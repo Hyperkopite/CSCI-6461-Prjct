@@ -551,8 +551,8 @@ public class ComputerArchitecture {
 		}
 		
 		
-		//JRE
-private void Jre(String addr, int reg, int indirect, MemorySystem ms) throws IOException {		
+		//JGE
+private void Jge(String addr, int reg, int indirect, MemorySystem ms) throws IOException {		
 			if (r[reg][0]==0){
 				if (indirect == 0) {
 					int addrLen = addr.length();
@@ -580,7 +580,7 @@ private void Jre(String addr, int reg, int indirect, MemorySystem ms) throws IOE
 			else {
 				pcIncrement();
 			}
-			System.out.println("In function Jre() :");
+			System.out.println("In function Jge() :");
 			
 		}
 		
@@ -1001,7 +1001,7 @@ private void Jre(String addr, int reg, int indirect, MemorySystem ms) throws IOE
 			Sob(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "17":
-			Jre(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		
 

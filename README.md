@@ -11,4 +11,12 @@
 [04]AMR<br>
 [05]SMR<br>
 [06]AIR<br>
-[07]SIR
+[07]SIR<br>
+[10]JZ<br>
+[11]JNE<br>
+[12]JCC<br>
+[13]JMA<br>
+[15]RFS<br>
+[16]SOB<br>
+[17]JGE<br>
+
