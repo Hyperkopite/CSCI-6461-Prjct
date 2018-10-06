@@ -1,8 +1,8 @@
 # CSCI-6461-Prjct
 已完成的指令：(需要测试)
->[01]LDR
->[02]STR
->[03]LDA
+[01]LDR
+[02]STR
+[03]LDA
 [41]LDX
 [42]STX
 [04]AMR
