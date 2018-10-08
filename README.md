@@ -22,3 +22,10 @@
 [31]SRC<br>
 [32]RRC<br>
 
+×1.	HLT, TRAP code<br>
+√2.	JZ, JNE, JCC, JMA, JSR, RFS, SOB, JGE<br>
+√3.	AMR, SMR, AIR, SIR<br>
+×4.	MLT, DVD, TRR, AND, ORR, NOT<br>
+√5.	SRC, RRC<br>
+?6.	IN, OUT, CHK
+
