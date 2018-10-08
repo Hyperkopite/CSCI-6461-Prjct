@@ -339,6 +339,243 @@ public class ComputerArchitecture {
 		System.out.println("In function moveMbrToIr() :");
 	}
 
+	public void moveMbrToPc() throws IOException {
+		for (int i = 0; i < 16; i++) {
+			pc[i] = mbr[i];
+		}
+
+		// print
+		System.out.println("In function moveMbrToPc() :");
+	}
+
+	// instruction JZ
+	private void Jz(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
+		for (int i = 0; i < 16; i++) {
+			if (r[reg][i] == 1) {
+				pcIncrement();
+				System.out.println("In function Jz() :");
+				return;
+			}
+		}
+		if (indirect == 0) {
+			int addrLen = addr.length();
+			// load address to register reg
+			for (int i = 0; i < addrLen; i++) {
+				pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+			}
+			for (int i = 0; i < (16 - addrLen); i++) {
+				pc[i] = 0;
+			}
+		} else {
+			int address = 0;
+			// move address to mar
+			moveAddrToMar(addr);
+			// calculate address in mar
+			address = calMemAddr();
+			// fetch values in memory to mbr
+			fetchFromMemToMbr(address, ms);
+			// move mbr to register pc
+			moveMbrToPc();
+
+		}
+
+		// print
+		System.out.println("In function Jz() :");
+	}
+
+	// instruction JNE
+	private void Jne(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
+		for (int i = 0; i < 16; i++) {
+			if (r[reg][i] == 1) {
+
+				if (indirect == 0) {
+					int addrLen = addr.length();
+					// load address to register reg
+					for (int j = 0; j < addrLen; j++) {
+						pc[16 - addrLen + j] = Character.getNumericValue(addr.charAt(j));
+					}
+					for (int j = 0; j < (16 - addrLen); j++) {
+						pc[j] = 0;
+					}
+				} else {
+					int address = 0;
+					// move address to mar
+					moveAddrToMar(addr);
+					// calculate address in mar
+					address = calMemAddr();
+					// fetch values in memory to mbr
+					fetchFromMemToMbr(address, ms);
+					// move mbr to register pc
+					moveMbrToPc();
+
+				}
+
+				// print
+				System.out.println("In function Jne() :");
+				return;
+			}
+		}
+		pcIncrement();
+		// print
+		System.out.println("In function Jne() :");
+	}
+
+	// instruction JCC
+	private void Jcc(String addr, int ccindex, int indirect, MemorySystem ms) throws IOException {
+		if (cc[ccindex] == 1) {
+			if (indirect == 0) {
+				int addrLen = addr.length();
+				// load address to register reg
+				for (int i = 0; i < addrLen; i++) {
+					pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+				}
+				for (int i = 0; i < (16 - addrLen); i++) {
+					pc[i] = 0;
+				}
+			} else {
+				int address = 0;
+				// move address to mar
+				moveAddrToMar(addr);
+				// calculate address in mar
+				address = calMemAddr();
+				// fetch values in memory to mbr
+				fetchFromMemToMbr(address, ms);
+				// move mbr to register pc
+				moveMbrToPc();
+
+			}
+			System.out.println("In function Jcc() :");
+		} else {
+			pcIncrement();
+			// print
+			System.out.println("In function Jcc() :");
+
+		}
+	}
+
+	// instruction JMA
+	private void Jma(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
+		if (indirect == 0) {
+			int addrLen = addr.length();
+			// load address to register reg
+			for (int i = 0; i < addrLen; i++) {
+				pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+			}
+			for (int i = 0; i < (16 - addrLen); i++) {
+				pc[i] = 0;
+			}
+		} else {
+			int address = 0;
+			// move address to mar
+			moveAddrToMar(addr);
+			// calculate address in mar
+			address = calMemAddr();
+			// fetch values in memory to mbr
+			fetchFromMemToMbr(address, ms);
+			// move mbr to register pc
+			moveMbrToPc();
+
+		}
+		System.out.println("In function Jma() :");
+	}
+
+	// instruction RFS
+	private void Rfs(String immed, int reg, int indirect, MemorySystem ms) throws IOException {
+		int immedLen = immed.length();
+		// load address to register reg
+		for (int i = 0; i < immedLen; i++) {
+			r[0][16 - immedLen + i] = Character.getNumericValue(immed.charAt(i));
+		}
+		for (int i = 0; i < (16 - immedLen); i++) {
+			r[0][i] = 0;
+		}
+		for (int i = 0; i < 16; i++) {
+			pc[i] = r[3][i];
+		}
+		System.out.println("In function Rfs() :");
+	}
+
+	// instruction SOB
+	private void Sob(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
+		boolean overzeor = false;
+		for (int i = 15; i >= 0; i--) {
+			if (r[reg][i] == 1) {
+				r[reg][i] = 0;
+
+				break;
+			} else {
+				r[reg][i] = 1;
+			}
+		}
+		for (int i = 15; i >= 1; i--) {
+			if (r[reg][i] == 1) {
+				overzeor = true;
+				break;
+			}
+		}
+
+		if (r[reg][0] == 0 && overzeor) {
+			if (indirect == 0) {
+				int addrLen = addr.length();
+				// load address to register reg
+				for (int i = 0; i < addrLen; i++) {
+					pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+				}
+				for (int i = 0; i < (16 - addrLen); i++) {
+					pc[i] = 0;
+				}
+			} else {
+				int address = 0;
+				// move address to mar
+				moveAddrToMar(addr);
+				// calculate address in mar
+				address = calMemAddr();
+				// fetch values in memory to mbr
+				fetchFromMemToMbr(address, ms);
+				// move mbr to register pc
+				moveMbrToPc();
+
+			}
+
+		} else {
+			pcIncrement();
+		}
+		System.out.println("In function sob() :");
+
+	}
+
+	// JGE
+	private void Jge(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
+		if (r[reg][0] == 0) {
+			if (indirect == 0) {
+				int addrLen = addr.length();
+				// load address to register reg
+				for (int i = 0; i < addrLen; i++) {
+					pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+				}
+				for (int i = 0; i < (16 - addrLen); i++) {
+					pc[i] = 0;
+				}
+			} else {
+				int address = 0;
+				// move address to mar
+				moveAddrToMar(addr);
+				// calculate address in mar
+				address = calMemAddr();
+				// fetch values in memory to mbr
+				fetchFromMemToMbr(address, ms);
+				// move mbr to register pc
+				moveMbrToPc();
+
+			}
+
+		} else {
+			pcIncrement();
+		}
+		System.out.println("In function Jge() :");
+
+	}
+
 	// instruction LDR
 	private void Ldr(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 
@@ -510,7 +747,7 @@ public class ComputerArchitecture {
 					mbr[i] += rTemp[i];
 				} else {
 					if (i != 0) { // not overflow
-						mbr[i] += 2 - (mbr[i] + rTemp[i]);
+						mbr[i] = (mbr[i] + rTemp[i]) - 2;
 						mbr[i - 1]++;
 					} else {
 						// i == 0, overflow
@@ -533,7 +770,7 @@ public class ComputerArchitecture {
 					mbr[i] += rTemp[i];
 				} else {
 					if (i != 0) { // not overflow
-						mbr[i] += 2 - (mbr[i] + rTemp[i]);
+						mbr[i] = (mbr[i] + rTemp[i]) - 2;
 						mbr[i - 1]++;
 					} else {
 						// i == 0, overflow
@@ -653,6 +890,11 @@ public class ComputerArchitecture {
 		}
 	}
 
+	// SRC
+	private void Src(int reg, String count, int al, int lr, MemorySystem ms) {
+
+	}
+
 	// decode the instruction in register IR
 	public void decode(MemorySystem ms) throws Exception {
 		String opcode = "0";
@@ -679,6 +921,7 @@ public class ComputerArchitecture {
 				address = address + (int) Math.pow(ir[i] * 2, (15 - i));
 			}
 		}
+		int immed = address;
 		// find specified index register.
 		indexRegInUse = ir[8] * 2 + ir[9] * 1;
 		// calculate specified general use register.
@@ -723,6 +966,37 @@ public class ComputerArchitecture {
 			break;
 		case "7":
 			Sir(generalRegInUse, Integer.toBinaryString(effectiveAddress), ms);
+			break;
+		case "31":
+			Src(generalRegInUse, Integer.toBinaryString(effectiveAddress), ir[8], ir[9], ms);
+			break;
+
+		case "10":
+			Jz(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			break;
+		case "11":
+			Jne(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			break;
+		case "12":
+			int ccindex = generalRegInUse;
+			Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
+			break;
+		case "13":
+			Jma(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			break;
+
+//		case "14":
+//			Jsr(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+//			break;
+
+		case "15":
+			Rfs(Integer.toBinaryString(immed), generalRegInUse, indirect, ms);
+			break;
+		case "16":
+			Sob(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			break;
+		case "17":
+			Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 
 		// use general register bit [6],[7] to calculate index register, because the
