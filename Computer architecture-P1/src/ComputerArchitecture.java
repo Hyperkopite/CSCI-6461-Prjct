@@ -958,7 +958,6 @@ public class ComputerArchitecture {
 		int addrIx = 0; // store the address in index register.
 		int address = 0;
 		int indirect = 0; // 0 means instruction doesn't use indirect mode.
-//		int immed = 0; // for some instructions need immediate number.
 		int count = 0; // for instructions need count, like SRC, RRC.
 
 		// calculate address in instruction.
@@ -967,7 +966,7 @@ public class ComputerArchitecture {
 				address = address + (int) Math.pow(ir[i] * 2, (15 - i));
 			}
 		}
-//		immed = address;
+		// calculate the number of count
 		for (int i = 15; i >= 12; i--) {
 			if (ir[i] == 1) {
 				count += (int) Math.pow(ir[i] * 2, (15 - i));
@@ -1032,8 +1031,8 @@ public class ComputerArchitecture {
 			Jne(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "12":
-//			int ccindex = generalRegInUse;
-			Jcc(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			int ccindex = generalRegInUse;
+			Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
 			break;
 		case "13":
 			Jma(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
