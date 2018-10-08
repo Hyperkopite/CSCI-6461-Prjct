@@ -958,7 +958,7 @@ public class ComputerArchitecture {
 		int addrIx = 0; // store the address in index register.
 		int address = 0;
 		int indirect = 0; // 0 means instruction doesn't use indirect mode.
-		int immed = 0; // for some instructions need immediate number.
+//		int immed = 0; // for some instructions need immediate number.
 		int count = 0; // for instructions need count, like SRC, RRC.
 
 		// calculate address in instruction.
@@ -967,7 +967,7 @@ public class ComputerArchitecture {
 				address = address + (int) Math.pow(ir[i] * 2, (15 - i));
 			}
 		}
-		immed = address;
+//		immed = address;
 		for (int i = 15; i >= 12; i--) {
 			if (ir[i] == 1) {
 				count += (int) Math.pow(ir[i] * 2, (15 - i));
@@ -1013,10 +1013,10 @@ public class ComputerArchitecture {
 			Smr(generalRegInUse, Integer.toBinaryString(effectiveAddress), indirect, ms);
 			break;
 		case "6":
-			Air(generalRegInUse, Integer.toBinaryString(immed));
+			Air(generalRegInUse, Integer.toBinaryString(address));
 			break;
 		case "7":
-			Sir(generalRegInUse, Integer.toBinaryString(immed));
+			Sir(generalRegInUse, Integer.toBinaryString(address));
 			break;
 		case "31":
 			Src(generalRegInUse, count, ir[8], ir[9]);
@@ -1032,8 +1032,8 @@ public class ComputerArchitecture {
 			Jne(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "12":
-			int ccindex = generalRegInUse;
-			Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
+//			int ccindex = generalRegInUse;
+			Jcc(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "13":
 			Jma(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
@@ -1044,7 +1044,7 @@ public class ComputerArchitecture {
 //			break;
 
 		case "15":
-			Rfs(Integer.toBinaryString(immed), generalRegInUse, indirect, ms);
+			Rfs(Integer.toBinaryString(address), generalRegInUse, indirect, ms);
 			break;
 		case "16":
 			Sob(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
