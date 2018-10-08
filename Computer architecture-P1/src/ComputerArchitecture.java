@@ -839,7 +839,7 @@ public class ComputerArchitecture {
 	}
 
 	// AIR
-	private void Air(int reg, String immed, MemorySystem ms) throws IOException {
+	private void Air(int reg, String immed) {
 		// fill the immed to 5 bits
 		int temp = 5 - immed.length();
 		for (int i = 0; i < temp; i++) {
@@ -865,7 +865,7 @@ public class ComputerArchitecture {
 	}
 
 	// SIR
-	private void Sir(int reg, String immed, MemorySystem ms) throws IOException {
+	private void Sir(int reg, String immed) {
 		// fill the immed to 5 bits
 		int temp = 5 - immed.length();
 		for (int i = 0; i < temp; i++) {
@@ -891,8 +891,52 @@ public class ComputerArchitecture {
 	}
 
 	// SRC
-	private void Src(int reg, String count, int al, int lr, MemorySystem ms) {
+	private void Src(int reg, int count, int al, int lr) {
+		for (int i = 0; i < count; i++) {
+			if (lr == 1) { // shift left
+				for (int j = 0; j < 16; j++) {
+					if (j != 15) {
+						r[reg][j] = r[reg][j + 1];
+					} else {
+						r[reg][j] = 0;
+					}
+				}
+			} else { // shift right
+				for (int j = 15; j >= 0; j--) {
+					if (j != 0) {
+						r[reg][j] = r[reg][j - 1];
+					} else if (al == 1) { // logically shift
+						r[reg][j] = 0;
+					} // if it's arithmetically shift, keep the sign bit.
+				}
+			}
+		}
+	}
 
+	// RRC
+	private void Rrc(int reg, int count, int lr) {
+		int temp;
+		for (int i = 0; i < count; i++) {
+			if (lr == 1) { // rotate left
+				temp = r[reg][0];
+				for (int j = 0; j < 16; j++) {
+					if (j != 15) {
+						r[reg][j] = r[reg][j + 1];
+					}else {
+						r[reg][j] = temp;
+					}
+				}
+			} else { // rotate right
+				temp = r[reg][15];
+				for (int j = 15; j >= 0; j--) {
+					if (j != 0) {
+						r[reg][j] = r[reg][j - 1];
+					}else {
+						r[reg][j] = temp;
+					}
+				}
+			}
+		}
 	}
 
 	// decode the instruction in register IR
@@ -914,6 +958,8 @@ public class ComputerArchitecture {
 		int addrIx = 0; // store the address in index register.
 		int address = 0;
 		int indirect = 0; // 0 means instruction doesn't use indirect mode.
+		int immed = 0; // for some instructions need immediate number.
+		int count = 0; // for instructions need count, like SRC, RRC.
 
 		// calculate address in instruction.
 		for (int i = 15; i >= 11; i--) {
@@ -921,7 +967,12 @@ public class ComputerArchitecture {
 				address = address + (int) Math.pow(ir[i] * 2, (15 - i));
 			}
 		}
-		int immed = address;
+		immed = address;
+		for (int i = 15; i >= 12; i--) {
+			if (ir[i] == 1) {
+				count += (int) Math.pow(ir[i] * 2, (15 - i));
+			}
+		}
 		// find specified index register.
 		indexRegInUse = ir[8] * 2 + ir[9] * 1;
 		// calculate specified general use register.
@@ -962,13 +1013,16 @@ public class ComputerArchitecture {
 			Smr(generalRegInUse, Integer.toBinaryString(effectiveAddress), indirect, ms);
 			break;
 		case "6":
-			Air(generalRegInUse, Integer.toBinaryString(effectiveAddress), ms);
+			Air(generalRegInUse, Integer.toBinaryString(immed));
 			break;
 		case "7":
-			Sir(generalRegInUse, Integer.toBinaryString(effectiveAddress), ms);
+			Sir(generalRegInUse, Integer.toBinaryString(immed));
 			break;
 		case "31":
-			Src(generalRegInUse, Integer.toBinaryString(effectiveAddress), ir[8], ir[9], ms);
+			Src(generalRegInUse, count, ir[8], ir[9]);
+			break;
+		case "32":
+			Rrc(generalRegInUse, count, ir[9]);
 			break;
 
 		case "10":
