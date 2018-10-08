@@ -29,4 +29,4 @@ Currrent under part II
 × 4.MLT, DVD, TRR, AND, ORR, NOT<br>
 √ 5.SRC, RRC<br>
 ? 6.IN, OUT, CHK<br>
-× 7.Program 1
+× 7.Program 1<br>
