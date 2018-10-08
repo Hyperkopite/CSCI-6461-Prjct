@@ -1,4 +1,5 @@
 # CSCI-6461-Prjct
+Currrent under part II
 <a target="_blank" href=""><img src="https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg"></a>
 <a target="_blank" href=""><img src="https://img.shields.io/badge/Status-Need%20help-red.svg"></a>
 <a target="_blank" href=""><img src="https://img.shields.io/badge/Coverage-15%25-yellow.svg"></a><br>
@@ -22,9 +23,10 @@
 [31]SRC<br>
 [32]RRC<br>
 
-× 1.	HLT, TRAP code<br>
-√ 2.	JZ, JNE, JCC, JMA, JSR, RFS, SOB, JGE<br>
-√ 3.	AMR, SMR, AIR, SIR<br>
-× 4.	MLT, DVD, TRR, AND, ORR, NOT<br>
-√ 5.	SRC, RRC<br>
-? 6.	IN, OUT, CHK
+× 1.HLT, TRAP code<br>
+√ 2.JZ, JNE, JCC, JMA, JSR, RFS, SOB, JGE<br>
+√ 3.AMR, SMR, AIR, SIR<br>
+× 4.MLT, DVD, TRR, AND, ORR, NOT<br>
+√ 5.SRC, RRC<br>
+? 6.IN, OUT, CHK<br>
+× 7.Program 1
