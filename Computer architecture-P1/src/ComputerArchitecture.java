@@ -575,95 +575,88 @@ public class ComputerArchitecture {
 		System.out.println("In function Jge() :");
 
 	}
-	
+
 	// MLT
-		private void Mlt(int reg1, int reg2) throws IOException {
-			// sava result
-			int[] hold = new int[32];
-			int[] mid = new int[32];
-			hold[0]=reg1;
-			//check -*- or -*+ or +*+
-			if (r[reg1][0]==r[reg2][0]){
-				hold[0]=0;
-			}
-			for (int i=15 ;i> 0; i--){
-				if (r[reg2][i]==1){
-					for (int j=31;j>(i+16);j--){
-						mid[j]=0;
-					}
-					for (int j=(i+16);j>(i+1);j--){
-						mid[j]=r[reg1][j-i-1];
-					}
-					for (int j=i+1; j>0; j--){
-						mid[j]=0;
-					}
-					int over=0;
-					int add;
-					for (int j=31;j>0;j--)
-					{
-						add=mid[j]+hold[j]+over;
-						hold[j]=add%2;
-						if(add>1) over=1; else over=0;
-					}
-					if (over==1){
-						//set overflag
-						continue;
-					}
-					
-				}
-			}
-			for (int i=0; i<32; i++)
-				r[reg1+i/16][i%16]=hold[i];
-				
+	private void Mlt(int reg1, int reg2) throws IOException {
+		// sava result
+		int[] hold = new int[32];
+		int[] mid = new int[32];
+		hold[0] = reg1;
+		// check -*- or -*+ or +*+
+		if (r[reg1][0] == r[reg2][0]) {
+			hold[0] = 0;
 		}
-	
-		
-	
-	
-	// TRR
-			private void Trr(int reg1, int reg2) throws IOException {
-				for (int i=0; i<15; i++){
-					if (r[reg1][i]!=r[reg2][i]){
-						cc[4]=0;
-						return;
-					}
+		for (int i = 15; i > 0; i--) {
+			if (r[reg2][i] == 1) {
+				for (int j = 31; j > (i + 16); j--) {
+					mid[j] = 0;
 				}
-				cc[4]=1;
-				
-				
+				for (int j = (i + 16); j > (i + 1); j--) {
+					mid[j] = r[reg1][j - i - 1];
+				}
+				for (int j = i + 1; j > 0; j--) {
+					mid[j] = 0;
+				}
+				int over = 0;
+				int add;
+				for (int j = 31; j > 0; j--) {
+					add = mid[j] + hold[j] + over;
+					hold[j] = add % 2;
+					if (add > 1)
+						over = 1;
+					else
+						over = 0;
+				}
+				if (over == 1) {
+					// set overflag
+					continue;
+				}
+
 			}
-	
+		}
+		for (int i = 0; i < 32; i++)
+			r[reg1 + i / 16][i % 16] = hold[i];
+	}
+
+	// TRR
+	private void Trr(int reg1, int reg2) throws IOException {
+		for (int i = 0; i < 15; i++) {
+			if (r[reg1][i] != r[reg2][i]) {
+				cc[4] = 0;
+				return;
+			}
+		}
+		cc[4] = 1;
+	}
+
 	// AND
 	private void And(int reg1, int reg2) throws IOException {
-		for (int i=0; i<15; i++){
-			if (r[reg1][i]==reg1 && r[reg2][i]==1){
-				r[reg1][i]=reg1;
+		for (int i = 0; i < 15; i++) {
+			if (r[reg1][i] == reg1 && r[reg2][i] == 1) {
+				r[reg1][i] = reg1;
 			}
 		}
-		
 	}
-	
-	// ORR
-		private void Orr(int reg1, int reg2) throws IOException {
-			for (int i=0; i<15; i++){
-				if (r[reg1][i]==reg1 || r[reg2][i]==1){
-					r[reg1][i]=reg1;
-				}
-			}
-			
-		}
 
-		
+	// ORR
+	private void Orr(int reg1, int reg2) throws IOException {
+		for (int i = 0; i < 15; i++) {
+			if (r[reg1][i] == reg1 || r[reg2][i] == 1) {
+				r[reg1][i] = reg1;
+			}
+		}
+	}
+
 	// Not
 	private void Not(int reg) throws IOException {
-		for (int i=0; i<15 ;i++){
-			if (r[reg][i]==1)
-				r[reg][i]=1;
-			else 
-				r[reg][i]=0;
+		for (int i = 0; i < 15; i++) {
+			if (r[reg][i] == 1)
+				r[reg][i] = 1;
+			else
+				r[reg][i] = 0;
 		}
-			
-		}
+	}
+
 	// instruction LDR
 	private void Ldr(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 
@@ -1010,7 +1003,7 @@ public class ComputerArchitecture {
 				for (int j = 0; j < 16; j++) {
 					if (j != 15) {
 						r[reg][j] = r[reg][j + 1];
-					}else {
+					} else {
 						r[reg][j] = temp;
 					}
 				}
@@ -1019,14 +1012,14 @@ public class ComputerArchitecture {
 				for (int j = 15; j >= 0; j--) {
 					if (j != 0) {
 						r[reg][j] = r[reg][j - 1];
-					}else {
+					} else {
 						r[reg][j] = temp;
 					}
 				}
 			}
 		}
 	}
-	
+
 //	//HLT
 //	private void Hlt() {
 //	}
@@ -1136,8 +1129,6 @@ public class ComputerArchitecture {
 		case "17":
 			Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 		case "31":
 			Src(generalRegInUse, count, ir[8], ir[9]);
@@ -1145,39 +1136,31 @@ public class ComputerArchitecture {
 		case "32":
 			Rrc(generalRegInUse, count, ir[9]);
 			break;
-=======
-=======
->>>>>>> 5db17dc760cf597c0133130e8c9cf961e64a1e6f
-			
-		
+
 		case "20":
 			Mlt(generalRegInUse, indexRegInUse);
 			break;
-			
+
 //		case "21":
 //			Dvd(generalRegInUse, indexRegInUse);
 //			break;
-		
+
 		case "22":
 			Trr(generalRegInUse, indexRegInUse);
 			break;
-		
+
 		case "23":
 			And(generalRegInUse, indexRegInUse);
 			break;
-			
+
 		case "24":
 			Orr(generalRegInUse, indexRegInUse);
 			break;
-		
+
 		case "25":
 			Not(generalRegInUse);
 			break;
-			
-<<<<<<< HEAD
->>>>>>> 5db17dc760cf597c0133130e8c9cf961e64a1e6f
-=======
->>>>>>> 5db17dc760cf597c0133130e8c9cf961e64a1e6f
+
 		// use general register bit [6],[7] to calculate index register, because the
 		// index register is using these two bits in instruction ldx and stx.
 		case "41":
