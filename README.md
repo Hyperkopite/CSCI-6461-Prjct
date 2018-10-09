@@ -28,7 +28,8 @@ Currrent under part II<br>
 [31]SRC<br>
 [32]RRC<br>
 
-× 1.HLT, TRAP code<br>
+√ 1.HLT<br> 
+× TRAP code<br>
 √ 2.JZ, JNE, JCC, JMA, RFS, SOB, JGE<br>
 × JSR<br>
 √ 3.AMR, SMR, AIR, SIR<br>
