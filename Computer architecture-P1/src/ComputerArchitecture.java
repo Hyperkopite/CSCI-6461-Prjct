@@ -575,7 +575,95 @@ public class ComputerArchitecture {
 		System.out.println("In function Jge() :");
 
 	}
+	
+	// MLT
+		private void Mlt(int reg1, int reg2) throws IOException {
+			// sava result
+			int[] hold = new int[32];
+			int[] mid = new int[32];
+			hold[0]=reg1;
+			//check -*- or -*+ or +*+
+			if (r[reg1][0]==r[reg2][0]){
+				hold[0]=0;
+			}
+			for (int i=15 ;i> 0; i--){
+				if (r[reg2][i]==1){
+					for (int j=31;j>(i+16);j--){
+						mid[j]=0;
+					}
+					for (int j=(i+16);j>(i+1);j--){
+						mid[j]=r[reg1][j-i-1];
+					}
+					for (int j=i+1; j>0; j--){
+						mid[j]=0;
+					}
+					int over=0;
+					int add;
+					for (int j=31;j>0;j--)
+					{
+						add=mid[j]+hold[j]+over;
+						hold[j]=add%2;
+						if(add>1) over=1; else over=0;
+					}
+					if (over==1){
+						//set overflag
+						continue;
+					}
+					
+				}
+			}
+			for (int i=0; i<32; i++)
+				r[reg1+i/16][i%16]=hold[i];
+				
+		}
+	
+		
+	
+	
+	// TRR
+			private void Trr(int reg1, int reg2) throws IOException {
+				for (int i=0; i<15; i++){
+					if (r[reg1][i]!=r[reg2][i]){
+						cc[4]=0;
+						return;
+					}
+				}
+				cc[4]=1;
+				
+				
+			}
+	
+	// AND
+	private void And(int reg1, int reg2) throws IOException {
+		for (int i=0; i<15; i++){
+			if (r[reg1][i]==reg1 && r[reg2][i]==1){
+				r[reg1][i]=reg1;
+			}
+		}
+		
+	}
+	
+	// ORR
+		private void Orr(int reg1, int reg2) throws IOException {
+			for (int i=0; i<15; i++){
+				if (r[reg1][i]==reg1 || r[reg2][i]==1){
+					r[reg1][i]=reg1;
+				}
+			}
+			
+		}
 
+		
+	// Not
+	private void Not(int reg) throws IOException {
+		for (int i=0; i<15 ;i++){
+			if (r[reg][i]==1)
+				r[reg][i]=1;
+			else 
+				r[reg][i]=0;
+		}
+			
+		}
 	// instruction LDR
 	private void Ldr(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 
@@ -938,6 +1026,10 @@ public class ComputerArchitecture {
 			}
 		}
 	}
+	
+//	//HLT
+//	private void Hlt() {
+//	}
 
 	// decode the instruction in register IR
 	public void decode(MemorySystem ms) throws Exception {
@@ -1017,13 +1109,6 @@ public class ComputerArchitecture {
 		case "7":
 			Sir(generalRegInUse, Integer.toBinaryString(address));
 			break;
-		case "31":
-			Src(generalRegInUse, count, ir[8], ir[9]);
-			break;
-		case "32":
-			Rrc(generalRegInUse, count, ir[9]);
-			break;
-
 		case "10":
 			Jz(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
@@ -1051,7 +1136,42 @@ public class ComputerArchitecture {
 		case "17":
 			Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
+<<<<<<< HEAD
 
+		case "31":
+			Src(generalRegInUse, count, ir[8], ir[9]);
+			break;
+		case "32":
+			Rrc(generalRegInUse, count, ir[9]);
+			break;
+=======
+			
+		
+		case "20":
+			Mlt(generalRegInUse, indexRegInUse);
+			break;
+			
+//		case "21":
+//			Dvd(generalRegInUse, indexRegInUse);
+//			break;
+		
+		case "22":
+			Trr(generalRegInUse, indexRegInUse);
+			break;
+		
+		case "23":
+			And(generalRegInUse, indexRegInUse);
+			break;
+			
+		case "24":
+			Orr(generalRegInUse, indexRegInUse);
+			break;
+		
+		case "25":
+			Not(generalRegInUse);
+			break;
+			
+>>>>>>> 5db17dc760cf597c0133130e8c9cf961e64a1e6f
 		// use general register bit [6],[7] to calculate index register, because the
 		// index register is using these two bits in instruction ldx and stx.
 		case "41":
@@ -1167,7 +1287,6 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function init() :");
 		display_preload(ms);
-		UI.screen_update();
 	}
 
 	public void run(MemorySystem ms) throws IOException {
@@ -1183,6 +1302,11 @@ public class ComputerArchitecture {
 		while (instructionsNum != 0) {
 			System.out.println(
 					"Successfully loaded.\nThe instruction is: " + current_instruction[insLen - instructionsNum]);
+			if (current_instruction[insLen - instructionsNum].substring(0, 6).equals("000000")) {
+				System.out.println("**Program has been halted.**");
+				UI.screen_update();
+				return;
+			}
 			fetchFromPcToMar();
 			pcAddr = calMemAddr();
 			fetchFromMemToMbr(pcAddr, ms);
@@ -1218,6 +1342,11 @@ public class ComputerArchitecture {
 			return;
 		}
 		System.out.println("Successfully loaded.\nThe instruction is: " + current_instruction[stepByStep]);
+		if (current_instruction[stepByStep].substring(0, 6).equals("000000")) {
+			System.out.println("**Program has been halted.**");
+			UI.screen_update();
+			return;
+		}
 		fetchFromPcToMar();
 		pcAddr = calMemAddr();
 		fetchFromMemToMbr(pcAddr, ms);

@@ -311,8 +311,8 @@ public class UI {
 						cacheStream = new PrintStream(temp_stream);
 						System.setOut(new PrintStream(cacheStream));
 						ca.init(ms);
-						screen_update();
 						display_register(ca);
+						screen_update();
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();

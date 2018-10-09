@@ -20,6 +20,11 @@ Currrent under part II<br>
 [15]RFS<br>
 [16]SOB<br>
 [17]JGE<br>
+[20]MLT<br>
+[22]TRR<br>
+[23]AND<br>
+[24]ORR<br>
+[25]NOT<br>
 [31]SRC<br>
 [32]RRC<br>
 
@@ -27,7 +32,8 @@ Currrent under part II<br>
 √ 2.JZ, JNE, JCC, JMA, RFS, SOB, JGE<br>
 × JSR<br>
 √ 3.AMR, SMR, AIR, SIR<br>
-× 4.MLT, DVD, TRR, AND, ORR, NOT<br>
+√ 4.MLT, TRR, AND, ORR, NOT<br>
+× DVD<br>
 √ 5.SRC, RRC<br>
 ? 6.IN, OUT, CHK<br>
 × 7.Program 1<br>
