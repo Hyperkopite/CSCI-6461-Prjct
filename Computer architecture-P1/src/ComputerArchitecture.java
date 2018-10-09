@@ -1137,6 +1137,7 @@ public class ComputerArchitecture {
 			Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		case "31":
 			Src(generalRegInUse, count, ir[8], ir[9]);
@@ -1145,6 +1146,8 @@ public class ComputerArchitecture {
 			Rrc(generalRegInUse, count, ir[9]);
 			break;
 =======
+=======
+>>>>>>> 5db17dc760cf597c0133130e8c9cf961e64a1e6f
 			
 		
 		case "20":
@@ -1171,6 +1174,9 @@ public class ComputerArchitecture {
 			Not(generalRegInUse);
 			break;
 			
+<<<<<<< HEAD
+>>>>>>> 5db17dc760cf597c0133130e8c9cf961e64a1e6f
+=======
 >>>>>>> 5db17dc760cf597c0133130e8c9cf961e64a1e6f
 		// use general register bit [6],[7] to calculate index register, because the
 		// index register is using these two bits in instruction ldx and stx.
