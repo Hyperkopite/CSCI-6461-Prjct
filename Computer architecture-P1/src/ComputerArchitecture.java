@@ -580,7 +580,7 @@ public class ComputerArchitecture {
 
 	// MLT
 	private void Mlt(int reg1, int reg2) throws IOException {
-<<<<<<< HEAD
+
 		// use reg2+1 as ac
 		for (int i=0; i<16 ;i++)
 			r[reg2+1][i]=r[reg1][i];
@@ -750,58 +750,8 @@ public class ComputerArchitecture {
 				
 				System.out.println("In function Trr() :");
 				
-=======
-		// sava result
-		int[] hold = new int[32];
-		int[] mid = new int[32];
-		hold[0] = reg1;
-		// check -*- or -*+ or +*+
-		if (r[reg1][0] == r[reg2][0]) {
-			hold[0] = 0;
-		}
-		for (int i = 15; i > 0; i--) {
-			if (r[reg2][i] == 1) {
-				for (int j = 31; j > (i + 16); j--) {
-					mid[j] = 0;
-				}
-				for (int j = (i + 16); j > (i + 1); j--) {
-					mid[j] = r[reg1][j - i - 1];
-				}
-				for (int j = i + 1; j > 0; j--) {
-					mid[j] = 0;
-				}
-				int over = 0;
-				int add;
-				for (int j = 31; j > 0; j--) {
-					add = mid[j] + hold[j] + over;
-					hold[j] = add % 2;
-					if (add > 1)
-						over = 1;
-					else
-						over = 0;
-				}
-				if (over == 1) {
-					// set overflag
-					continue;
-				}
-
 			}
-		}
-		for (int i = 0; i < 32; i++)
-			r[reg1 + i / 16][i % 16] = hold[i];
-	}
-
-	// TRR
-	private void Trr(int reg1, int reg2) throws IOException {
-		for (int i = 0; i < 15; i++) {
-			if (r[reg1][i] != r[reg2][i]) {
-				cc[4] = 0;
-				return;
->>>>>>> 95294e8947cf8dd41f787b06591e26fb11139618
-			}
-		}
-		cc[4] = 1;
-	}
+	
 
 	// AND
 	private void And(int reg1, int reg2) throws IOException {
@@ -810,11 +760,10 @@ public class ComputerArchitecture {
 				r[reg1][i] = reg1;
 			}
 		}
-<<<<<<< HEAD
+
 		System.out.println("In function And() :");
 		
-=======
->>>>>>> 95294e8947cf8dd41f787b06591e26fb11139618
+
 	}
 
 	// ORR
@@ -823,17 +772,16 @@ public class ComputerArchitecture {
 			if (r[reg1][i] == reg1 || r[reg2][i] == 1) {
 				r[reg1][i] = reg1;
 			}
-<<<<<<< HEAD
+
 			System.out.println("In function Orr() :");
 			
-=======
->>>>>>> 95294e8947cf8dd41f787b06591e26fb11139618
+
 		}
 	}
 
 	// Not
 	private void Not(int reg) throws IOException {
-<<<<<<< HEAD
+
 		for (int i=0; i<15 ;i++){
 			if (r[reg][i]==1)
 				r[reg][i]=1;
@@ -842,14 +790,6 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function Not() :");
 			
-=======
-		for (int i = 0; i < 15; i++) {
-			if (r[reg][i] == 1)
-				r[reg][i] = 1;
-			else
-				r[reg][i] = 0;
->>>>>>> 95294e8947cf8dd41f787b06591e26fb11139618
-		}
 	}
 
 	// instruction LDR
@@ -1378,19 +1318,17 @@ public class ComputerArchitecture {
 		case "20":
 			Mlt(generalRegInUse, indexRegInUse);
 			break;
-<<<<<<< HEAD
+
 			
 		case "21":
 			Dvd(generalRegInUse, indexRegInUse);
 			break;
 		
-=======
 
-//		case "21":
-//			Dvd(generalRegInUse, indexRegInUse);
-//			break;
 
->>>>>>> 95294e8947cf8dd41f787b06591e26fb11139618
+
+
+
 		case "22":
 			Trr(generalRegInUse, indexRegInUse);
 			break;
