@@ -359,16 +359,24 @@ public class ComputerArchitecture {
 				return;
 			}
 		}
+		System.out.println(indirect);
 		if (indirect == 0) {
+			
+			
+			
 			int addrLen = addr.length();
 			// load address to register reg
 			for (int i = 0; i < addrLen; i++) {
-				pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+				pc[12 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
 			}
-			for (int i = 0; i < (16 - addrLen); i++) {
+			for (int i = 0; i < (12 - addrLen); i++) {
 				pc[i] = 0;
 			}
-		} else {
+			
+			
+		} 
+		else {
+			System.out.println("In function Jz() :");
 			int address = 0;
 			// move address to mar
 			moveAddrToMar(addr);
@@ -394,9 +402,9 @@ public class ComputerArchitecture {
 					int addrLen = addr.length();
 					// load address to register reg
 					for (int j = 0; j < addrLen; j++) {
-						pc[16 - addrLen + j] = Character.getNumericValue(addr.charAt(j));
+						pc[12 - addrLen + j] = Character.getNumericValue(addr.charAt(j));
 					}
-					for (int j = 0; j < (16 - addrLen); j++) {
+					for (int j = 0; j < (12 - addrLen); j++) {
 						pc[j] = 0;
 					}
 				} else {
@@ -429,9 +437,9 @@ public class ComputerArchitecture {
 				int addrLen = addr.length();
 				// load address to register reg
 				for (int i = 0; i < addrLen; i++) {
-					pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+					pc[12 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
 				}
-				for (int i = 0; i < (16 - addrLen); i++) {
+				for (int i = 0; i < (12 - addrLen); i++) {
 					pc[i] = 0;
 				}
 			} else {
@@ -461,9 +469,9 @@ public class ComputerArchitecture {
 			int addrLen = addr.length();
 			// load address to register reg
 			for (int i = 0; i < addrLen; i++) {
-				pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+				pc[12 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
 			}
-			for (int i = 0; i < (16 - addrLen); i++) {
+			for (int i = 0; i < (12 - addrLen); i++) {
 				pc[i] = 0;
 			}
 		} else {
@@ -521,9 +529,9 @@ public class ComputerArchitecture {
 				int addrLen = addr.length();
 				// load address to register reg
 				for (int i = 0; i < addrLen; i++) {
-					pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+					pc[12 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
 				}
-				for (int i = 0; i < (16 - addrLen); i++) {
+				for (int i = 0; i < (12 - addrLen); i++) {
 					pc[i] = 0;
 				}
 			} else {
@@ -553,9 +561,9 @@ public class ComputerArchitecture {
 				int addrLen = addr.length();
 				// load address to register reg
 				for (int i = 0; i < addrLen; i++) {
-					pc[16 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+					pc[12 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
 				}
-				for (int i = 0; i < (16 - addrLen); i++) {
+				for (int i = 0; i < (12 - addrLen); i++) {
 					pc[i] = 0;
 				}
 			} else {
