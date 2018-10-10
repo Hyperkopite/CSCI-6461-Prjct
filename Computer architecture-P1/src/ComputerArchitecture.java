@@ -21,11 +21,12 @@ public class ComputerArchitecture {
 	private static int[] cc = new int[4];
 	private static int[] ir = new int[16];
 	private static int[][] x = new int[4][16]; // three index registers
-	public static boolean is_halted = false; //for halt instruction
 	// memory
 //	private int[][] memory1 = new int[2048][16];
 //	private int[][] memory2 = new int[2048][16]; // make sure the memory can expand when required
 	// extra needed variables
+	public boolean is_halted = false; // for halt instruction
+	public boolean is_from_trap = false; // for detecting if the program just recovered from trap
 	public int stepByStep = 0; // 0 for normal mode, 1 for single-step mode
 	private int effectiveAddress = 0; // effective address calculated by function decode()
 	private int generalRegInUse;
@@ -33,7 +34,6 @@ public class ComputerArchitecture {
 	private int instructionsNum; // count total number of instructions in the file.
 	private int[] rTemp = new int[16]; // used in indirect mode.
 	private String[] current_instruction = new String[100000];
-
 
 	public int[] getter_r(int num) {
 		int[][] r_temp = new int[4][16];
@@ -342,8 +342,8 @@ public class ComputerArchitecture {
 	}
 
 	public void moveMbrToPc() throws IOException {
-		for (int i = 0; i < 16; i++) {
-			pc[i] = mbr[i];
+		for (int i = 11; i >= 0; i--) {
+			pc[i] = mbr[i + 4];
 		}
 
 		// print
@@ -359,11 +359,7 @@ public class ComputerArchitecture {
 				return;
 			}
 		}
-		System.out.println(indirect);
 		if (indirect == 0) {
-			
-			
-			
 			int addrLen = addr.length();
 			// load address to register reg
 			for (int i = 0; i < addrLen; i++) {
@@ -372,11 +368,7 @@ public class ComputerArchitecture {
 			for (int i = 0; i < (12 - addrLen); i++) {
 				pc[i] = 0;
 			}
-			
-			
-		} 
-		else {
-			System.out.println("In function Jz() :");
+		} else {
 			int address = 0;
 			// move address to mar
 			moveAddrToMar(addr);
@@ -499,7 +491,7 @@ public class ComputerArchitecture {
 		for (int i = 0; i < (16 - immedLen); i++) {
 			r[0][i] = 0;
 		}
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 12; i++) {
 			pc[i] = r[3][i];
 		}
 		System.out.println("In function Rfs() :");
@@ -588,178 +580,56 @@ public class ComputerArchitecture {
 
 	// MLT
 	private void Mlt(int reg1, int reg2) throws IOException {
+		// sava result
+		int[] hold = new int[32];
+		int[] mid = new int[32];
+		hold[0] = reg1;
+		// check -*- or -*+ or +*+
+		if (r[reg1][0] == r[reg2][0]) {
+			hold[0] = 0;
+		}
+		for (int i = 15; i > 0; i--) {
+			if (r[reg2][i] == 1) {
+				for (int j = 31; j > (i + 16); j--) {
+					mid[j] = 0;
+				}
+				for (int j = (i + 16); j > (i + 1); j--) {
+					mid[j] = r[reg1][j - i - 1];
+				}
+				for (int j = i + 1; j > 0; j--) {
+					mid[j] = 0;
+				}
+				int over = 0;
+				int add;
+				for (int j = 31; j > 0; j--) {
+					add = mid[j] + hold[j] + over;
+					hold[j] = add % 2;
+					if (add > 1)
+						over = 1;
+					else
+						over = 0;
+				}
+				if (over == 1) {
+					// set overflag
+					continue;
+				}
 
-		// use reg2+1 as ac
-		for (int i=0; i<16 ;i++)
-			r[reg2+1][i]=r[reg1][i];
-		for (int i=1; i<32; i++)
-			r[reg1+i/16][i%16]=0;
-		for (int i=15 ;i> 0; i--){
-			if (r[reg2][i]==1){		
-				r[reg1][0]=0;
-				int vaule=0;
-				for (int j=(i+15);j>0;j--){
-					if (j>15){
-						vaule=r[reg1+1][j-15]+r[reg2+1][j-i]+r[reg1][0];
-						r[reg1+1][j-15]=vaule%2;
-						r[reg1][0]=vaule/2;
-					}
-					else{
-						if(j>i){
-						vaule=r[reg1][j]+r[reg2+1][j-i]+r[reg1][0];
-						r[reg1][j]=vaule%2;
-						r[reg1][0]=vaule/2;
-						}
-						else {
-							vaule=r[reg1][j]+r[reg1][0];
-							r[reg1][j]=vaule%2;
-							r[reg1][0]=vaule/2;
-						}
-					}
-				}
-//					if (r[reg1][0]==1){
-//						setoverflow();
-//					}
-				
 			}
 		}
-			
-		r[reg1][0]=1;
-		//check -*- or -*+ or +*+
-		if (r[reg2+1][0]==r[reg2][0]){
-			r[reg1][0]=0;
-		}
-		System.out.println("In function Mlt() :");
-			
+		for (int i = 0; i < 32; i++)
+			r[reg1 + i / 16][i % 16] = hold[i];
 	}
-		
-		// Dvd
-	private void Dvd(int reg1, int reg2) throws IOException {
-		int k1=0,k2=0,k3=0;
-		for (int i=1; i<16;i++){
-			if (r[reg1][i]==1 && k1==0)
-				k1=i;
-			if (r[reg2][i]==1 && k2==0)
-				k2=i;
-		}
-		for (int i=15; i>0;i--){
-			if (r[reg1][i]==1){
-				k3=i;
-				break;
-			}
-		}
-		
-		if (k2==0){
-			cc[3]=1;
-			return;
-		}
-		for (int i=0; i<16 ; i++){
-			r[reg2+1][i]=r[reg1][i];
-			r[reg1][i]=0;
-		}
-		r[reg1][0]=1;
-		if (r[reg2][0]==r[reg2+1][0]){
-			r[reg1][0]=0;
-		}
-		int index1=k1;
-		int index2=k1;
-		boolean loop=true,in=false;
-		while(loop){
-			for (int i=index1 ; i<16 ; i++){
-				r[reg1+1][i]=r[reg2+1][i];
-				
-				if ((i-index2)>=(15-k2)){
-					System.out.println(i);
-					boolean same=true;
-					for (int x=index2;x<=i;x++){
-						if (r[reg1+1][x]==1 && r[reg2][x-index2+k2]==0){
-							r[reg1][i]=1;
-							index1=i+1;
-							same=false;
-							break;
-						}
-						if  (r[reg1+1][x]==0 && r[reg2][x-index2+k2]==1){
-							if(i<15){
-								r[reg1+1][i+1]=r[reg2+1][i+1];
-								r[reg1][i+1]=1;
-								index1=i+2;
-								same=false;
-								break;
-								}
-							else{
-								return;
-							}
-							
-						}	
-					}
-					if (same){
-						r[reg1][i]=1;
-						index1=i+1;
-					}
-					for (int j=(index1-1);j>=index2;j--){
-						if (r[reg1+1][j]==0 && r[reg2][j-index1+16]==0){
-							r[reg1+1][j]=0;
-						}
-						else if(r[reg1+1][j]==1 && r[reg2][j-index1+16]==0){
-							r[reg1+1][j]=0;
-						}
-						else if(r[reg1+1][j]==0 && r[reg2][j-index1+16]==1){
-							r[reg1+1][j]=1;
-							for (int x= (j-1); x >=index2 ;x--){
-								if(r[reg1+1][x]==1){
-									r[reg1+1][x]=0;
-									break;
-								}
-								r[reg1+1][x]=1;
-							}
-						}
-						else {
-							r[reg1+1][j]=0;
-						}
-					}
-					
-					if(i==k3 && same){
-						return;
-					}
-					index2=index1;
-					for (int j=1;j<16;j++){
-						if (r[reg1+1][j]==1){
-							index2=j;
-						}
-					}
-				in=true;
-				break;
-				}
-				in=false;
-			}
-			if (in)
-				loop=true;
-			else
-				loop=false;
-			
-		}
-	}
-		
-		
-		
-	
-		
-	
-	
+
 	// TRR
-			private void Trr(int reg1, int reg2) throws IOException {
-				for (int i=0; i<15; i++){
-					if (r[reg1][i]!=r[reg2][i]){
-						cc[4]=0;
-						return;
-					}
-				}
-				cc[4]=1;
-				
-				System.out.println("In function Trr() :");
-				
+	private void Trr(int reg1, int reg2) throws IOException {
+		for (int i = 0; i < 15; i++) {
+			if (r[reg1][i] != r[reg2][i]) {
+				cc[4] = 0;
+				return;
 			}
-	
+		}
+		cc[4] = 1;
+	}
 
 	// AND
 	private void And(int reg1, int reg2) throws IOException {
@@ -768,10 +638,6 @@ public class ComputerArchitecture {
 				r[reg1][i] = reg1;
 			}
 		}
-
-		System.out.println("In function And() :");
-		
-
 	}
 
 	// ORR
@@ -780,24 +646,17 @@ public class ComputerArchitecture {
 			if (r[reg1][i] == reg1 || r[reg2][i] == 1) {
 				r[reg1][i] = reg1;
 			}
-
-			System.out.println("In function Orr() :");
-			
-
 		}
 	}
 
 	// Not
 	private void Not(int reg) throws IOException {
-
-		for (int i=0; i<15 ;i++){
-			if (r[reg][i]==1)
-				r[reg][i]=1;
-			else 
-				r[reg][i]=0;
+		for (int i = 0; i < 15; i++) {
+			if (r[reg][i] == 1)
+				r[reg][i] = 1;
+			else
+				r[reg][i] = 0;
 		}
-		System.out.println("In function Not() :");
-			
 	}
 
 	// instruction LDR
@@ -1086,6 +945,7 @@ public class ComputerArchitecture {
 				}
 			}
 		}
+		System.out.println("In function AIR() :");
 	}
 
 	// SIR
@@ -1112,6 +972,7 @@ public class ComputerArchitecture {
 				}
 			}
 		}
+		System.out.println("In function SIR() :");
 	}
 
 	// SRC
@@ -1135,6 +996,7 @@ public class ComputerArchitecture {
 				}
 			}
 		}
+		System.out.println("In function SRC() :");
 	}
 
 	// RRC
@@ -1161,18 +1023,25 @@ public class ComputerArchitecture {
 				}
 			}
 		}
+		System.out.println("In function RRC() :");
 	}
 
 //	//HLT
 	private void Hlt() {
 		is_halted = true;
+		System.out.println("In function HLT() :");
 	}
-	
-	//TRAP
-	private void Trap(MemorySystem ms) throws IOException {
+
+	// TRAP
+	private void Trap(int trap_code, MemorySystem ms) throws IOException {
+//		String trp_cd = Integer.toBinaryString(trap_code);
+		int pcAddr;
+//		for (int i = 0; i < 4 - trp_cd.length(); i++) {
+//			"0".concat(trp_cd);
+//		}
 		fetchFromPcToMar();
 		// pc++ => mar++
-		for (int i = 11; i >= 0; i--) {
+		for (int i = 15; i >= 4; i--) {
 			if (mar[i] == 0) {
 				mar[i] = 1;
 				break;
@@ -1181,26 +1050,91 @@ public class ComputerArchitecture {
 				mar[i] = 0;
 			}
 		}
+
 		// store pc+1 to mem[130], which is mem location 2.
-		ms.storeToMem(130, mar);
-		// set the content of mem[128] as "001011 00 00 0 11111" => JMA 0, 31, 0(Jump to mem[31] where stores the user-specified instructions)
-		ms.setMemory(128, 0, 0);
-		ms.setMemory(128, 1, 0);
-		ms.setMemory(128, 2, 1);
-		ms.setMemory(128, 3, 0);
-		ms.setMemory(128, 4, 1);
-		ms.setMemory(128, 5, 1);
-		for (int i = 6; i < 16; i++) {
-			if (i < 11) {
-				ms.setMemory(128, i, 0);
-			}else {
-				ms.setMemory(128, i, 1);
-			}
+		for (int i = 15; i >= 4; i--) {
+			ms.setMemory(130, i, mar[i]);
 		}
-		// here to define the contents of mem[31]
+//		System.out.print("pc: ");
+//		for (int i = 0; i < 12; i++) {
+//			System.out.print(pc[i]);
+//			if ((i + 1) % 4 == 0) {
+//				System.out.print(' ');
+//			}
+//		}
+//		System.out.print("\n");
+		for (int i = 0; i < 16; i++) {
+			System.out.print(ms.getMemory(130, i));
+		}
+		System.out.print("\n");
 		
 		// set mem[128] as mem location 0 and jump to mem[128].
-		Jma("10000000", 0, ms); 	
+		Jma("10000000", 0, ms);
+		// parse the address in mem[128] (131)
+		fetchFromPcToMar();
+		pcAddr = calMemAddr();
+		fetchFromMemToMbr(pcAddr, ms);
+		// set the pc as 131+index of routines, it's the address of the entry of the
+		// routine[index]
+		pcAddr = 0;
+		for (int i = 15; i >= 4; i--) {
+			if (mbr[i] == 1) {
+				pcAddr += (int) Math.pow(2, (15 - i));
+			}
+		}
+//		System.out.println("pcaddr = " + pcAddr);
+		Jma(Integer.toBinaryString(pcAddr + trap_code), 0, ms);
+//		for (int i = 0; i < 12; i++) {
+//			System.out.print(pc[i]);
+//			if ((i + 1) % 4 == 0) {
+//				System.out.print(' ');
+//			}
+//		}
+//		System.out.print("\n");
+		while (true) {
+			fetchFromPcToMar();
+			pcAddr = calMemAddr();
+//			System.out.println("pcaddr = " + pcAddr);
+			fetchFromMemToMbr(pcAddr, ms);
+//			for (int i = 0; i < 16; i++) {
+//				System.out.print(mbr[i]);
+//			}
+//			System.out.print("\n");
+			moveMbrToPc();
+			fetchFromPcToMar();
+			pcAddr = calMemAddr();
+			fetchFromMemToMbr(pcAddr, ms);
+			moveMbrToIr();
+
+			System.out.println("Trap to instruction: ");
+			for (int i = 0; i < 16; i++) {
+				System.out.print(ir[i]);
+			}
+			System.out.print("\n");
+
+			try {
+				decode(ms);
+			} catch (Exception e) {
+
+			}
+			if (is_halted) {
+				is_halted = false; // nothing wrong here
+				break;
+			}
+			pcIncrement();
+
+			// print
+			display(ms);
+			System.out.println("End of this instruction: ");
+			for (int i = 0; i < 16; i++) {
+				System.out.print(ir[i]);
+			}
+			System.out.print(
+					"\n--------------------------------------------------------------------------------------------------------\n");
+		}
+		// recover the original pc
+		is_from_trap = true;
+		System.out.println("In function TRAP() :");
 	}
 
 	// decode the instruction in register IR
@@ -1222,7 +1156,6 @@ public class ComputerArchitecture {
 		int addrIx = 0; // store the address in index register.
 		int address = 0;
 		int indirect = 0; // 0 means instruction doesn't use indirect mode.
-//		int immed = 0; // for some instructions need immediate number.
 		int count = 0; // for instructions need count, like SRC, RRC.
 
 		// calculate address in instruction.
@@ -1231,7 +1164,7 @@ public class ComputerArchitecture {
 				address = address + (int) Math.pow(ir[i] * 2, (15 - i));
 			}
 		}
-//		immed = address;
+		// calculate the number of count
 		for (int i = 15; i >= 12; i--) {
 			if (ir[i] == 1) {
 				count += (int) Math.pow(ir[i] * 2, (15 - i));
@@ -1292,8 +1225,8 @@ public class ComputerArchitecture {
 			Jne(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "12":
-//			int ccindex = generalRegInUse;
-			Jcc(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			int ccindex = generalRegInUse;
+			Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
 			break;
 		case "13":
 			Jma(Integer.toBinaryString(effectiveAddress), indirect, ms);
@@ -1320,22 +1253,16 @@ public class ComputerArchitecture {
 			Rrc(generalRegInUse, count, ir[9]);
 			break;
 		case "36":
-			Trap(ms);
+			Trap(count, ms); // actually count == trap code
 			break;
 
 		case "20":
 			Mlt(generalRegInUse, indexRegInUse);
 			break;
 
-			
-		case "21":
-			Dvd(generalRegInUse, indexRegInUse);
-			break;
-		
-
-
-
-
+//		case "21":
+//			Dvd(generalRegInUse, indexRegInUse);
+//			break;
 
 		case "22":
 			Trr(generalRegInUse, indexRegInUse);
@@ -1457,10 +1384,55 @@ public class ComputerArchitecture {
 				mfr[i] = 0;
 			}
 
+			// set the content of mem[128] as "0000 0000 1000 0011" => mem[131], where
+			// is the address of routines table
+			for (int i = 0; i < 16; i++) {
+				if (i == 8 || i == 14 || i == 15) {
+					ms.setMemory(128, i, 1);
+				} else {
+					ms.setMemory(128, i, 0);
+				}
+			}
+
+			// set the contents of routines table mem[131]~mem[146], for test here only has
+			// 1 entry for routine[0]. Every routine has 20 instructions capacity,from
+			// mem[147]~mem[467]
+			String temp_str;
+			int temp_len;
+			for (int i = 0; i < 16; i++) {
+				temp_str = Integer.toBinaryString(i * 20 + 147);
+				temp_len = temp_str.length();
+				for (int j = 0; j < 16 - temp_len; j++) {
+					temp_str = "0".concat(temp_str);
+				}
+//				System.out.println(temp_str);
+				for (int j = 0; j < 16; j++) {
+					ms.setMemory(131 + i, j, Character.getNumericValue(temp_str.charAt(j)));
+				}
+//				for (int j = 0; j < 16; j++) {
+//					System.out.print(ms.getMemory(131, j));
+//				}
+//				System.out.print("\n");
+			}
+			// instruction[0] of routine[0]: 0110010011000010 //SRC R0,2,1,1 [R0=4]
+			for (int i = 0; i < 16; i++) {
+				if (i == 1 || i == 2 || i == 5 || i == 8 || i == 9 || i == 14) {
+					ms.setMemory(147, i, 1);
+				} else {
+					ms.setMemory(147, i, 0);
+				}
+			}
+
+			// instruction[1] of routine[0]: 0000000000000000 //HLT
+			for (int i = 0; i < 16; i++) {
+				ms.setMemory(148, i, 0);
+			}
+
 			effectiveAddress = 0;
 			instructionsNum = 0;
 			stepByStep = 0;
 			is_halted = false;
+//			is_over = false;
 
 		} catch (Exception e) {
 			throw new Exception("Error! init failed!");
@@ -1474,7 +1446,7 @@ public class ComputerArchitecture {
 	public void run(MemorySystem ms) throws IOException {
 		int pcAddr;
 
-		if(is_halted) {
+		if (is_halted) {
 			return;
 		}
 		try {
@@ -1491,20 +1463,42 @@ public class ComputerArchitecture {
 			pcAddr = calMemAddr();
 			fetchFromMemToMbr(pcAddr, ms);
 			moveMbrToIr();
+//			for (int i = 0; i < 16; i++) {
+//				System.out.print(ir[i]);
+//				if ((i + 1) % 4 == 0) {
+//					System.out.print(' ');
+//				}
+//			}
+//			System.out.print("\n");
+//			System.out.print("pc: ");
+//			for (int i = 0; i < 12; i++) {
+//				System.out.print(pc[i]);
+//				if ((i + 1) % 4 == 0) {
+//					System.out.print(' ');
+//				}
+//			}
+//			System.out.print("\n");
+			
 			try {
 				decode(ms);
 			} catch (Exception e) {
 
 			}
 			if (is_halted) {
-				System.out.println("**Program has been halted.**");
+				System.out.println("**Program has been halted or over.**");
 				System.out.println("End of this instruction: " + current_instruction[insLen - instructionsNum]
 						+ "\n--------------------------------------------------------------------------------------------------------\n");
 				UI.screen_update();
 				return;
 			}
-			pcIncrement();
-
+			if (is_from_trap) {
+				fetchFromMemToMbr(130, ms);
+				moveMbrToPc();
+				is_from_trap = false;
+			}else {
+				pcIncrement();
+			}
+			
 			// print
 			display(ms);
 			System.out.println("End of this instruction: " + current_instruction[insLen - instructionsNum]
@@ -1517,7 +1511,7 @@ public class ComputerArchitecture {
 	public void run_single_step(MemorySystem ms) throws IOException {
 		int pcAddr;
 
-		if(is_halted) {
+		if (is_halted) {
 			return;
 		}
 		if (stepByStep == 0) {
@@ -1542,13 +1536,19 @@ public class ComputerArchitecture {
 
 		}
 		if (is_halted) {
-			System.out.println("**Program has been halted.**");
+			System.out.println("**Program has been halted or over.**");
 			System.out.println("End of this instruction: " + current_instruction[stepByStep]
 					+ "\n--------------------------------------------------------------------------------------------------------\n");
 			UI.screen_update();
 			return;
 		}
-		pcIncrement();
+		if (is_from_trap) {
+			fetchFromMemToMbr(130, ms);
+			moveMbrToPc();
+			is_from_trap = false;
+		}else {
+			pcIncrement();
+		}
 
 		// print
 		display(ms);
