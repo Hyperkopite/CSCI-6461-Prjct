@@ -21,6 +21,7 @@ public class ComputerArchitecture {
 	private static int[] cc = new int[4];
 	private static int[] ir = new int[16];
 	private static int[][] x = new int[4][16]; // three index registers
+	public static boolean is_halted = false; //for halt instruction
 	// memory
 //	private int[][] memory1 = new int[2048][16];
 //	private int[][] memory2 = new int[2048][16]; // make sure the memory can expand when required
@@ -32,6 +33,7 @@ public class ComputerArchitecture {
 	private int instructionsNum; // count total number of instructions in the file.
 	private int[] rTemp = new int[16]; // used in indirect mode.
 	private String[] current_instruction = new String[100000];
+
 
 	public int[] getter_r(int num) {
 		int[][] r_temp = new int[4][16];
@@ -1021,8 +1023,9 @@ public class ComputerArchitecture {
 	}
 
 //	//HLT
-//	private void Hlt() {
-//	}
+	private void Hlt() {
+		is_halted = true;
+	}
 	
 	//TRAP
 	private void Trap(MemorySystem ms) throws IOException {
@@ -1116,6 +1119,9 @@ public class ComputerArchitecture {
 		}
 
 		switch (opcode) {
+		case "0":
+			Hlt();
+			break;
 		case "1":
 			Ldr(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
@@ -1306,6 +1312,7 @@ public class ComputerArchitecture {
 			effectiveAddress = 0;
 			instructionsNum = 0;
 			stepByStep = 0;
+			is_halted = false;
 
 		} catch (Exception e) {
 			throw new Exception("Error! init failed!");
@@ -1319,6 +1326,9 @@ public class ComputerArchitecture {
 	public void run(MemorySystem ms) throws IOException {
 		int pcAddr;
 
+		if(is_halted) {
+			return;
+		}
 		try {
 			loadFile("test.txt", ms);
 		} catch (Exception e) {
@@ -1329,11 +1339,6 @@ public class ComputerArchitecture {
 		while (instructionsNum != 0) {
 			System.out.println(
 					"Successfully loaded.\nThe instruction is: " + current_instruction[insLen - instructionsNum]);
-			if (current_instruction[insLen - instructionsNum].substring(0, 6).equals("000000")) {
-				System.out.println("**Program has been halted.**");
-				UI.screen_update();
-				return;
-			}
 			fetchFromPcToMar();
 			pcAddr = calMemAddr();
 			fetchFromMemToMbr(pcAddr, ms);
@@ -1342,6 +1347,13 @@ public class ComputerArchitecture {
 				decode(ms);
 			} catch (Exception e) {
 
+			}
+			if (is_halted) {
+				System.out.println("**Program has been halted.**");
+				System.out.println("End of this instruction: " + current_instruction[insLen - instructionsNum]
+						+ "\n--------------------------------------------------------------------------------------------------------\n");
+				UI.screen_update();
+				return;
 			}
 			pcIncrement();
 
@@ -1357,6 +1369,9 @@ public class ComputerArchitecture {
 	public void run_single_step(MemorySystem ms) throws IOException {
 		int pcAddr;
 
+		if(is_halted) {
+			return;
+		}
 		if (stepByStep == 0) {
 			try {
 				loadFile("test.txt", ms);
@@ -1369,11 +1384,6 @@ public class ComputerArchitecture {
 			return;
 		}
 		System.out.println("Successfully loaded.\nThe instruction is: " + current_instruction[stepByStep]);
-		if (current_instruction[stepByStep].substring(0, 6).equals("000000")) {
-			System.out.println("**Program has been halted.**");
-			UI.screen_update();
-			return;
-		}
 		fetchFromPcToMar();
 		pcAddr = calMemAddr();
 		fetchFromMemToMbr(pcAddr, ms);
@@ -1382,6 +1392,13 @@ public class ComputerArchitecture {
 			decode(ms);
 		} catch (Exception e) {
 
+		}
+		if (is_halted) {
+			System.out.println("**Program has been halted.**");
+			System.out.println("End of this instruction: " + current_instruction[stepByStep]
+					+ "\n--------------------------------------------------------------------------------------------------------\n");
+			UI.screen_update();
+			return;
 		}
 		pcIncrement();
 

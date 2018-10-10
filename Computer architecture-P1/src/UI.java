@@ -386,12 +386,7 @@ public class UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (pwr_status) {
-					try {
-						ca.init(ms);
-						display_register(ca);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
+					ca.is_halted = true;
 					System.out.println("**Program has been halted.**");
 					screen_update();
 				}
