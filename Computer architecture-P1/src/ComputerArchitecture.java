@@ -1146,11 +1146,7 @@ public class ComputerArchitecture {
 
 	// TRAP
 	private void Trap(int trap_code, MemorySystem ms) throws IOException {
-//		String trp_cd = Integer.toBinaryString(trap_code);
 		int pcAddr;
-//		for (int i = 0; i < 4 - trp_cd.length(); i++) {
-//			"0".concat(trp_cd);
-//		}
 		fetchFromPcToMar();
 		// pc++ => mar++
 		for (int i = 15; i >= 4; i--) {
