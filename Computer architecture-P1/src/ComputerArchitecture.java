@@ -1047,7 +1047,7 @@ public class ComputerArchitecture {
 				r[reg][i] += Character.getNumericValue(immed.charAt(i - 11));
 			} else {
 				if (i != 11) {
-					r[reg][i] += 2 - (r[reg][i] + Character.getNumericValue(immed.charAt(i - 11)));
+					r[reg][i] = r[reg][i] + Character.getNumericValue(immed.charAt(i - 11)) - 2;
 					r[reg][i - 1]++;
 				} else {
 					cc[0] = 1;
