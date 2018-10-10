@@ -1063,10 +1063,10 @@ public class ComputerArchitecture {
 //			}
 //		}
 //		System.out.print("\n");
-		for (int i = 0; i < 16; i++) {
-			System.out.print(ms.getMemory(130, i));
-		}
-		System.out.print("\n");
+//		for (int i = 0; i < 16; i++) {
+//			System.out.print(ms.getMemory(130, i));
+//		}
+//		System.out.print("\n");
 		
 		// set mem[128] as mem location 0 and jump to mem[128].
 		Jma("10000000", 0, ms);
@@ -1106,7 +1106,7 @@ public class ComputerArchitecture {
 			fetchFromMemToMbr(pcAddr, ms);
 			moveMbrToIr();
 
-			System.out.println("Trap to instruction: ");
+			System.out.println("**********Trap to instruction: **********");
 			for (int i = 0; i < 16; i++) {
 				System.out.print(ir[i]);
 			}
@@ -1134,7 +1134,7 @@ public class ComputerArchitecture {
 		}
 		// recover the original pc
 		is_from_trap = true;
-		System.out.println("In function TRAP() :");
+		System.out.println("**********Recovering from TRAP() :**********");
 	}
 
 	// decode the instruction in register IR
@@ -1457,6 +1457,7 @@ public class ComputerArchitecture {
 
 		int insLen = instructionsNum;
 		while (instructionsNum != 0) {
+			System.out.println(instructionsNum);
 			System.out.println(
 					"Successfully loaded.\nThe instruction is: " + current_instruction[insLen - instructionsNum]);
 			fetchFromPcToMar();
@@ -1506,6 +1507,8 @@ public class ComputerArchitecture {
 			effectiveAddress = 0;
 			instructionsNum -= 1;
 		}
+		is_halted = true;
+		System.out.println("**Program has been over.**");
 	}
 
 	public void run_single_step(MemorySystem ms) throws IOException {
