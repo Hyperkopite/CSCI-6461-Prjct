@@ -1526,6 +1526,7 @@ public class ComputerArchitecture {
 //				}
 //				System.out.print("\n");
 			}
+			
 			// instruction[0] of routine[0]: 0110010011000010 //SRC R0,2,1,1 [R0=4]
 			for (int i = 0; i < 16; i++) {
 				if (i == 1 || i == 2 || i == 5 || i == 8 || i == 9 || i == 14) {
@@ -1544,6 +1545,7 @@ public class ComputerArchitecture {
 			instructionsNum = 0;
 			stepByStep = 0;
 			is_halted = false;
+			is_from_trap = false;
 //			is_over = false;
 
 		} catch (Exception e) {
