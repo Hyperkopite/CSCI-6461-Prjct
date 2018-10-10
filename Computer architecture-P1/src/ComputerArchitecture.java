@@ -454,7 +454,7 @@ public class ComputerArchitecture {
 	}
 
 	// instruction JMA
-	private void Jma(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
+	private void Jma(String addr, int indirect, MemorySystem ms) throws IOException {
 		if (indirect == 0) {
 			int addrLen = addr.length();
 			// load address to register reg
@@ -1023,6 +1023,41 @@ public class ComputerArchitecture {
 //	//HLT
 //	private void Hlt() {
 //	}
+	
+	//TRAP
+	private void Trap(MemorySystem ms) throws IOException {
+		fetchFromPcToMar();
+		// pc++ => mar++
+		for (int i = 11; i >= 0; i--) {
+			if (mar[i] == 0) {
+				mar[i] = 1;
+				break;
+			}
+			if (mar[i] == 1) {
+				mar[i] = 0;
+			}
+		}
+		// store pc+1 to mem[130], which is mem location 2.
+		ms.storeToMem(130, mar);
+		// set the content of mem[128] as "001011 00 00 0 11111" => JMA 0, 31, 0(Jump to mem[31] where stores the user-specified instructions)
+		ms.setMemory(128, 0, 0);
+		ms.setMemory(128, 1, 0);
+		ms.setMemory(128, 2, 1);
+		ms.setMemory(128, 3, 0);
+		ms.setMemory(128, 4, 1);
+		ms.setMemory(128, 5, 1);
+		for (int i = 6; i < 16; i++) {
+			if (i < 11) {
+				ms.setMemory(128, i, 0);
+			}else {
+				ms.setMemory(128, i, 1);
+			}
+		}
+		// here to define the contents of mem[31]
+		
+		// set mem[128] as mem location 0 and jump to mem[128].
+		Jma("10000000", 0, ms); 	
+	}
 
 	// decode the instruction in register IR
 	public void decode(MemorySystem ms) throws Exception {
@@ -1113,7 +1148,7 @@ public class ComputerArchitecture {
 			Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
 			break;
 		case "13":
-			Jma(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			Jma(Integer.toBinaryString(effectiveAddress), indirect, ms);
 			break;
 
 //		case "14":
@@ -1135,6 +1170,9 @@ public class ComputerArchitecture {
 			break;
 		case "32":
 			Rrc(generalRegInUse, count, ir[9]);
+			break;
+		case "36":
+			Trap(ms);
 			break;
 
 		case "20":
