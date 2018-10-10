@@ -22,6 +22,7 @@ Currrent under part II<br>
 [16]SOB<br>
 [17]JGE<br>
 [20]MLT<br>
+[21]DVD<br>
 [22]TRR<br>
 [23]AND<br>
 [24]ORR<br>
@@ -36,7 +37,7 @@ Currrent under part II<br>
 √ 3.AMR, SMR, SIR<br>
 ? AIR<br>
 √ 4.MLT, TRR, AND, ORR, NOT<br>
-? DVD<br>
+√ DVD<br>
 √ 5.RRC<br>
 ? SRC<br>
 ? 6.IN, OUT, CHK<br>
