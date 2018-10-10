@@ -403,7 +403,7 @@ public class UI {
 	public static void reset_switches() {
 		for (int i = 0; i < array_switch_button.length; i++) {
 			array_switch_button[i].setText(("<html>" + "S" + Integer.toString(i) + "<br>" + "[0]" + "</html>"));
-			switch_status[29][i] = false;
+			switch_status[29][i] = 0;
 		}
 	}
 
