@@ -29,6 +29,7 @@ Currrent under part II<br>
 [25]NOT<br>
 [31]SRC<br>
 [32]RRC<br>
+[36]TRAP<br>
 
 √ 1.HLT<br> 
 √ TRAP code<br>
