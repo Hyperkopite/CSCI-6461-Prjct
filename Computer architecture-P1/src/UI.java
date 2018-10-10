@@ -29,7 +29,7 @@ public class UI {
 	private static boolean pwr_status = false;
 
 	// status of s0-s15
-	private static boolean[] switch_status = new boolean[16];
+	private static int[][] switch_status = new int[30][16];
 
 	// panel component with flow layout
 	private static JPanel panel_south = new JPanel(new FlowLayout());
@@ -96,7 +96,7 @@ public class UI {
 		for (int i = 0; i < array_switch_button.length; i++) {
 			array_switch_button[i] = new JButton("<html>" + "S" + Integer.toString(i) + "<br>" + "[0]" + "</html>");
 			array_switch_button[i].setFocusable(false);
-			switch_status[i] = false;
+			switch_status[29][i] = 0;
 		}
 
 		// add switch buttons to panel
@@ -265,12 +265,12 @@ public class UI {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JButton btn = (JButton) e.getSource();
-					if (!switch_status[i_temp]) {
+					if (switch_status[29][i_temp] == 0) {
 						btn.setText("<html>" + "S" + Integer.toString(i_temp) + "<br>" + "[1]" + "</html>");
-						switch_status[i_temp] = true;
+						switch_status[29][i_temp] = 1;
 					} else {
 						btn.setText("<html>" + "S" + Integer.toString(i_temp) + "<br>" + "[0]" + "</html>");
-						switch_status[i_temp] = false;
+						switch_status[29][i_temp] = 0;
 					}
 				}
 			});
@@ -311,8 +311,8 @@ public class UI {
 						cacheStream = new PrintStream(temp_stream);
 						System.setOut(new PrintStream(cacheStream));
 						ca.init(ms);
-						screen_update();
 						display_register(ca);
+						screen_update();
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -386,12 +386,7 @@ public class UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (pwr_status) {
-					try {
-						ca.init(ms);
-						display_register(ca);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
+					ca.is_halted = true;
 					System.out.println("**Program has been halted.**");
 					screen_update();
 				}
@@ -403,7 +398,7 @@ public class UI {
 	public static void reset_switches() {
 		for (int i = 0; i < array_switch_button.length; i++) {
 			array_switch_button[i].setText(("<html>" + "S" + Integer.toString(i) + "<br>" + "[0]" + "</html>"));
-			switch_status[i] = false;
+			switch_status[29][i] = 0;
 		}
 	}
 

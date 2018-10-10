@@ -4,6 +4,7 @@ Currrent under part II<br>
 <a target="_blank" href=""><img src="https://img.shields.io/badge/Status-Need%20help-red.svg"></a>
 <a target="_blank" href=""><img src="https://img.shields.io/badge/Coverage-15%25-yellow.svg"></a><br>
 已完成的指令：(需要测试)<br>
+[00]HLT<br>
 [01]LDR<br>
 [02]STR<br>
 [03]LDA<br>
@@ -28,7 +29,8 @@ Currrent under part II<br>
 [31]SRC<br>
 [32]RRC<br>
 
-× 1.HLT, TRAP code<br>
+√ 1.HLT<br> 
+× TRAP code<br>
 √ 2.JZ, JNE, JCC, JMA, RFS, SOB, JGE<br>
 × JSR<br>
 √ 3.AMR, SMR, AIR, SIR<br>
