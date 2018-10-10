@@ -33,9 +33,11 @@ Currrent under part II<br>
 √ TRAP code<br>
 √ 2.JZ, JNE, JCC, JMA, RFS, SOB, JGE<br>
 × JSR<br>
-√ 3.AMR, SMR, AIR, SIR<br>
+√ 3.AMR, SMR, SIR<br>
+? AIR<br>
 √ 4.MLT, TRR, AND, ORR, NOT<br>
-√ DVD<br>
-√ 5.SRC, RRC<br>
+? DVD<br>
+√ 5.RRC<br>
+? SRC<br>
 ? 6.IN, OUT, CHK<br>
 × 7.Program 1<br>
