@@ -1567,7 +1567,6 @@ public class ComputerArchitecture {
 
 		int insLen = instructionsNum;
 		while (instructionsNum != 0) {
-			System.out.println(instructionsNum);
 			System.out.println(
 					"Successfully loaded.\nThe instruction is: " + current_instruction[insLen - instructionsNum]);
 			fetchFromPcToMar();
