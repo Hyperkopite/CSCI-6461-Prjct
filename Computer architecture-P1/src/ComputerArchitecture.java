@@ -577,45 +577,160 @@ public class ComputerArchitecture {
 	}
 	
 	// MLT
-		private void Mlt(int reg1, int reg2) throws IOException {
-			// sava result
-			int[] hold = new int[32];
-			int[] mid = new int[32];
-			hold[0]=reg1;
-			//check -*- or -*+ or +*+
-			if (r[reg1][0]==r[reg2][0]){
-				hold[0]=0;
+	private void Mlt(int reg1, int reg2) throws IOException {
+		// use reg2+1 as ac
+		for (int i=0; i<16 ;i++)
+			r[reg2+1][i]=r[reg1][i];
+		for (int i=1; i<32; i++)
+			r[reg1+i/16][i%16]=0;
+		for (int i=15 ;i> 0; i--){
+			if (r[reg2][i]==1){		
+				r[reg1][0]=0;
+				int vaule=0;
+				for (int j=(i+15);j>0;j--){
+					if (j>15){
+						vaule=r[reg1+1][j-15]+r[reg2+1][j-i]+r[reg1][0];
+						r[reg1+1][j-15]=vaule%2;
+						r[reg1][0]=vaule/2;
+					}
+					else{
+						if(j>i){
+						vaule=r[reg1][j]+r[reg2+1][j-i]+r[reg1][0];
+						r[reg1][j]=vaule%2;
+						r[reg1][0]=vaule/2;
+						}
+						else {
+							vaule=r[reg1][j]+r[reg1][0];
+							r[reg1][j]=vaule%2;
+							r[reg1][0]=vaule/2;
+						}
+					}
+				}
+//					if (r[reg1][0]==1){
+//						setoverflow();
+//					}
+				
 			}
-			for (int i=15 ;i> 0; i--){
-				if (r[reg2][i]==1){
-					for (int j=31;j>(i+16);j--){
-						mid[j]=0;
+		}
+			
+		r[reg1][0]=1;
+		//check -*- or -*+ or +*+
+		if (r[reg2+1][0]==r[reg2][0]){
+			r[reg1][0]=0;
+		}
+		System.out.println("In function Mlt() :");
+			
+	}
+		
+		// Dvd
+	private void Dvd(int reg1, int reg2) throws IOException {
+		int k1=0,k2=0,k3=0;
+		for (int i=1; i<16;i++){
+			if (r[reg1][i]==1 && k1==0)
+				k1=i;
+			if (r[reg2][i]==1 && k2==0)
+				k2=i;
+		}
+		for (int i=15; i>0;i--){
+			if (r[reg1][i]==1){
+				k3=i;
+				break;
+			}
+		}
+		
+		if (k2==0){
+			cc[3]=1;
+			return;
+		}
+		for (int i=0; i<16 ; i++){
+			r[reg2+1][i]=r[reg1][i];
+			r[reg1][i]=0;
+		}
+		r[reg1][0]=1;
+		if (r[reg2][0]==r[reg2+1][0]){
+			r[reg1][0]=0;
+		}
+		int index1=k1;
+		int index2=k1;
+		boolean loop=true,in=false;
+		while(loop){
+			for (int i=index1 ; i<16 ; i++){
+				r[reg1+1][i]=r[reg2+1][i];
+				
+				if ((i-index2)>=(15-k2)){
+					System.out.println(i);
+					boolean same=true;
+					for (int x=index2;x<=i;x++){
+						if (r[reg1+1][x]==1 && r[reg2][x-index2+k2]==0){
+							r[reg1][i]=1;
+							index1=i+1;
+							same=false;
+							break;
+						}
+						if  (r[reg1+1][x]==0 && r[reg2][x-index2+k2]==1){
+							if(i<15){
+								r[reg1+1][i+1]=r[reg2+1][i+1];
+								r[reg1][i+1]=1;
+								index1=i+2;
+								same=false;
+								break;
+								}
+							else{
+								return;
+							}
+							
+						}	
 					}
-					for (int j=(i+16);j>(i+1);j--){
-						mid[j]=r[reg1][j-i-1];
+					if (same){
+						r[reg1][i]=1;
+						index1=i+1;
 					}
-					for (int j=i+1; j>0; j--){
-						mid[j]=0;
-					}
-					int over=0;
-					int add;
-					for (int j=31;j>0;j--)
-					{
-						add=mid[j]+hold[j]+over;
-						hold[j]=add%2;
-						if(add>1) over=1; else over=0;
-					}
-					if (over==1){
-						//set overflag
-						continue;
+					for (int j=(index1-1);j>=index2;j--){
+						if (r[reg1+1][j]==0 && r[reg2][j-index1+16]==0){
+							r[reg1+1][j]=0;
+						}
+						else if(r[reg1+1][j]==1 && r[reg2][j-index1+16]==0){
+							r[reg1+1][j]=0;
+						}
+						else if(r[reg1+1][j]==0 && r[reg2][j-index1+16]==1){
+							r[reg1+1][j]=1;
+							for (int x= (j-1); x >=index2 ;x--){
+								if(r[reg1+1][x]==1){
+									r[reg1+1][x]=0;
+									break;
+								}
+								r[reg1+1][x]=1;
+							}
+						}
+						else {
+							r[reg1+1][j]=0;
+						}
 					}
 					
+					if(i==k3 && same){
+						return;
+					}
+					index2=index1;
+					for (int j=1;j<16;j++){
+						if (r[reg1+1][j]==1){
+							index2=j;
+						}
+					}
+				in=true;
+				break;
 				}
+				in=false;
 			}
-			for (int i=0; i<32; i++)
-				r[reg1+i/16][i%16]=hold[i];
-				
+			if (in)
+				loop=true;
+			else
+				loop=false;
+			
 		}
+	}
+		
+		
+		
 	
 		
 	
@@ -630,6 +745,7 @@ public class ComputerArchitecture {
 				}
 				cc[4]=1;
 				
+				System.out.println("In function Trr() :");
 				
 			}
 	
@@ -640,6 +756,7 @@ public class ComputerArchitecture {
 				r[reg1][i]=reg1;
 			}
 		}
+		System.out.println("In function And() :");
 		
 	}
 	
@@ -650,6 +767,7 @@ public class ComputerArchitecture {
 					r[reg1][i]=reg1;
 				}
 			}
+			System.out.println("In function Orr() :");
 			
 		}
 
@@ -662,6 +780,7 @@ public class ComputerArchitecture {
 			else 
 				r[reg][i]=0;
 		}
+		System.out.println("In function Not() :");
 			
 		}
 	// instruction LDR
@@ -1046,6 +1165,7 @@ public class ComputerArchitecture {
 		int addrIx = 0; // store the address in index register.
 		int address = 0;
 		int indirect = 0; // 0 means instruction doesn't use indirect mode.
+//		int immed = 0; // for some instructions need immediate number.
 		int count = 0; // for instructions need count, like SRC, RRC.
 
 		// calculate address in instruction.
@@ -1054,7 +1174,7 @@ public class ComputerArchitecture {
 				address = address + (int) Math.pow(ir[i] * 2, (15 - i));
 			}
 		}
-		// calculate the number of count
+//		immed = address;
 		for (int i = 15; i >= 12; i--) {
 			if (ir[i] == 1) {
 				count += (int) Math.pow(ir[i] * 2, (15 - i));
@@ -1119,8 +1239,8 @@ public class ComputerArchitecture {
 			Jne(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "12":
-			int ccindex = generalRegInUse;
-			Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
+//			int ccindex = generalRegInUse;
+			Jcc(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "13":
 			Jma(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
@@ -1145,9 +1265,9 @@ public class ComputerArchitecture {
 			Mlt(generalRegInUse, indexRegInUse);
 			break;
 			
-//		case "21":
-//			Dvd(generalRegInUse, indexRegInUse);
-//			break;
+		case "21":
+			Dvd(generalRegInUse, indexRegInUse);
+			break;
 		
 		case "22":
 			Trr(generalRegInUse, indexRegInUse);
