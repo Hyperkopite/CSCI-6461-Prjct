@@ -1498,7 +1498,7 @@ public class ComputerArchitecture {
 				moveMbrToPc();
 				is_from_trap = false;
 			} else {
-				pcIncrement();
+				pcIncrement(); // U need to change this
 			}
 			// print
 			display(ms);
@@ -1546,7 +1546,7 @@ public class ComputerArchitecture {
 			moveMbrToPc();
 			is_from_trap = false;
 		} else {
-			pcIncrement();
+			pcIncrement(); // U need to change this
 		}
 		// print
 		display(ms);
