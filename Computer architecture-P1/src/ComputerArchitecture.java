@@ -428,6 +428,7 @@ public class ComputerArchitecture {
 	}
 	// JSR
 	private void Jsr(String addr, int indirect, MemorySystem ms) throws IOException {
+		pcIncrement();
 		for (int i = 11; i >= 0; i--) {
 			r[3][i + 4] = pc[i];
 		}
@@ -569,9 +570,9 @@ public class ComputerArchitecture {
 						}
 					}
 				}
-//					if (r[reg1][0]==1){
-//						setoverflow();
-//					}
+					if (r[reg1][0]==1){
+						cc[0]=1;
+					}
 			}
 		}
 		r[reg1][0] = 1;
@@ -597,7 +598,7 @@ public class ComputerArchitecture {
 			}
 		}
 		if (k2 == 0) {
-			cc[3] = 1;
+			cc[2] = 1;
 			System.out.println("In function Dvd() :");
 			return;
 		}
