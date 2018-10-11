@@ -12,15 +12,11 @@
 
  */
 
-
-
 import java.io.*;
 
 import java.net.URL;
 
 import java.util.Arrays;
-
-
 
 public class ComputerArchitecture {
 
@@ -68,8 +64,6 @@ public class ComputerArchitecture {
 
 	private String[] current_instruction = new String[100000];
 
-
-
 	public int[] getter_r(int num) {
 
 		int[][] r_temp = new int[4][16];
@@ -83,8 +77,6 @@ public class ComputerArchitecture {
 		return r_temp[num];
 
 	}
-
-
 
 	public int[] getter_x(int num) {
 
@@ -100,8 +92,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public int[] getter_pc() {
 
 		int[] pc_temp = new int[12];
@@ -115,8 +105,6 @@ public class ComputerArchitecture {
 		return pc_temp;
 
 	}
-
-
 
 	public int[] getter_mar() {
 
@@ -132,8 +120,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public int[] getter_mbr() {
 
 		int[] mbr_temp = new int[16];
@@ -147,8 +133,6 @@ public class ComputerArchitecture {
 		return mbr_temp;
 
 	}
-
-
 
 	public int[] getter_mfr() {
 
@@ -164,8 +148,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public int[] getter_cc() {
 
 		int[] cc_temp = new int[4];
@@ -179,8 +161,6 @@ public class ComputerArchitecture {
 		return cc_temp;
 
 	}
-
-
 
 	public int[] getter_ir() {
 
@@ -196,8 +176,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public int[] getter_rTemp() {
 
 		int[] rTemp_temp = new int[16];
@@ -211,8 +189,6 @@ public class ComputerArchitecture {
 		return rTemp_temp;
 
 	}
-
-
 
 	public int[] getter_mem(int num, MemorySystem ms) {
 
@@ -229,8 +205,6 @@ public class ComputerArchitecture {
 		return mem_temp;
 
 	}
-
-
 
 	public void setter_r(int num) {
 
@@ -250,8 +224,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public void setter_pc() {
 
 		for (int i = 0; i < 12; i++) {
@@ -269,8 +241,6 @@ public class ComputerArchitecture {
 		}
 
 	}
-
-
 
 	public void setter_mem(int num, MemorySystem ms) {
 
@@ -294,8 +264,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// load instructions in file to the array memory1.
 
 	public void loadFile(String fileName, MemorySystem ms) throws IOException {
@@ -303,8 +271,6 @@ public class ComputerArchitecture {
 		InputStream input = readFile(fileName);
 
 		BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(input));
-
-
 
 		String instructions = bufferedInput.readLine();
 
@@ -336,33 +302,27 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function loadFile() :");
 
 	}
 
-
-
 	/*
-
+	 * 
 	 * Test for the function loadFile public void testLoadFile() { int i = 0;
-
 	 *
-
+	 * 
+	 * 
 	 * while (i<5) { String s = ""; for (int j=0;j<16;j++) { s = s +
-
+	 * 
 	 * String.valueOf(memory1[i][j]); } System.out.println(s); i += 1; }
-
 	 *
-
+	 * 
+	 * 
 	 * }
-
+	 * 
 	 */
-
-
 
 	private InputStream readFile(String fileName) throws IOException {
 
@@ -383,8 +343,6 @@ public class ComputerArchitecture {
 		return file.openStream();
 
 	}
-
-
 
 	// May have overflow problem, but doesn't need to pay attention to at project
 
@@ -410,17 +368,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function pcIncrement() :");
 
 	}
-
-
-
-
 
 	public int calMemAddr() throws IOException {
 
@@ -436,8 +388,6 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function calMemAddr() :");
@@ -445,8 +395,6 @@ public class ComputerArchitecture {
 		return address;
 
 	}
-
-
 
 	// fetch instruction from pc to mar.
 
@@ -464,15 +412,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function fetchFromPcToMar() :");
 
 	}
-
-
 
 	public void fetchFromMemToMbr(int addr, MemorySystem ms) throws IOException {
 
@@ -483,8 +427,6 @@ public class ComputerArchitecture {
 //		}
 
 		int tempLen = 0;
-
-
 
 		String temp = Integer.toBinaryString(ms.execute(addr, 1, mbr));
 
@@ -502,15 +444,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function fetchFromMemToMbr() :");
 
 	}
-
-
 
 	public void storeMbrToMem(int addr, MemorySystem ms) throws IOException {
 
@@ -530,8 +468,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public void moveMbrToIr() throws IOException {
 
 		for (int i = 0; i < 16; i++) {
@@ -540,15 +476,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveMbrToIr() :");
 
 	}
-
-
 
 	public void moveMbrToReg(int reg) throws IOException {
 
@@ -558,15 +490,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveMbrToReg() :");
 
 	}
-
-
 
 	public void moveMbrToIndexReg(int index) throws IOException {
 
@@ -576,15 +504,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveMbrToIndexReg() :");
 
 	}
-
-
 
 	public void moveRegToMbr(int reg) throws IOException {
 
@@ -594,15 +518,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveRegToMbr() :");
 
 	}
-
-
 
 	public void moveIndexRegToMbr(int index) throws IOException {
 
@@ -612,15 +532,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveIndexRegToMbr() :");
 
 	}
-
-
 
 	public void moveAddrToMar(String addr) throws IOException {
 
@@ -638,15 +554,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveAddrToMar() :");
 
 	}
-
-
 
 	public void moveMbrToRTemp() throws IOException {
 
@@ -656,15 +568,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveMbrToIr() :");
 
 	}
-
-
 
 	public void moveRTempToMar() throws IOException {
 
@@ -674,15 +582,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveMbrToIr() :");
 
 	}
-
-
 
 	public void moveMbrToPc() throws IOException {
 
@@ -692,15 +596,11 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function moveMbrToPc() :");
 
 	}
-
-
 
 	// instruction JZ
 
@@ -709,8 +609,6 @@ public class ComputerArchitecture {
 		for (int i = 0; i < 16; i++) {
 
 			if (r[reg][i] == 1) {
-
-
 
 				pcIncrement();
 
@@ -760,19 +658,13 @@ public class ComputerArchitecture {
 
 			moveMbrToPc();
 
-
-
 		}
-
-
 
 		// print
 
 		System.out.println("In function Jz() :");
 
 	}
-
-
 
 	// instruction JNE
 
@@ -781,8 +673,6 @@ public class ComputerArchitecture {
 		for (int i = 0; i < 16; i++) {
 
 			if (r[reg][i] == 1) {
-
-
 
 				if (indirect == 0) {
 
@@ -822,11 +712,7 @@ public class ComputerArchitecture {
 
 					moveMbrToPc();
 
-
-
 				}
-
-
 
 				// print
 
@@ -845,8 +731,6 @@ public class ComputerArchitecture {
 		System.out.println("In function Jne() :");
 
 	}
-
-
 
 	// instruction JCC
 
@@ -892,8 +776,6 @@ public class ComputerArchitecture {
 
 				moveMbrToPc();
 
-
-
 			}
 
 			System.out.println("In function Jcc() :");
@@ -906,13 +788,9 @@ public class ComputerArchitecture {
 
 			System.out.println("In function Jcc() :");
 
-
-
 		}
 
 	}
-
-
 
 	// instruction JMA
 
@@ -956,25 +834,19 @@ public class ComputerArchitecture {
 
 			moveMbrToPc();
 
-
-
 		}
 
 		System.out.println("In function Jma() :");
 
 	}
 
-
-
-
-
-	//JSR
+	// JSR
 
 	private void Jsr(String addr, int indirect, MemorySystem ms) throws IOException {
 
-		for (int i=11;i>=0;i--){
+		for (int i = 11; i >= 0; i--) {
 
-			r[3][i+4]=pc[i];
+			r[3][i + 4] = pc[i];
 
 		}
 
@@ -1016,15 +888,11 @@ public class ComputerArchitecture {
 
 			moveMbrToPc();
 
-
-
 		}
 
 		System.out.println("In function Jsr() :");
 
 	}
-
-
 
 	// instruction RFS
 
@@ -1056,8 +924,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// instruction SOB
 
 	private void Sob(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
@@ -1069,8 +935,6 @@ public class ComputerArchitecture {
 			if (r[reg][i] == 1) {
 
 				r[reg][i] = 0;
-
-
 
 				break;
 
@@ -1093,8 +957,6 @@ public class ComputerArchitecture {
 			}
 
 		}
-
-
 
 		if (r[reg][0] == 0 && overzeor) {
 
@@ -1136,11 +998,7 @@ public class ComputerArchitecture {
 
 				moveMbrToPc();
 
-
-
 			}
-
-
 
 		} else {
 
@@ -1150,11 +1008,7 @@ public class ComputerArchitecture {
 
 		System.out.println("In function sob() :");
 
-
-
 	}
-
-
 
 	// JGE
 
@@ -1200,11 +1054,7 @@ public class ComputerArchitecture {
 
 				moveMbrToPc();
 
-
-
 			}
-
-
 
 		} else {
 
@@ -1214,11 +1064,7 @@ public class ComputerArchitecture {
 
 		System.out.println("In function Jge() :");
 
-
-
 	}
-
-
 
 	// MLT
 
@@ -1226,53 +1072,53 @@ public class ComputerArchitecture {
 
 		// use reg2+1 as ac
 
-		for (int i=0; i<16 ;i++)
+		for (int i = 0; i < 16; i++)
 
-			r[reg2+1][i]=r[reg1][i];
+			r[reg2 + 1][i] = r[reg1][i];
 
-		for (int i=1; i<32; i++)
+		for (int i = 1; i < 32; i++)
 
-			r[reg1+i/16][i%16]=0;
+			r[reg1 + i / 16][i % 16] = 0;
 
-		for (int i=15 ;i> 0; i--){
+		for (int i = 15; i > 0; i--) {
 
-			if (r[reg2][i]==1){
+			if (r[reg2][i] == 1) {
 
-				r[reg1][0]=0;
+				r[reg1][0] = 0;
 
-				int vaule=0;
+				int vaule = 0;
 
-				for (int j=(i+15);j>0;j--){
+				for (int j = (i + 15); j > 0; j--) {
 
-					if (j>15){
+					if (j > 15) {
 
-						vaule=r[reg1+1][j-15]+r[reg2+1][j-i]+r[reg1][0];
+						vaule = r[reg1 + 1][j - 15] + r[reg2 + 1][j - i] + r[reg1][0];
 
-						r[reg1+1][j-15]=vaule%2;
+						r[reg1 + 1][j - 15] = vaule % 2;
 
-						r[reg1][0]=vaule/2;
+						r[reg1][0] = vaule / 2;
 
 					}
 
-					else{
+					else {
 
-						if(j>i){
+						if (j > i) {
 
-							vaule=r[reg1][j]+r[reg2+1][j-i]+r[reg1][0];
+							vaule = r[reg1][j] + r[reg2 + 1][j - i] + r[reg1][0];
 
-							r[reg1][j]=vaule%2;
+							r[reg1][j] = vaule % 2;
 
-							r[reg1][0]=vaule/2;
+							r[reg1][0] = vaule / 2;
 
 						}
 
 						else {
 
-							vaule=r[reg1][j]+r[reg1][0];
+							vaule = r[reg1][j] + r[reg1][0];
 
-							r[reg1][j]=vaule%2;
+							r[reg1][j] = vaule % 2;
 
-							r[reg1][0]=vaule/2;
+							r[reg1][0] = vaule / 2;
 
 						}
 
@@ -1286,21 +1132,17 @@ public class ComputerArchitecture {
 
 //					}
 
-
-
 			}
 
 		}
 
+		r[reg1][0] = 1;
 
+		// check -*- or -*+ or +*+
 
-		r[reg1][0]=1;
+		if (r[reg2 + 1][0] == r[reg2][0]) {
 
-		//check -*- or -*+ or +*+
-
-		if (r[reg2+1][0]==r[reg2][0]){
-
-			r[reg1][0]=0;
+			r[reg1][0] = 0;
 
 		}
 
@@ -1308,33 +1150,29 @@ public class ComputerArchitecture {
 
 	}
 
-
-
-	//Dvd
+	// Dvd
 
 	public void Dvd(int reg1, int reg2) throws IOException {
 
-		int k1=0,k2=0,k3=0;
+		int k1 = 0, k2 = 0, k3 = 0;
 
+		for (int i = 1; i < 16; i++) {
 
+			if (r[reg1][i] == 1 && k1 == 0)
 
-		for (int i=1; i<16;i++){
+				k1 = i;
 
-			if (r[reg1][i]==1 && k1==0)
+			if (r[reg2][i] == 1 && k2 == 0)
 
-				k1=i;
-
-			if (r[reg2][i]==1 && k2==0)
-
-				k2=i;
+				k2 = i;
 
 		}
 
-		for (int i=15; i>0;i--){
+		for (int i = 15; i > 0; i--) {
 
-			if (r[reg1][i]==1){
+			if (r[reg1][i] == 1) {
 
-				k3=i;
+				k3 = i;
 
 				break;
 
@@ -1342,11 +1180,9 @@ public class ComputerArchitecture {
 
 		}
 
+		if (k2 == 0) {
 
-
-		if (k2==0){
-
-			cc[3]=1;
+			cc[3] = 1;
 
 			System.out.println("In function Dvd() :");
 
@@ -1354,73 +1190,71 @@ public class ComputerArchitecture {
 
 		}
 
-		for (int i=0; i<16 ; i++){
+		for (int i = 0; i < 16; i++) {
 
-			r[reg2+1][i]=r[reg1][i];
+			r[reg2 + 1][i] = r[reg1][i];
 
-			r[reg1][i]=0;
-
-		}
-
-		r[reg1][0]=1;
-
-		if (r[reg2][0]==r[reg2+1][0]){
-
-			r[reg1][0]=0;
+			r[reg1][i] = 0;
 
 		}
 
-		int index1=k1;
+		r[reg1][0] = 1;
 
-		int index2=k1;
+		if (r[reg2][0] == r[reg2 + 1][0]) {
 
-		boolean loop=true;
+			r[reg1][0] = 0;
 
-		while(loop){
+		}
 
-			loop=false;
+		int index1 = k1;
 
-			for (int i=index1 ; i<16 ; i++){
+		int index2 = k1;
 
-				r[reg1+1][i]=r[reg2+1][i];
+		boolean loop = true;
 
+		while (loop) {
 
+			loop = false;
 
-				if ((i-index2)>=(15-k2)){
+			for (int i = index1; i < 16; i++) {
 
-					boolean same=true;
+				r[reg1 + 1][i] = r[reg2 + 1][i];
 
-					for (int x=index2;x<=i;x++){
+				if ((i - index2) >= (15 - k2)) {
 
-						if (r[reg1+1][x]==1 && r[reg2][x-index2+k2]==0){
+					boolean same = true;
 
-							r[reg1][i]=1;
+					for (int x = index2; x <= i; x++) {
 
-							index1=i+1;
+						if (r[reg1 + 1][x] == 1 && r[reg2][x - index2 + k2] == 0) {
 
-							same=false;
+							r[reg1][i] = 1;
+
+							index1 = i + 1;
+
+							same = false;
 
 							break;
 
 						}
 
-						if  (r[reg1+1][x]==0 && r[reg2][x-index2+k2]==1){
+						if (r[reg1 + 1][x] == 0 && r[reg2][x - index2 + k2] == 1) {
 
-							if(i<15){
+							if (i < 15) {
 
-								r[reg1+1][i+1]=r[reg2+1][i+1];
+								r[reg1 + 1][i + 1] = r[reg2 + 1][i + 1];
 
-								r[reg1][i+1]=1;
+								r[reg1][i + 1] = 1;
 
-								index1=i+2;
+								index1 = i + 2;
 
-								same=false;
+								same = false;
 
 								break;
 
 							}
 
-							else{
+							else {
 
 								System.out.println("In function Dvd() :");
 
@@ -1428,49 +1262,47 @@ public class ComputerArchitecture {
 
 							}
 
-
-
 						}
 
 					}
 
-					if (same){
+					if (same) {
 
-						r[reg1][i]=1;
+						r[reg1][i] = 1;
 
-						index1=i+1;
+						index1 = i + 1;
 
 					}
 
-					for (int j=(index1-1);j>=index2;j--){
+					for (int j = (index1 - 1); j >= index2; j--) {
 
-						if (r[reg1+1][j]==0 && r[reg2][j-index1+16]==0){
+						if (r[reg1 + 1][j] == 0 && r[reg2][j - index1 + 16] == 0) {
 
-							r[reg1+1][j]=0;
-
-						}
-
-						else if(r[reg1+1][j]==1 && r[reg2][j-index1+16]==0){
-
-							r[reg1+1][j]=0;
+							r[reg1 + 1][j] = 0;
 
 						}
 
-						else if(r[reg1+1][j]==0 && r[reg2][j-index1+16]==1){
+						else if (r[reg1 + 1][j] == 1 && r[reg2][j - index1 + 16] == 0) {
 
-							r[reg1+1][j]=1;
+							r[reg1 + 1][j] = 0;
 
-							for (int x= (j-1); x >=index2 ;x--){
+						}
 
-								if(r[reg1+1][x]==1){
+						else if (r[reg1 + 1][j] == 0 && r[reg2][j - index1 + 16] == 1) {
 
-									r[reg1+1][x]=0;
+							r[reg1 + 1][j] = 1;
+
+							for (int x = (j - 1); x >= index2; x--) {
+
+								if (r[reg1 + 1][x] == 1) {
+
+									r[reg1 + 1][x] = 0;
 
 									break;
 
 								}
 
-								r[reg1+1][x]=1;
+								r[reg1 + 1][x] = 1;
 
 							}
 
@@ -1478,55 +1310,43 @@ public class ComputerArchitecture {
 
 						else {
 
-							r[reg1+1][j]=0;
+							r[reg1 + 1][j] = 0;
 
 						}
 
 					}
 
-
-
-					if(i==k3 && same){
+					if (i == k3 && same) {
 
 						return;
 
 					}
 
-					index2=index1;
+					index2 = index1;
 
-					for (int j=1;j<16;j++){
+					for (int j = 1; j < 16; j++) {
 
-						if (r[reg1+1][j]==1){
+						if (r[reg1 + 1][j] == 1) {
 
-							index2=j;
+							index2 = j;
 
 						}
 
 					}
 
-					loop=true;
+					loop = true;
 
 					break;
 
 				}
 
-
-
 			}
-
-
-
-
-
-
 
 		}
 
 		System.out.println("In function Dvd() :");
 
 	}
-
-
 
 	// TRR
 
@@ -1548,8 +1368,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// AND
 
 	public void And(int reg1, int reg2) throws IOException {
@@ -1566,8 +1384,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// ORR
 
 	public void Orr(int reg1, int reg2) throws IOException {
@@ -1583,8 +1399,6 @@ public class ComputerArchitecture {
 		}
 
 	}
-
-
 
 	// Not
 
@@ -1604,17 +1418,11 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// instruction LDR
 
 	public void Ldr(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 
-
-
 		int address = 0;
-
-
 
 		// move address to register mar.
 
@@ -1631,8 +1439,6 @@ public class ComputerArchitecture {
 		// move values in mbr to register reg
 
 		moveMbrToReg(reg);
-
-
 
 		address = 0;
 
@@ -1663,8 +1469,6 @@ public class ComputerArchitecture {
 		System.out.println("In function Ldr() :");
 
 	}
-
-
 
 	// instruction STR
 
@@ -1732,13 +1536,9 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// instruction LDA
 
 	private void Lda(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
-
-
 
 		if (indirect == 0) {
 
@@ -1786,8 +1586,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// instruction LDX
 
 	private void Ldx(String addr, int index, int indirect, MemorySystem ms) throws IOException {
@@ -1809,8 +1607,6 @@ public class ComputerArchitecture {
 		// move values in mbr to index register x[index]
 
 		moveMbrToIndexReg(index);
-
-
 
 		address = 0;
 
@@ -1838,23 +1634,17 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		// print
 
 		System.out.println("In function Ldx() :");
 
 	}
 
-
-
 	// instruction STX
 
 	private void Stx(String addr, int index, int indirect, MemorySystem ms) throws IOException {
 
 		int address = 0;
-
-
 
 		if (indirect == 0) {
 
@@ -1915,8 +1705,6 @@ public class ComputerArchitecture {
 		System.out.println("In function Stx() :");
 
 	}
-
-
 
 	// AMR
 
@@ -2022,8 +1810,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// SMR
 
 	public void Smr(int r, String addr, int indirect, MemorySystem ms) throws IOException {
@@ -2128,15 +1914,13 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// AIR
 
 	public void Air(int reg, String immed) {
 
-		// fill the immed to 5 bits
+		// fill the immed to 16 bits
 
-		int temp = 5 - immed.length();
+		int temp = 16 - immed.length();
 
 		for (int i = 0; i < temp; i++) {
 
@@ -2144,21 +1928,21 @@ public class ComputerArchitecture {
 
 		}
 
-		for (int i = 15; i >= 11; i--) {
+		for (int i = 15; i >= 0; i--) {
 
 //			System.out.println("r[reg][i] = " + r[reg][i]);
 
 //			System.out.println("immed.charAt(i - 11) = " + Character.getNumericValue(immed.charAt(i - 11)) + "\n");
 
-			if (r[reg][i] + Character.getNumericValue(immed.charAt(i - 11)) < 2) {
+			if (r[reg][i] + Character.getNumericValue(immed.charAt(i)) < 2) {
 
-				r[reg][i] += Character.getNumericValue(immed.charAt(i - 11));
+				r[reg][i] += Character.getNumericValue(immed.charAt(i));
 
 			} else {
 
-				if (i != 11) {
+				if (i != 0) {
 
-					r[reg][i] = r[reg][i] + Character.getNumericValue(immed.charAt(i - 11)) - 2;
+					r[reg][i] = r[reg][i] + Character.getNumericValue(immed.charAt(i)) - 2;
 
 					r[reg][i - 1]++;
 
@@ -2182,15 +1966,13 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// SIR
 
 	private void Sir(int reg, String immed) {
 
-		// fill the immed to 5 bits
+		// fill the immed to 16 bits
 
-		int temp = 5 - immed.length();
+		int temp = 16 - immed.length();
 
 		for (int i = 0; i < temp; i++) {
 
@@ -2198,21 +1980,21 @@ public class ComputerArchitecture {
 
 		}
 
-		for (int i = 15; i >= 11; i--) {
+		for (int i = 15; i >= 0; i--) {
 
 //			System.out.println("r[reg][i] = " + r[reg][i]);
 
 //			System.out.println("immed.charAt(i - 11) = " + Character.getNumericValue(immed.charAt(i - 11)) + "\n");
 
-			if (r[reg][i] - Character.getNumericValue(immed.charAt(i - 11)) >= 0) {
+			if (r[reg][i] - Character.getNumericValue(immed.charAt(i)) >= 0) {
 
-				r[reg][i] -= Character.getNumericValue(immed.charAt(i - 11));
+				r[reg][i] -= Character.getNumericValue(immed.charAt(i));
 
 			} else {
 
-				if (i != 11) {
+				if (i != 0) {
 
-					r[reg][i] = r[reg][i] + 2 - Character.getNumericValue(immed.charAt(i - 11));
+					r[reg][i] = r[reg][i] + 2 - Character.getNumericValue(immed.charAt(i));
 
 					r[reg][i - 1]--;
 
@@ -2235,8 +2017,6 @@ public class ComputerArchitecture {
 		System.out.println("In function SIR() :");
 
 	}
-
-
 
 	// SRC
 
@@ -2283,8 +2063,6 @@ public class ComputerArchitecture {
 		System.out.println("In function SRC() :");
 
 	}
-
-
 
 	// RRC
 
@@ -2338,8 +2116,6 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 //	//HLT
 
 	private void Hlt() {
@@ -2349,8 +2125,6 @@ public class ComputerArchitecture {
 		System.out.println("In function HLT() :");
 
 	}
-
-
 
 	// TRAP
 
@@ -2379,8 +2153,6 @@ public class ComputerArchitecture {
 			}
 
 		}
-
-
 
 		// store pc+1 to mem[130], which is mem location 2.
 
@@ -2413,8 +2185,6 @@ public class ComputerArchitecture {
 //		}
 
 //		System.out.print("\n");
-
-
 
 		// set mem[128] as mem location 0 and jump to mem[128].
 
@@ -2490,8 +2260,6 @@ public class ComputerArchitecture {
 
 			moveMbrToIr();
 
-
-
 			System.out.println("**********Trap to instruction: **********");
 
 			for (int i = 0; i < 16; i++) {
@@ -2502,15 +2270,11 @@ public class ComputerArchitecture {
 
 			System.out.print("\n");
 
-
-
 			try {
 
 				decode(ms);
 
 			} catch (Exception e) {
-
-
 
 			}
 
@@ -2523,8 +2287,6 @@ public class ComputerArchitecture {
 			}
 
 			pcIncrement();
-
-
 
 			// print
 
@@ -2552,15 +2314,11 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// decode the instruction in register IR
 
 	public void decode(MemorySystem ms) throws Exception {
 
 		String opcode = "0";
-
-
 
 		// calculate opcode in base10
 
@@ -2580,11 +2338,7 @@ public class ComputerArchitecture {
 
 		opcode = Integer.toString(temp, 8);
 
-
-
 		// calculate effective address in the instruction.
-
-
 
 		int addrIx = 0; // store the address in index register.
 
@@ -2593,8 +2347,6 @@ public class ComputerArchitecture {
 		int indirect = 0; // 0 means instruction doesn't use indirect mode.
 
 		int count = 0; // for instructions need count, like SRC, RRC.
-
-
 
 		// calculate address in instruction.
 
@@ -2628,8 +2380,6 @@ public class ComputerArchitecture {
 
 		generalRegInUse = ir[6] * 2 + ir[7] * 1;
 
-
-
 		if (indexRegInUse != 0) {
 
 			for (int i = 0; i < 16; i++) {
@@ -2642,19 +2392,13 @@ public class ComputerArchitecture {
 
 			}
 
-
-
 			effectiveAddress = address + addrIx;
-
-
 
 		} else {
 
 			effectiveAddress = address;
 
 		}
-
-
 
 		// if instruction use indirect mode.
 
@@ -2664,203 +2408,179 @@ public class ComputerArchitecture {
 
 		}
 
-
-
 		switch (opcode) {
 
-			case "0":
+		case "0":
 
-				Hlt();
+			Hlt();
 
-				break;
+			break;
 
-			case "1":
+		case "1":
 
-				Ldr(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			Ldr(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				break;
+			break;
 
-			case "2":
+		case "2":
 
-				Str(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			Str(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				break;
+			break;
 
-			case "3":
+		case "3":
 
-				Lda(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			Lda(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				break;
+			break;
 
-			case "4":
+		case "4":
 
-				Amr(generalRegInUse, Integer.toBinaryString(effectiveAddress), indirect, ms);
+			Amr(generalRegInUse, Integer.toBinaryString(effectiveAddress), indirect, ms);
 
-				break;
+			break;
 
-			case "5":
+		case "5":
 
-				Smr(generalRegInUse, Integer.toBinaryString(effectiveAddress), indirect, ms);
+			Smr(generalRegInUse, Integer.toBinaryString(effectiveAddress), indirect, ms);
 
-				break;
+			break;
 
-			case "6":
+		case "6":
 
-				Air(generalRegInUse, Integer.toBinaryString(address));
+			Air(generalRegInUse, Integer.toBinaryString(address));
 
-				break;
+			break;
 
-			case "7":
+		case "7":
 
-				Sir(generalRegInUse, Integer.toBinaryString(address));
+			Sir(generalRegInUse, Integer.toBinaryString(address));
 
-				break;
+			break;
 
-			case "10":
+		case "10":
 
-				Jz(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			Jz(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				break;
+			break;
 
-			case "11":
+		case "11":
 
-				Jne(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			Jne(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				break;
+			break;
 
-			case "12":
+		case "12":
 
-				int ccindex = generalRegInUse;
+			int ccindex = generalRegInUse;
 
-				Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
+			Jcc(Integer.toBinaryString(effectiveAddress), ccindex, indirect, ms);
 
-				break;
+			break;
 
-			case "13":
+		case "13":
 
-				Jma(Integer.toBinaryString(effectiveAddress), indirect, ms);
+			Jma(Integer.toBinaryString(effectiveAddress), indirect, ms);
 
-				break;
+			break;
 
+		case "14":
 
+			Jsr(Integer.toBinaryString(effectiveAddress), indirect, ms);
 
-			case "14":
+			break;
 
-				Jsr(Integer.toBinaryString(effectiveAddress), indirect, ms);
+		case "15":
 
-				break;
+			Rfs(Integer.toBinaryString(address), generalRegInUse, indirect, ms);
 
+			break;
 
+		case "16":
 
-			case "15":
+			Sob(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				Rfs(Integer.toBinaryString(address), generalRegInUse, indirect, ms);
+			break;
 
-				break;
+		case "17":
 
-			case "16":
+			Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				Sob(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			break;
 
-				break;
+		case "31":
 
-			case "17":
+			Src(generalRegInUse, count, ir[8], ir[9]);
 
-				Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
+			break;
 
-				break;
+		case "32":
 
+			Rrc(generalRegInUse, count, ir[9]);
 
+			break;
 
-			case "31":
+		case "36":
 
-				Src(generalRegInUse, count, ir[8], ir[9]);
+			Trap(count, ms); // actually count == trap code
 
-				break;
+			break;
 
-			case "32":
+		case "20":
 
-				Rrc(generalRegInUse, count, ir[9]);
+			Mlt(generalRegInUse, indexRegInUse);
 
-				break;
+			break;
 
-			case "36":
+		case "21":
 
-				Trap(count, ms); // actually count == trap code
+			Dvd(generalRegInUse, indexRegInUse);
 
-				break;
+			break;
 
+		case "22":
 
+			Trr(generalRegInUse, indexRegInUse);
 
-			case "20":
+			break;
 
-				Mlt(generalRegInUse, indexRegInUse);
+		case "23":
 
-				break;
+			And(generalRegInUse, indexRegInUse);
 
+			break;
 
+		case "24":
 
-			case "21":
+			Orr(generalRegInUse, indexRegInUse);
 
-				Dvd(generalRegInUse, indexRegInUse);
+			break;
 
-				break;
+		case "25":
 
+			Not(generalRegInUse);
 
+			break;
 
-			case "22":
+		// use general register bit [6],[7] to calculate index register, because the
 
-				Trr(generalRegInUse, indexRegInUse);
+		// index register is using these two bits in instruction ldx and stx.
 
-				break;
+		case "41":
 
+			Ldx(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
+			break;
 
-			case "23":
+		case "42":
 
-				And(generalRegInUse, indexRegInUse);
+			Stx(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 
-				break;
-
-
-
-			case "24":
-
-				Orr(generalRegInUse, indexRegInUse);
-
-				break;
-
-
-
-			case "25":
-
-				Not(generalRegInUse);
-
-				break;
-
-
-
-			// use general register bit [6],[7] to calculate index register, because the
-
-			// index register is using these two bits in instruction ldx and stx.
-
-			case "41":
-
-				Ldx(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
-
-				break;
-
-			case "42":
-
-				Stx(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
-
-				break;
+			break;
 
 		}
 
 	}
-
-
 
 	public void display(MemorySystem ms) {
 
@@ -2920,15 +2640,11 @@ public class ComputerArchitecture {
 
 		ms.displayMainMem(25);
 
-
-
 		System.out.println(
 
 				"--------------------------------------------------------------------------------------------------------");
 
 	}
-
-
 
 	public void display_preload(MemorySystem ms) {
 
@@ -2978,15 +2694,11 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	// initialize all the register to 0, effectiveAddress to -1, stepByStep to 0.
 
 	public void init(MemorySystem ms) throws Exception {
 
 		try {
-
-
 
 			for (int i = 0; i < 12; i++) {
 
@@ -3002,11 +2714,7 @@ public class ComputerArchitecture {
 
 			}
 
-
-
 			ms.init();
-
-
 
 			for (int i = 0; i < 16; i++) {
 
@@ -3039,8 +2747,6 @@ public class ComputerArchitecture {
 
 			}
 
-
-
 			for (int i = 0; i < 4; i++) {
 
 				cc[i] = 0;
@@ -3048,8 +2754,6 @@ public class ComputerArchitecture {
 				mfr[i] = 0;
 
 			}
-
-
 
 			// set the content of mem[128] as "0000 0000 1000 0011" => mem[131], where
 
@@ -3068,8 +2772,6 @@ public class ComputerArchitecture {
 				}
 
 			}
-
-
 
 			// set the contents of routines table mem[131]~mem[146], for test here only has
 
@@ -3111,8 +2813,6 @@ public class ComputerArchitecture {
 
 			}
 
-
-
 			// instruction[0] of routine[0]: 0110010011000010 //SRC R0,2,1,1 [R0=4]
 
 			for (int i = 0; i < 16; i++) {
@@ -3129,8 +2829,6 @@ public class ComputerArchitecture {
 
 			}
 
-
-
 			// instruction[1] of routine[0]: 0000000000000000 //HLT
 
 			for (int i = 0; i < 16; i++) {
@@ -3138,8 +2836,6 @@ public class ComputerArchitecture {
 				ms.setMemory(148, i, 0);
 
 			}
-
-
 
 			effectiveAddress = 0;
 
@@ -3153,15 +2849,11 @@ public class ComputerArchitecture {
 
 //			is_over = false;
 
-
-
 		} catch (Exception e) {
 
 			throw new Exception("Error! init failed!");
 
 		}
-
-
 
 		// print
 
@@ -3171,13 +2863,9 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public void run(MemorySystem ms) throws IOException {
 
 		int pcAddr;
-
-
 
 		if (is_halted) {
 
@@ -3191,11 +2879,7 @@ public class ComputerArchitecture {
 
 		} catch (Exception e) {
 
-
-
 		}
-
-
 
 		int insLen = instructionsNum;
 
@@ -3243,15 +2927,11 @@ public class ComputerArchitecture {
 
 //			System.out.print("\n");
 
-
-
 			try {
 
 				decode(ms);
 
 			} catch (Exception e) {
-
-
 
 			}
 
@@ -3279,13 +2959,11 @@ public class ComputerArchitecture {
 
 				is_from_trap = false;
 
-			}else {
+			} else {
 
 				pcIncrement();
 
 			}
-
-
 
 			// print
 
@@ -3307,13 +2985,9 @@ public class ComputerArchitecture {
 
 	}
 
-
-
 	public void run_single_step(MemorySystem ms) throws IOException {
 
 		int pcAddr;
-
-
 
 		if (is_halted) {
 
@@ -3328,8 +3002,6 @@ public class ComputerArchitecture {
 				loadFile("test.txt", ms);
 
 			} catch (Exception e) {
-
-
 
 			}
 
@@ -3359,8 +3031,6 @@ public class ComputerArchitecture {
 
 		} catch (Exception e) {
 
-
-
 		}
 
 		if (is_halted) {
@@ -3385,13 +3055,11 @@ public class ComputerArchitecture {
 
 			is_from_trap = false;
 
-		}else {
+		} else {
 
 			pcIncrement();
 
 		}
-
-
 
 		// print
 
