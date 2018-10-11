@@ -486,6 +486,7 @@ public class ComputerArchitecture {
 	
 	//JSR
 	private void Jsr(String addr, int indirect, MemorySystem ms) throws IOException {
+        pcIncrement();
 		for (int i=11;i>=0;i--){
 			r[3][i+4]=pc[i];
 		}
