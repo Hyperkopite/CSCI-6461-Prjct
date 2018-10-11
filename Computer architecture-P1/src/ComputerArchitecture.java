@@ -641,9 +641,10 @@ public class ComputerArchitecture {
 						}
 					}
 				}
-//					if (r[reg1][0]==1){
-//						setoverflow();
-//					}
+					if (r[reg1][0]==1){
+						cc[0]=1;
+                        return;
+					}
 				
 			}
 		}
@@ -674,7 +675,7 @@ public class ComputerArchitecture {
 		}
 		
 		if (k2==0){
-			cc[3]=1;
+			cc[2]=1;
             System.out.println("In function Dvd() :");
 			return;
 		}
