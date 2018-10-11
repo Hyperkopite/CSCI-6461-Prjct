@@ -34,9 +34,9 @@ Currrent under part II<br>
 √ 1.HLT<br> 
 √ TRAP code<br>
 √ 2.JZ, JNE, JCC, JMA, RFS, SOB, JGE<br>
-× JSR<br>
+? JSR<br>
 √ 3.AMR, SMR, SIR<br>
-? AIR<br>
+√ AIR<br>
 √ 4.MLT, TRR, AND, ORR, NOT<br>
 √ DVD<br>
 √ 5.RRC<br>
