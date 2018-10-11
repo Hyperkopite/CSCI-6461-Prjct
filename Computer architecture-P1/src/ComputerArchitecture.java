@@ -543,6 +543,10 @@ public class ComputerArchitecture {
 	// MLT
 	private void Mlt(int reg1, int reg2) throws IOException {
 		// use reg2+1 as ac
+		for (int i = 0; i < 16; i++){
+			r[reg2 + 1][i]=0;
+			r[reg1 + 1][i]=0;
+		}
 		for (int i = 0; i < 16; i++)
 			r[reg2 + 1][i] = r[reg1][i];
 		for (int i = 1; i < 32; i++)
@@ -585,6 +589,10 @@ public class ComputerArchitecture {
 	// Dvd
 	public void Dvd(int reg1, int reg2) throws IOException {
 		int k1 = 0, k2 = 0, k3 = 0;
+		for (int i = 0; i < 16; i++){
+			r[reg2 + 1][i]=0;
+			r[reg1 + 1][i]=0;
+		}
 		for (int i = 1; i < 16; i++) {
 			if (r[reg1][i] == 1 && k1 == 0)
 				k1 = i;
@@ -685,11 +693,11 @@ public class ComputerArchitecture {
 	private void Trr(int reg1, int reg2) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			if (r[reg1][i] != r[reg2][i]) {
-				cc[4] = 0;
+				cc[3] = 0;
 				return;
 			}
 		}
-		cc[4] = 1;
+		cc[3] = 1;
 	}
 	// AND
 	public void And(int reg1, int reg2) throws IOException {
@@ -717,9 +725,9 @@ public class ComputerArchitecture {
 	private void Not(int reg) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			if (r[reg][i] == 1)
-				r[reg][i] = 1;
-			else
 				r[reg][i] = 0;
+			else
+				r[reg][i] = 1;
 		}
 	}
 	// instruction LDR
