@@ -1634,6 +1634,7 @@ public class ComputerArchitecture {
 				return;
 			}
 			if (is_from_trap) {
+				// recover from original pc
 				fetchFromMemToMbr(130, ms);
 				moveMbrToPc();
 				is_from_trap = false;
