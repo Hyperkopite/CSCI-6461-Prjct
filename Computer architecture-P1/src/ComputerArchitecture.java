@@ -209,6 +209,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function pcIncrement() :");
 	}
+	
 
 	public int calMemAddr() throws IOException {
 		int address = 0;
@@ -354,6 +355,7 @@ public class ComputerArchitecture {
 	private void Jz(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			if (r[reg][i] == 1) {
+				
 				pcIncrement();
 				System.out.println("In function Jz() :");
 				return;
@@ -479,6 +481,36 @@ public class ComputerArchitecture {
 
 		}
 		System.out.println("In function Jma() :");
+	}
+	
+	
+	//JSR
+	private void Jsr(String addr, int indirect, MemorySystem ms) throws IOException {
+		for (int i=11;i>=0;i--){
+			r[3][i+4]=pc[i];
+		}
+		if (indirect == 0) {
+			int addrLen = addr.length();
+			// load address to register reg
+			for (int i = 0; i < addrLen; i++) {
+				pc[12 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+			}
+			for (int i = 0; i < (12 - addrLen); i++) {
+				pc[i] = 0;
+			}
+		} else {
+			int address = 0;
+			// move address to mar
+			moveAddrToMar(addr);
+			// calculate address in mar
+			address = calMemAddr();
+			// fetch values in memory to mbr
+			fetchFromMemToMbr(address, ms);
+			// move mbr to register pc
+			moveMbrToPc();
+
+		}
+		System.out.println("In function Jsr() :");
 	}
 
 	// instruction RFS
@@ -1340,9 +1372,9 @@ public class ComputerArchitecture {
 			Jma(Integer.toBinaryString(effectiveAddress), indirect, ms);
 			break;
 
-//		case "14":
-//			Jsr(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
-//			break;
+		case "14":
+			Jsr(Integer.toBinaryString(effectiveAddress), indirect, ms);
+			break;
 
 		case "15":
 			Rfs(Integer.toBinaryString(address), generalRegInUse, indirect, ms);
