@@ -683,7 +683,7 @@ public class ComputerArchitecture {
 	}
 	// TRR
 	private void Trr(int reg1, int reg2) throws IOException {
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 16; i++) {
 			if (r[reg1][i] != r[reg2][i]) {
 				cc[4] = 0;
 				return;
@@ -715,7 +715,7 @@ public class ComputerArchitecture {
 	}
 	// Not
 	private void Not(int reg) throws IOException {
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 16; i++) {
 			if (r[reg][i] == 1)
 				r[reg][i] = 1;
 			else
