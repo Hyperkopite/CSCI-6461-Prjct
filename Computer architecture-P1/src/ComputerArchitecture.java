@@ -693,17 +693,23 @@ public class ComputerArchitecture {
 	}
 	// AND
 	public void And(int reg1, int reg2) throws IOException {
-		for (int i = 0; i < 15; i++) {
-			if (r[reg1][i] == reg1 && r[reg2][i] == 1) {
-				r[reg1][i] = reg1;
+		for (int i = 0; i < 16; i++) {
+			if (r[reg1][i] == 1 && r[reg2][i] == 1) {
+				r[reg1][i] = 1;
+			}
+			else{
+				r[reg1][i] = 0;
 			}
 		}
 	}
 	// ORR
 	public void Orr(int reg1, int reg2) throws IOException {
-		for (int i = 0; i < 15; i++) {
-			if (r[reg1][i] == reg1 || r[reg2][i] == 1) {
-				r[reg1][i] = reg1;
+		for (int i = 0; i < 16; i++) {
+			if (r[reg1][i] == 1 || r[reg2][i] == 1) {
+				r[reg1][i] = 1;
+			}
+			else{
+				r[reg1][i] = 0;
 			}
 		}
 	}
