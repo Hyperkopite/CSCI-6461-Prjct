@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class ComputerArchitecture {
 	// registers
 	private static int[] pc = new int[12];
-	public static int[][] r = new int[10][16]; // general purpose registers
+	public int[][] r = new int[10][16]; // general purpose registers
 	private static int[] mar = new int[16];
 	private static int[] mbr = new int[16];
 	private static int[] mfr = new int[4];
@@ -815,7 +815,7 @@ public class ComputerArchitecture {
 		System.out.println("In function Lda() :");
 	}
 	// instruction LDX
-	private void Ldx(String addr, int index, int indirect, MemorySystem ms) throws IOException {
+	public void Ldx(String addr, int index, int indirect, MemorySystem ms) throws IOException {
 		int address = 0;
 		// move address to mar
 		moveAddrToMar(addr);

@@ -4,7 +4,6 @@
  */
 
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class program1 {
     private static final int SEARCH = 60;
