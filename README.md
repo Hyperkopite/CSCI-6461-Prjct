@@ -18,6 +18,7 @@ Currrent under part II<br>
 [11]JNE<br>
 [12]JCC<br>
 [13]JMA<br>
+[14]JSR<br>
 [15]RFS<br>
 [16]SOB<br>
 [17]JGE<br>
@@ -32,7 +33,7 @@ Currrent under part II<br>
 [36]TRAP<br>
 
 √ 1.HLT<br> 
-√ TRAP code<br>
+√ TRAP<br>
 √ 2.JZ, JNE, JCC, JMA, RFS, SOB, JGE<br>
 √  JSR<br>
 √ 3.AMR, SMR, SIR<br>
@@ -42,4 +43,5 @@ Currrent under part II<br>
 √ 5.RRC<br>
 √  SRC<br>
 ? 6.IN, OUT, CHK<br>
-√  7.Program 1<br>
+√ 7.LDR, STR, LDA, LDX, STX<br>
+√ 8.Program 1<br>
