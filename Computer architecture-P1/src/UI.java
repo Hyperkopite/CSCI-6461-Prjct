@@ -29,7 +29,7 @@ public class UI {
 	private static boolean pwr_status = false;
 
 	// status of s0-s15
-	private static int[][] switch_status = new int[30][16];
+	public static int[][] switch_status = new int[30][16];
 
 	// panel component with flow layout
 	private static JPanel panel_south = new JPanel(new FlowLayout());

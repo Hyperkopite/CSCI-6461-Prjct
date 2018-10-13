@@ -308,6 +308,36 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveMbrToPc() :");
 	}
+	//In
+	public void In(String DevID, int reg) throws IOException {
+	    int devid = 0;
+
+	    moveAddrToMar(DevID);
+	    devid = calMemAddr();
+	    for (int i=0; i<16; i++) {
+	        r[reg][i] = UI.switch_status[devid][i];
+	    }
+	}
+
+	//Out
+	public void Out(String DevID, int reg) throws IOException {
+	    int devid = 0;
+
+	    moveAddrToMar(DevID);
+	    devid = calMemAddr();
+	    for (int i=0; i<16; i++) {
+	        UI.switch_status[devid][i] = r[reg][i];
+	    }
+	}
+
+	//Chk
+	public void Chk(String DevID, int reg) throws IOException {
+	    moveAddrToMar(DevID);
+	    for (int i=0; i<16; i++) {
+	        r[reg][i] = mar[i];
+	    }
+	}
+
 	// instruction JZ
 	private void Jz(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		for (int i = 0; i < 16; i++) {
@@ -1311,6 +1341,15 @@ public class ComputerArchitecture {
 		case "42":
 			Stx(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
+		case "61":
+		    In(Integer.toBinaryString(effectiveAddress),generalRegInUse);
+		    break;
+		case "62":
+		    Out(Integer.toBinaryString(effectiveAddress),generalRegInUse);
+		    break;
+		case "63":
+		    Chk(Integer.toBinaryString(effectiveAddress),generalRegInUse);
+		    break;
 		}
 	}
 	public void display(MemorySystem ms) {
