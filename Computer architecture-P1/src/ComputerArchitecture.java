@@ -10,14 +10,14 @@ import java.net.URL;
 import java.util.Arrays;
 public class ComputerArchitecture {
 	// registers
-	private static int[] pc = new int[12];
 	public int[][] r = new int[10][16]; // general purpose registers
-	private static int[] mar = new int[16];
-	private static int[] mbr = new int[16];
-	private static int[] mfr = new int[4];
-	private static int[] cc = new int[4];
-	private static int[] ir = new int[16];
-	private static int[][] x = new int[4][16]; // three index registers
+	private int[] pc = new int[12];
+	private int[] mar = new int[16];
+	private int[] mbr = new int[16];
+	private int[] mfr = new int[4];
+	private int[] cc = new int[4];
+	private int[] ir = new int[16];
+	private int[][] x = new int[4][16]; // three index registers
 	// memory
 //	private int[][] memory1 = new int[2048][16];
 //	private int[][] memory2 = new int[2048][16]; // make sure the memory can expand when required
@@ -31,6 +31,7 @@ public class ComputerArchitecture {
 	private int instructionsNum; // count total number of instructions in the file.
 	private int[] rTemp = new int[16]; // used in indirect mode.
 	private String[] current_instruction = new String[100000];
+	
 	public int[] getter_r(int num) {
 		int[][] r_temp = new int[4][16];
 		for (int i = 0; i < r[num].length; i++) {
