@@ -42,6 +42,6 @@ Currrent under part II<br>
 √ DVD<br>
 √ 5.RRC<br>
 √  SRC<br>
-? 6.IN, OUT, CHK<br>
+√ 6.IN, OUT, CHK<br>
 √ 7.LDR, STR, LDA, LDX, STX<br>
 √ 8.Program 1<br>
