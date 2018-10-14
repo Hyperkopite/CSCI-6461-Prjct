@@ -11,9 +11,9 @@ LDA R2 0 0 0
 SRC R2 1 1 5
 AIR R2 0 0 31
 SRC R2 1 1 5
-AIR R2 0 0 26
+AIR R2 0 0 25
 STR R2 0 0 25
-LDX X3 0 0 25      //X3=memory[25]=z+y*32+x*32*32=1018
+LDX X3 0 0 25      //X3=memory[25]=z+y*32+x*32*32=1017
 LDA R0 0 0 20
 STR R0 0 0 24     //memory24=R0
 LDR R1 0 0 21     //R1=128
@@ -30,9 +30,9 @@ LDA R2 0 0 1
 SRC R2 1 1 5
 AIR R2 0 0 0
 SRC R2 1 1 5
-AIR R2 0 0 15
+AIR R2 0 0 14
 STR R2 0 0 25
-LDX X1 0 0 25   //x1=memory[25]=z+y*32+x*32*32=1039
+LDX X1 0 0 25   //x1=memory[25]=z+y*32+x*32*32=1038
 JGE R1 X1 0 0   //if r1>=0 jump
 NOT R1 0 0 0   //
 AIR R1 0 0 1   //change R1=-R1
@@ -42,9 +42,9 @@ LDA R2 0 0 1
 SRC R2 1 1 5
 AIR R2 0 0 0
 SRC R2 1 1 5
-AIR R2 0 0 28
+AIR R2 0 0 27
 STR R2 0 0 25
-LDX X3 0 0 25   //X3=memory[25]=z+y*32+x*32*32=1052
+LDX X3 0 0 25   //X3=memory[25]=z+y*32+x*32*32=1051
 LDX X1 0 0 23  //x1=memory23=512
 LDR R1 X1 0 20 //R1=subArray[20]
 STR R1 0 1 22  //memory[memory22]=memory[256]=R1
@@ -60,9 +60,9 @@ LDA R2 0 0 1
 SRC R2 1 1 5
 AIR R2 0 0 1
 SRC R2 1 1 5
-AIR R2 0 0 12
+AIR R2 0 0 11
 STR R2 0 0 25
-LDX X2 0 0 25   //X2=memory[25]=z+y*32+x*32*32=1068
+LDX X2 0 0 25   //X2=memory[25]=z+y*32+x*32*32=1067
 JGE R1 X2 0 0  //jump 1068
 JMA 0 X2 0 2  //jump 1068+2=1070
 LDR R1 X1 0 0

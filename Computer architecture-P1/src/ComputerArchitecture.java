@@ -1381,6 +1381,10 @@ public class ComputerArchitecture {
 		ms.displayMainMem(16);
 		ms.displayMainMem(20);
 		ms.displayMainMem(25);
+		ms.displayMainMem(256);
+		ms.displayMainMem(512);
+		ms.displayMainMem(513);
+		ms.displayMainMem(514);
 		System.out.println(
 				"--------------------------------------------------------------------------------------------------------");
 	}
@@ -1503,11 +1507,23 @@ public class ComputerArchitecture {
 			return;
 		}
 		try {
-			loadFile("test.txt", ms);
+			loadFile("reExample.txt", ms);
 		} catch (Exception e) {
 		}
 		int insLen = instructionsNum;
-		while (instructionsNum != 0) {
+		
+		while (true) {
+			int pcValue=0;
+			for (int i = 11; i >= 0; i--) {
+				if (pc[i] == 1) {
+					pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
+				}
+			}
+			System.out.println(pcValue);
+			int[] pcBefore=new int[12];
+			for (int i=0;i<12;i++){
+				pcBefore[i]=pc[i];
+			}
 			System.out.println(
 					"Successfully loaded.\nThe instruction is: " + current_instruction[insLen - instructionsNum]);
 			fetchFromPcToMar();
@@ -1546,7 +1562,16 @@ public class ComputerArchitecture {
 				moveMbrToPc();
 				is_from_trap = false;
 			} else {
+				boolean ifInc=true;
+				for (int i=0;i<12;i++){
+					if (pc[i]!=pcBefore[i]){
+						ifInc=false;
+						break;
+					}
+				}
+				if (ifInc){
 				pcIncrement(); // U need to change this
+				}
 			}
 			// print
 			display(ms);
@@ -1554,6 +1579,17 @@ public class ComputerArchitecture {
 					+ "\n--------------------------------------------------------------------------------------------------------\n");
 			effectiveAddress = 0;
 			instructionsNum -= 1;
+			pcValue=0;
+			for (int i = 11; i >= 0; i--) {
+				if (pc[i] == 1) {
+					pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
+				}
+			}
+			System.out.println(pcValue);
+			System.out.println(insLen);
+			if (pcValue>(1000+insLen)){
+				break;
+			}
 		}
 		is_halted = true;
 		System.out.println("**Program has been over.**");
@@ -1565,7 +1601,7 @@ public class ComputerArchitecture {
 		}
 		if (stepByStep == 0) {
 			try {
-				loadFile("test.txt", ms);
+				loadFile("reExample.txt", ms);
 			} catch (Exception e) {
 			}
 		}
