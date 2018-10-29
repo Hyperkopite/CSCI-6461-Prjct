@@ -10,7 +10,7 @@ public class program2 {
         int SEARCH = 30;
         boolean find = false; //if find match, set find to true
         boolean compare = true; //if compare is false, do not compare two values in the register
-        String userInput = "hello"; //mimic user input
+        String userInput = "sheath "; //mimic user input
 
         try {
             ca.init(ms);
@@ -45,7 +45,7 @@ public class program2 {
                     continue;
                 }
                 increment++;
-                if (increment == userInput.length()) {find = true; break;}
+                if (increment == userInput.length()-1) {find = true; break;} //minus the last character, which is ETX.
             }
         }
 
