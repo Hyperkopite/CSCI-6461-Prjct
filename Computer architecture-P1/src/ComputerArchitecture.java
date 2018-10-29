@@ -31,6 +31,9 @@ public class ComputerArchitecture {
 	private int instructionsNum; // count total number of instructions in the file.
 	private int[] rTemp = new int[16]; // used in indirect mode.
 	private String[] current_instruction = new String[100000];
+	//for program2
+    public final int START = 40;
+    public int STOP = 0;
 	
 	public int[] getter_r(int num) {
 		int[][] r_temp = new int[4][16];
@@ -309,14 +312,34 @@ public class ComputerArchitecture {
 		System.out.println("In function moveMbrToPc() :");
 	}
 	//In
-	public void In(String DevID, int reg) throws IOException {
+	public void In(String DevID, int reg, MemorySystem ms) throws IOException {
 	    int devid = 0;
 
 	    moveAddrToMar(DevID);
 	    devid = calMemAddr();
-	    for (int i=0; i<16; i++) {
-	        r[reg][i] = UI.switch_status[devid][i];
-	    }
+//	    for (int i=0; i<16; i++) {
+//	        r[reg][i] = UI.switch_status[devid][i];
+//	    }
+        if (devid == 20) {
+            String readIn;
+            int len;
+            InputStream input = readFile("Readin-for-program2.txt");
+            BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(input));
+
+            readIn = bufferedInput.readLine();
+            len = readIn.length();
+            //convert character to binary string, then store them into memory, start at memory1[40]
+            for (int i=0; i<len; i++) {
+                var temp = Integer.toBinaryString((int)readIn.charAt(i));
+                var k = 15;
+                for (int j=temp.length()-1; j>=0; j--) {
+                    ms.setMemory(START+i, k, Character.getNumericValue(temp.charAt(j)));
+                    k--;
+                }
+                STOP = START + i;
+//                ms.displayMainMem(START+i);
+            }
+        }
 	}
 
 	//Out
@@ -1457,7 +1480,7 @@ public class ComputerArchitecture {
 			Stx(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "61":
-		    In(Integer.toBinaryString(effectiveAddress),generalRegInUse);
+		    In(Integer.toBinaryString(effectiveAddress),generalRegInUse, ms);
 		    break;
 		case "62":
 		    Out(Integer.toBinaryString(effectiveAddress),generalRegInUse);

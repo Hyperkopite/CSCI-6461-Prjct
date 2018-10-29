@@ -5,7 +5,7 @@ public class MainMemory {
 	private int[][] memory2 = new int[2048][16]; // make sure the memory can expand when required
 
 	public void init() {
-		for (int i = 0; i < 2018; i++) {
+		for (int i = 0; i < 2048; i++) {
 			for (int j = 0; j < 16; j++) {
 				memory1[i][j] = 0;
 				memory2[i][j] = 0;
