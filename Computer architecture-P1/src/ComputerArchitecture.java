@@ -1622,7 +1622,7 @@ public class ComputerArchitecture {
 			return;
 		}
 		try {
-			loadFile("test.txt", ms);
+			loadFile("reExample.txt", ms);
 		} catch (Exception e) {
 		}
 		int insLen = instructionsNum;
@@ -1707,7 +1707,7 @@ public class ComputerArchitecture {
 			}
 		}
 		is_halted = true;
-		System.out.println("**Program has been over.**");
+		System.out.println("**Program over.**");
 	}
 	public void run_single_step(MemorySystem ms) throws IOException {
 		int pcAddr;

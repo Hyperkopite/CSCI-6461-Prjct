@@ -49,6 +49,7 @@ public class UI {
 	private static JButton btnIPL = new JButton("IPL");
 	private static JButton btnPwr = new JButton("Power");
 	private static JButton btn_reset_switches = new JButton("reset switches");
+	private static JButton btn_confirm = new JButton("Confirm");
 //	private static JButton btn_execute_from_pc = new JButton("Execute from pc");
 
 	// registers labels
@@ -58,12 +59,14 @@ public class UI {
 	private static JLabel hint_for_addr_input = new JLabel(
 			"<html>" + "Input the 1st index of the" + "<br>" + "address you want to edit here" + "<html>");
 	private static JLabel addr_mar_poiunted_label = new JLabel("Contents which MAR points to");
+	private static JLabel word_input_label = new JLabel("The word u wanna search for");
 
 	// text fields for displaying registers
 	private static JTextField[] array_regs_text = new JTextField[15];
 	private static JTextField current_mem_addr_text = new JTextField(16);
 	private static JTextField addr_to_input_text = new JTextField(16);
 	private static JTextField addr_mar_pointed = new JTextField(16);
+	private static JTextField word_input = new JTextField(16);
 
 	// text area and scroll panel for displaying console information
 	private static JTextArea screen_for_console = new JTextArea();
@@ -129,8 +132,12 @@ public class UI {
 		vbox_east.add(Box.createVerticalStrut(5));
 		vbox_east.add(addr_mar_poiunted_label);
 		vbox_east.add(Box.createVerticalStrut(30));
-//		vbox_east.add(btn_execute_from_pc);
-//		vbox_east.add(Box.createVerticalStrut(30));
+		vbox_east.add(word_input);
+		word_input.setMaximumSize(new Dimension(400, 23));
+		vbox_east.add(word_input_label);
+		vbox_east.add(Box.createVerticalStrut(5));
+		vbox_east.add(btn_confirm);
+		vbox_east.add(Box.createVerticalStrut(30));
 		vbox_east.add(btn_reset_switches);
 
 		// initiate register labels
@@ -334,9 +341,9 @@ public class UI {
 					}
 				}
 			}
-			
+
 //Please reserve the codes below for more precisely single-step function :)
-			
+
 //			public void actionPerformed(ActionEvent e) {
 //				if (pwr_status) {
 //					try {
@@ -389,6 +396,37 @@ public class UI {
 					ca.is_halted = true;
 					System.out.println("**Program has been halted.**");
 					screen_update();
+				}
+			}
+		});
+
+		// action binded to word search button
+		btn_confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (pwr_status) {
+					for (int i = 30; i < word_input.getText().length() + 30; i++) {
+						String tmp = Integer.toBinaryString((int) word_input.getText().charAt(i - 30));
+						int len = tmp.length();
+						for (int j = 0; j < 16 - len; j++) {
+							tmp = "0".concat(tmp);
+						}
+						for (int k = 0; k < 16; k++) {
+							ms.setMemory(i, k, Character.getNumericValue(tmp.charAt(k)));
+						}
+						if (i == word_input.getText().length() + 29) {
+							ms.setMemory(i + 1, 14, 1);
+							ms.setMemory(i + 1, 15, 1);
+						}
+					}
+//					for (int i = 30; i < 40; i++) {
+//						System.out.print("mem[" + i + "]");
+//						for (int j = 0; j < 16; j++) {
+//							System.out.print(ms.getMemory(i, j));
+//						}
+//						System.out.println("\n");
+//					}
+//					screen_update();
 				}
 			}
 		});
