@@ -330,8 +330,8 @@ public class ComputerArchitecture {
             len = readIn.length();
             //convert character to binary string, then store them into memory, start at memory1[40]
             for (int i=0; i<len; i++) {
-                var temp = Integer.toBinaryString((int)readIn.charAt(i));
-                var k = 15;
+                String temp = Integer.toBinaryString((int)readIn.charAt(i));
+                int k = 15;
                 for (int j=temp.length()-1; j>=0; j--) {
                     ms.setMemory(START+i, k, Character.getNumericValue(temp.charAt(j)));
                     k--;
