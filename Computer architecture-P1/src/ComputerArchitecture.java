@@ -1015,19 +1015,21 @@ public class ComputerArchitecture {
 				}
 			}
 		}
+		System.out.println(tmp_str + ',' + tmp_str2);
 		// to judge if the content of mbr[] is a negative number
 		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: Integer.parseUnsignedInt(tmp_str, 2);
+				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str.substring(1), 2);
 		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
-				: Integer.parseUnsignedInt(tmp_str2, 2);
+				: tmp_str2.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str2, 2);
 		res = a + b;
+		System.out.println(res);
 		if (res >= 0) {
 			tmp_str = Integer.toBinaryString(res);
 		} else {
 			tmp_str = Integer.toBinaryString(-res);
 			is_negative = true;
 		}
-//					System.out.println("tmp_str: " + tmp_str);
+		System.out.println("tmp_str: " + tmp_str);
 		// judge if underflows
 		if (tmp_str.length() >= 16) {
 			cc[0] = 1;
@@ -1099,9 +1101,9 @@ public class ComputerArchitecture {
 		}
 		// to judge if the content of mbr[] is a negative number
 		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: Integer.parseUnsignedInt(tmp_str, 2);
+				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
 		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
-				: Integer.parseUnsignedInt(tmp_str2, 2);
+				: tmp_str2.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str2, 2);
 		res = a - b;
 		if (res >= 0) {
 			tmp_str = Integer.toBinaryString(res);
@@ -1153,7 +1155,7 @@ public class ComputerArchitecture {
 		}
 		// to judge if the content of mbr[] is a negative number
 		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: Integer.parseUnsignedInt(tmp_str, 2);
+				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
 		b = Integer.parseUnsignedInt(immed, 2);
 		res = a + b;
 		if (res >= 0) {
@@ -1205,7 +1207,7 @@ public class ComputerArchitecture {
 		}
 		// to judge if the content of mbr[] is a negative number
 		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: Integer.parseUnsignedInt(tmp_str, 2);
+				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
 		b = Integer.parseUnsignedInt(immed, 2);
 		res = a - b;
 		if (res >= 0) {
@@ -1487,15 +1489,6 @@ public class ComputerArchitecture {
 		case "17":
 			Jge(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
-		case "31":
-			Src(generalRegInUse, count, ir[8], ir[9]);
-			break;
-		case "32":
-			Rrc(generalRegInUse, count, ir[9]);
-			break;
-		case "36":
-			Trap(count, ms); // actually count == trap code
-			break;
 		case "20":
 			Mlt(generalRegInUse, indexRegInUse);
 			break;
@@ -1513,6 +1506,15 @@ public class ComputerArchitecture {
 			break;
 		case "25":
 			Not(generalRegInUse);
+			break;
+		case "31":
+			Src(generalRegInUse, count, ir[8], ir[9]);
+			break;
+		case "32":
+			Rrc(generalRegInUse, count, ir[9]);
+			break;
+		case "36":
+			Trap(count, ms); // actually count == trap code
 			break;
 		// use general register bit [6],[7] to calculate index register, because the
 		// index register is using these two bits in instruction ldx and stx.
@@ -1692,7 +1694,7 @@ public class ComputerArchitecture {
 			return;
 		}
 		try {
-			loadFile("test.txt", ms);
+			loadFile("123.txt", ms);
 		} catch (Exception e) {
 		}
 		int insLen = instructionsNum;
@@ -1844,16 +1846,5 @@ public class ComputerArchitecture {
 				+ "\n--------------------------------------------------------------------------------------------------------\n");
 		effectiveAddress = 0;
 		stepByStep++;
-//		pcValue=0;
-//		for (int i = 11; i >= 0; i--) {
-//			if (pc[i] == 1) {
-//				pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
-//			}
-//		}
-//		System.out.println(pcValue);
-//		System.out.println(insLen);
-//		if (pcValue>(1000+insLen)){
-//			break;
-//		}
 	}
 }
