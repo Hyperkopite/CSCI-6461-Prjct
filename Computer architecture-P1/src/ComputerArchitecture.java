@@ -1,3 +1,4 @@
+
 /**
  * ComputerArchitecture Project.
  *
@@ -8,6 +9,7 @@
 import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
+
 public class ComputerArchitecture {
 	// registers
 	public int[][] r = new int[10][16]; // general purpose registers
@@ -31,10 +33,10 @@ public class ComputerArchitecture {
 	private int instructionsNum; // count total number of instructions in the file.
 	private int[] rTemp = new int[16]; // used in indirect mode.
 	private String[] current_instruction = new String[100000];
-	//for program2
-    public final int START = 40;
-    public int STOP = 0;
-	
+	// for program2
+	public final int START = 40;
+	public int STOP = 0;
+
 	public int[] getter_r(int num) {
 		int[][] r_temp = new int[4][16];
 		for (int i = 0; i < r[num].length; i++) {
@@ -42,6 +44,7 @@ public class ComputerArchitecture {
 		}
 		return r_temp[num];
 	}
+
 	public int[] getter_x(int num) {
 		int[][] x_temp = new int[4][16];
 		for (int i = 0; i < x[num].length; i++) {
@@ -49,6 +52,7 @@ public class ComputerArchitecture {
 		}
 		return x_temp[num];
 	}
+
 	public int[] getter_pc() {
 		int[] pc_temp = new int[12];
 		for (int i = 0; i < pc.length; i++) {
@@ -56,6 +60,7 @@ public class ComputerArchitecture {
 		}
 		return pc_temp;
 	}
+
 	public int[] getter_mar() {
 		int[] mar_temp = new int[16];
 		for (int i = 0; i < mar.length; i++) {
@@ -63,6 +68,7 @@ public class ComputerArchitecture {
 		}
 		return mar_temp;
 	}
+
 	public int[] getter_mbr() {
 		int[] mbr_temp = new int[16];
 		for (int i = 0; i < mbr.length; i++) {
@@ -70,6 +76,7 @@ public class ComputerArchitecture {
 		}
 		return mbr_temp;
 	}
+
 	public int[] getter_mfr() {
 		int[] mfr_temp = new int[4];
 		for (int i = 0; i < mfr.length; i++) {
@@ -77,6 +84,7 @@ public class ComputerArchitecture {
 		}
 		return mfr_temp;
 	}
+
 	public int[] getter_cc() {
 		int[] cc_temp = new int[4];
 		for (int i = 0; i < cc.length; i++) {
@@ -84,6 +92,7 @@ public class ComputerArchitecture {
 		}
 		return cc_temp;
 	}
+
 	public int[] getter_ir() {
 		int[] ir_temp = new int[16];
 		for (int i = 0; i < ir.length; i++) {
@@ -91,6 +100,7 @@ public class ComputerArchitecture {
 		}
 		return ir_temp;
 	}
+
 	public int[] getter_rTemp() {
 		int[] rTemp_temp = new int[16];
 		for (int i = 0; i < rTemp.length; i++) {
@@ -98,6 +108,7 @@ public class ComputerArchitecture {
 		}
 		return rTemp_temp;
 	}
+
 	public int[] getter_mem(int num, MemorySystem ms) {
 		int[] mem_temp = new int[16];
 		for (int i = 0; i < 16; i++) {
@@ -106,6 +117,7 @@ public class ComputerArchitecture {
 		}
 		return mem_temp;
 	}
+
 	public void setter_r(int num) {
 		for (int i = 0; i < 16; i++) {
 			if (i < 10) {
@@ -115,6 +127,7 @@ public class ComputerArchitecture {
 			}
 		}
 	}
+
 	public void setter_pc() {
 		for (int i = 0; i < 12; i++) {
 			if (i < 10) {
@@ -124,6 +137,7 @@ public class ComputerArchitecture {
 			}
 		}
 	}
+
 	public void setter_mem(int num, MemorySystem ms) {
 		for (int i = 0; i < 16; i++) {
 			if (i < 10) {
@@ -135,6 +149,7 @@ public class ComputerArchitecture {
 			}
 		}
 	}
+
 	// load instructions in file to the array memory1.
 	public void loadFile(String fileName, MemorySystem ms) throws IOException {
 		InputStream input = readFile(fileName);
@@ -157,6 +172,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function loadFile() :");
 	}
+
 	/*
 	 * 
 	 * Test for the function loadFile public void testLoadFile() { int i = 0;
@@ -182,6 +198,7 @@ public class ComputerArchitecture {
 		}
 		return file.openStream();
 	}
+
 	// May have overflow problem, but doesn't need to pay attention to at project
 	// part I.
 	public void pcIncrement() throws IOException {
@@ -197,6 +214,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function pcIncrement() :");
 	}
+
 	public int calMemAddr() throws IOException {
 		int address = 0;
 		for (int i = 15; i >= 4; i--) {
@@ -208,6 +226,7 @@ public class ComputerArchitecture {
 		System.out.println("In function calMemAddr() :");
 		return address;
 	}
+
 	// fetch instruction from pc to mar.
 	public void fetchFromPcToMar() throws IOException {
 		for (int i = 11; i >= 0; i--) {
@@ -219,6 +238,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function fetchFromPcToMar() :");
 	}
+
 	public void fetchFromMemToMbr(int addr, MemorySystem ms) throws IOException {
 //		for (int i = 0; i < 16; i++) {
 ////			mbr[i] = memory1[addr][i];
@@ -235,6 +255,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function fetchFromMemToMbr() :");
 	}
+
 	public void storeMbrToMem(int addr, MemorySystem ms) throws IOException {
 //		for (int i = 0; i < 16; i++) {
 ////			memory1[addr][i] = mbr[i];
@@ -244,6 +265,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function storeMbrToMem() :");
 	}
+
 	public void moveMbrToIr() throws IOException {
 		for (int i = 0; i < 16; i++) {
 			ir[i] = mbr[i];
@@ -251,6 +273,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveMbrToIr() :");
 	}
+
 	public void moveMbrToReg(int reg) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			r[reg][i] = mbr[i];
@@ -258,6 +281,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveMbrToReg() :");
 	}
+
 	public void moveMbrToIndexReg(int index) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			x[index][i] = mbr[i];
@@ -265,6 +289,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveMbrToIndexReg() :");
 	}
+
 	public void moveRegToMbr(int reg) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			mbr[i] = r[reg][i];
@@ -272,6 +297,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveRegToMbr() :");
 	}
+
 	public void moveIndexRegToMbr(int index) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			mbr[i] = x[index][i];
@@ -279,6 +305,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveIndexRegToMbr() :");
 	}
+
 	public void moveAddrToMar(String addr) throws IOException {
 		int addrLen = addr.length();
 		for (int i = 0; i < addrLen; i++) {
@@ -290,6 +317,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveAddrToMar() :");
 	}
+
 	public void moveMbrToRTemp() throws IOException {
 		for (int i = 0; i < 16; i++) {
 			rTemp[i] = mbr[i];
@@ -297,6 +325,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveMbrToIr() :");
 	}
+
 	public void moveRTempToMar() throws IOException {
 		for (int i = 0; i < 16; i++) {
 			mar[i] = rTemp[i];
@@ -304,6 +333,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveMbrToIr() :");
 	}
+
 	public void moveMbrToPc() throws IOException {
 		for (int i = 11; i >= 0; i--) {
 			pc[i] = mbr[i + 4];
@@ -311,54 +341,56 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function moveMbrToPc() :");
 	}
-	//In
-	public void In(String DevID, int reg, MemorySystem ms) throws IOException {
-	    int devid = 0;
 
-	    moveAddrToMar(DevID);
-	    devid = calMemAddr();
+	// In
+	public void In(String DevID, int reg, MemorySystem ms) throws IOException {
+		int devid = 0;
+
+		moveAddrToMar(DevID);
+		devid = calMemAddr();
 //	    for (int i=0; i<16; i++) {
 //	        r[reg][i] = UI.switch_status[devid][i];
 //	    }
-        if (devid == 20) {
-            String readIn;
-            int len;
-            InputStream input = readFile("Readin-for-program2.txt");
-            BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(input));
+		if (devid == 20) {
+			String readIn;
+			int len;
+			InputStream input = readFile("Readin-for-program2.txt");
+			BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(input));
 
-            readIn = bufferedInput.readLine();
-            len = readIn.length();
-            //convert character to binary string, then store them into memory, start at memory1[40]
-            for (int i=0; i<len; i++) {
-                String temp = Integer.toBinaryString((int)readIn.charAt(i));
-                int k = 15;
-                for (int j=temp.length()-1; j>=0; j--) {
-                    ms.setMemory(START+i, k, Character.getNumericValue(temp.charAt(j)));
-                    k--;
-                }
-                STOP = START + i;
+			readIn = bufferedInput.readLine();
+			len = readIn.length();
+			// convert character to binary string, then store them into memory, start at
+			// memory1[40]
+			for (int i = 0; i < len; i++) {
+				String temp = Integer.toBinaryString((int) readIn.charAt(i));
+				int k = 15;
+				for (int j = temp.length() - 1; j >= 0; j--) {
+					ms.setMemory(START + i, k, Character.getNumericValue(temp.charAt(j)));
+					k--;
+				}
+				STOP = START + i;
 //                ms.displayMainMem(START+i);
-            }
-        }
+			}
+		}
 	}
 
-	//Out
+	// Out
 	public void Out(String DevID, int reg) throws IOException {
-	    int devid = 0;
+		int devid = 0;
 
-	    moveAddrToMar(DevID);
-	    devid = calMemAddr();
-	    for (int i=0; i<16; i++) {
-	        UI.switch_status[devid][i] = r[reg][i];
-	    }
+		moveAddrToMar(DevID);
+		devid = calMemAddr();
+		for (int i = 0; i < 16; i++) {
+			UI.switch_status[devid][i] = r[reg][i];
+		}
 	}
 
-	//Chk
+	// Chk
 	public void Chk(String DevID, int reg) throws IOException {
-	    moveAddrToMar(DevID);
-	    for (int i=0; i<16; i++) {
-	        r[reg][i] = mar[i];
-	    }
+		moveAddrToMar(DevID);
+		for (int i = 0; i < 16; i++) {
+			r[reg][i] = mar[i];
+		}
 	}
 
 	// instruction JZ
@@ -393,6 +425,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function Jz() :");
 	}
+
 	// instruction JNE
 	private void Jne(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		for (int i = 0; i < 16; i++) {
@@ -426,6 +459,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function Jne() :");
 	}
+
 	// instruction JCC
 	private void Jcc(String addr, int ccindex, int indirect, MemorySystem ms) throws IOException {
 		if (cc[ccindex] == 1) {
@@ -456,6 +490,7 @@ public class ComputerArchitecture {
 			System.out.println("In function Jcc() :");
 		}
 	}
+
 	// instruction JMA
 	private void Jma(String addr, int indirect, MemorySystem ms) throws IOException {
 		if (indirect == 0) {
@@ -480,6 +515,7 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function Jma() :");
 	}
+
 	// JSR
 	private void Jsr(String addr, int indirect, MemorySystem ms) throws IOException {
 		pcIncrement();
@@ -508,6 +544,7 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function Jsr() :");
 	}
+
 	// instruction RFS
 	private void Rfs(String immed, int reg, int indirect, MemorySystem ms) throws IOException {
 		int immedLen = immed.length();
@@ -523,6 +560,7 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function Rfs() :");
 	}
+
 	// instruction SOB
 	private void Sob(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		boolean overzeor = false;
@@ -566,6 +604,7 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function sob() :");
 	}
+
 	// JGE
 	private void Jge(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		if (r[reg][0] == 0) {
@@ -594,12 +633,13 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function Jge() :");
 	}
+
 	// MLT
 	private void Mlt(int reg1, int reg2) throws IOException {
 		// use reg2+1 as ac
-		for (int i = 0; i < 16; i++){
-			r[reg2 + 1][i]=0;
-			r[reg1 + 1][i]=0;
+		for (int i = 0; i < 16; i++) {
+			r[reg2 + 1][i] = 0;
+			r[reg1 + 1][i] = 0;
 		}
 		for (int i = 0; i < 16; i++)
 			r[reg2 + 1][i] = r[reg1][i];
@@ -614,23 +654,21 @@ public class ComputerArchitecture {
 						vaule = r[reg1 + 1][j - 15] + r[reg2 + 1][j - i] + r[reg1][0];
 						r[reg1 + 1][j - 15] = vaule % 2;
 						r[reg1][0] = vaule / 2;
-					}
-					else {
+					} else {
 						if (j > i) {
 							vaule = r[reg1][j] + r[reg2 + 1][j - i] + r[reg1][0];
 							r[reg1][j] = vaule % 2;
 							r[reg1][0] = vaule / 2;
-						}
-						else {
+						} else {
 							vaule = r[reg1][j] + r[reg1][0];
 							r[reg1][j] = vaule % 2;
 							r[reg1][0] = vaule / 2;
 						}
 					}
 				}
-					if (r[reg1][0]==1){
-						cc[0]=1;
-					}
+				if (r[reg1][0] == 1) {
+					cc[0] = 1;
+				}
 			}
 		}
 		r[reg1][0] = 1;
@@ -640,12 +678,13 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function Mlt() :");
 	}
+
 	// Dvd
 	public void Dvd(int reg1, int reg2) throws IOException {
 		int k1 = 0, k2 = 0, k3 = 0;
-		for (int i = 0; i < 16; i++){
-			r[reg2 + 1][i]=0;
-			r[reg1 + 1][i]=0;
+		for (int i = 0; i < 16; i++) {
+			r[reg2 + 1][i] = 0;
+			r[reg1 + 1][i] = 0;
 		}
 		for (int i = 1; i < 16; i++) {
 			if (r[reg1][i] == 1 && k1 == 0)
@@ -695,8 +734,7 @@ public class ComputerArchitecture {
 								index1 = i + 2;
 								same = false;
 								break;
-							}
-							else {
+							} else {
 								System.out.println("In function Dvd() :");
 								return;
 							}
@@ -709,11 +747,9 @@ public class ComputerArchitecture {
 					for (int j = (index1 - 1); j >= index2; j--) {
 						if (r[reg1 + 1][j] == 0 && r[reg2][j - index1 + 16] == 0) {
 							r[reg1 + 1][j] = 0;
-						}
-						else if (r[reg1 + 1][j] == 1 && r[reg2][j - index1 + 16] == 0) {
+						} else if (r[reg1 + 1][j] == 1 && r[reg2][j - index1 + 16] == 0) {
 							r[reg1 + 1][j] = 0;
-						}
-						else if (r[reg1 + 1][j] == 0 && r[reg2][j - index1 + 16] == 1) {
+						} else if (r[reg1 + 1][j] == 0 && r[reg2][j - index1 + 16] == 1) {
 							r[reg1 + 1][j] = 1;
 							for (int x = (j - 1); x >= index2; x--) {
 								if (r[reg1 + 1][x] == 1) {
@@ -722,8 +758,7 @@ public class ComputerArchitecture {
 								}
 								r[reg1 + 1][x] = 1;
 							}
-						}
-						else {
+						} else {
 							r[reg1 + 1][j] = 0;
 						}
 					}
@@ -743,6 +778,7 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function Dvd() :");
 	}
+
 	// TRR
 	private void Trr(int reg1, int reg2) throws IOException {
 		for (int i = 0; i < 16; i++) {
@@ -753,28 +789,29 @@ public class ComputerArchitecture {
 		}
 		cc[3] = 1;
 	}
+
 	// AND
 	public void And(int reg1, int reg2) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			if (r[reg1][i] == 1 && r[reg2][i] == 1) {
 				r[reg1][i] = 1;
-			}
-			else{
+			} else {
 				r[reg1][i] = 0;
 			}
 		}
 	}
+
 	// ORR
 	public void Orr(int reg1, int reg2) throws IOException {
 		for (int i = 0; i < 16; i++) {
 			if (r[reg1][i] == 1 || r[reg2][i] == 1) {
 				r[reg1][i] = 1;
-			}
-			else{
+			} else {
 				r[reg1][i] = 0;
 			}
 		}
 	}
+
 	// Not
 	private void Not(int reg) throws IOException {
 		for (int i = 0; i < 16; i++) {
@@ -784,6 +821,7 @@ public class ComputerArchitecture {
 				r[reg][i] = 1;
 		}
 	}
+
 	// instruction LDR
 	public void Ldr(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		int address = 0;
@@ -810,6 +848,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function Ldr() :");
 	}
+
 	// instruction STR
 	public void Str(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		int address = 0;
@@ -843,6 +882,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function Str() :");
 	}
+
 	// instruction LDA
 	private void Lda(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
 		if (indirect == 0) {
@@ -868,6 +908,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function Lda() :");
 	}
+
 	// instruction LDX
 	public void Ldx(String addr, int index, int indirect, MemorySystem ms) throws IOException {
 		int address = 0;
@@ -895,6 +936,7 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function Ldx() :");
 	}
+
 	// instruction STX
 	private void Stx(String addr, int index, int indirect, MemorySystem ms) throws IOException {
 		int address = 0;
@@ -928,63 +970,93 @@ public class ComputerArchitecture {
 		// print
 		System.out.println("In function Stx() :");
 	}
+
 	// AMR
 	private void Amr(int r, String addr, int indirect, MemorySystem ms) throws IOException {
-		int address = 0;
+		int address = 0, a, b, res, temp_length;
+		String tmp_str = "", tmp_str2 = "";
+		boolean x = false, is_negative = false;
 		moveAddrToMar(addr);
 		address = calMemAddr();
 		fetchFromMemToMbr(address, ms);
 		moveMbrToRTemp();
 		if (indirect == 0) { // direct addressing
 			moveRegToMbr(r);
-			// MBR += rTemp
-			for (int i = 15; i >= 0; i--) {
-				if (mbr[i] + rTemp[i] < 2) {
-					mbr[i] += rTemp[i];
-				} else {
-					if (i != 0) { // not overflow
-						mbr[i] = (mbr[i] + rTemp[i]) - 2;
-						mbr[i - 1]++;
-					} else {
-						// i == 0, overflow
-						cc[0] = 1;
-						System.out.println("***Warning: Overflow detected in MBR, the result could be erroneous!***");
-						UI.screen_update();
-					}
-				}
-			}
-			moveMbrToReg(r);
 		} else { // indirect addressing
 			moveRTempToMar();
 			address = calMemAddr();
 			fetchFromMemToMbr(address, ms);
 			moveMbrToRTemp();
 			moveRegToMbr(r);
-			// MBR += rTemp
-			for (int i = 15; i >= 0; i--) {
-				if (mbr[i] + rTemp[i] < 2) {
-					mbr[i] += rTemp[i];
-				} else {
-					if (i != 0) { // not overflow
-						mbr[i] = (mbr[i] + rTemp[i]) - 2;
-						mbr[i - 1]++;
-					} else {
-						// i == 0, overflow
-						cc[0] = 1;
-						System.out.println("***Warning: Overflow detected in MBR, the result could be erroneous!***");
-						UI.screen_update();
-					}
+		}
+		// MBR += rTemp
+		for (int i : mbr) {
+			if (i == 0) {
+				if (x) {
+					tmp_str = tmp_str.concat(Integer.toString(i));
+				}
+			} else {
+				tmp_str = tmp_str.concat(Integer.toString(i));
+				if (!x) {
+					x = true;
 				}
 			}
-			moveMbrToReg(r);
 		}
+		x = false;
+		for (int i : rTemp) {
+			if (i == 0) {
+				if (x) {
+					tmp_str2 = tmp_str2.concat(Integer.toString(i));
+				}
+			} else {
+				tmp_str2 = tmp_str2.concat(Integer.toString(i));
+				if (!x) {
+					x = true;
+				}
+			}
+		}
+		// to judge if the content of mbr[] is a negative number
+		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+				: Integer.parseUnsignedInt(tmp_str, 2);
+		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
+				: Integer.parseUnsignedInt(tmp_str2, 2);
+		res = a + b;
+		if (res >= 0) {
+			tmp_str = Integer.toBinaryString(res);
+		} else {
+			tmp_str = Integer.toBinaryString(-res);
+			is_negative = true;
+		}
+//					System.out.println("tmp_str: " + tmp_str);
+		// judge if underflows
+		if (tmp_str.length() >= 16) {
+			cc[0] = 1;
+			System.out.println("***Warning: Overflow detected in MBR, the result could be erroneous!***");
+			System.out.println("In function AMR() :");
+			UI.screen_update();
+			return; // we can use trap code here instead of return
+		}
+		// fill the result to 16 bits
+		temp_length = tmp_str.length();
+		for (int i = 0; i < 16 - temp_length; i++) {
+			if (i == 15 - temp_length && is_negative) {
+				tmp_str = "1".concat(tmp_str);
+			} else {
+				tmp_str = "0".concat(tmp_str);
+			}
+		}
+		for (int i = 0; i < 16; i++) {
+			mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
+		}
+		moveMbrToReg(r);
 		System.out.println("In function AMR() :");
 	}
+
 	// SMR
 	public void Smr(int r, String addr, int indirect, MemorySystem ms) throws IOException {
 		int address = 0;
-		int temp_length, res;
-		boolean x = false, is_negative = false; //for cutting the tmp_str
+		int temp_length, res, a, b;
+		boolean x = false, is_negative = false; // for cutting the tmp_str
 		String tmp_str = "", tmp_str2 = "";
 		moveAddrToMar(addr);
 		address = calMemAddr();
@@ -992,197 +1064,111 @@ public class ComputerArchitecture {
 		moveMbrToRTemp();
 		if (indirect == 0) { // direct addressing
 			moveRegToMbr(r);
-			// MBR -= rTemp
-			for (int i : mbr) {
-				if (i == 0) {
-					if (x) {
-						tmp_str = tmp_str.concat(Integer.toString(i));
-					}
-				}else {
-					tmp_str = tmp_str.concat(Integer.toString(i));
-					if (!x) {
-						x = true;
-					}
-				}
-			}
-			x = false;
-			for (int i : rTemp) {
-				if (i == 0) {
-					if (x) {
-						tmp_str2 = tmp_str2.concat(Integer.toString(i));
-					}
-				}else {
-					tmp_str2 = tmp_str2.concat(Integer.toString(i));
-					if (!x) {
-						x = true;
-					}
-				}
-			}
-			//to judge if the content of mbr[] is a negative number
-			if (tmp_str.length() == 16) {
-				res = -Integer.parseUnsignedInt(tmp_str.substring(1), 2) - Integer.parseUnsignedInt(tmp_str2, 2);
-			}else {
-				res = Integer.parseUnsignedInt(tmp_str, 2) - Integer.parseUnsignedInt(tmp_str2, 2);	
-			}
-			if (res > 0) {
-				tmp_str = Integer.toBinaryString(res);
-			}else {
-				tmp_str = Integer.toBinaryString(-res);
-				is_negative = true;
-			}
-//			System.out.println("tmp_str: " + tmp_str);
-			//judge if underflows
-			if (tmp_str.length() >= 16) {
-				cc[1] = 1;
-				System.out.println("***Warning: Underflow detected in MBR, the result could be erroneous!***");
-				System.out.println("In function SMR() :");
-				UI.screen_update();
-				return; //we can use trap code here instead of return
-			}
-			// fill the result to 16 bits
-			temp_length = tmp_str.length();
-			for (int i = 0; i < 16 - temp_length; i++) {
-				if (i == 15 - temp_length && is_negative) {
-					tmp_str = "1".concat(tmp_str);
-				}else {
-					tmp_str = "0".concat(tmp_str);	
-				}
-			}
-			for (int i = 0; i < 16; i++) {
-				mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
-			}
-			moveMbrToReg(r);
 		} else { // indirect addressing
 			moveRTempToMar();
 			address = calMemAddr();
 			fetchFromMemToMbr(address, ms);
 			moveMbrToRTemp();
 			moveRegToMbr(r);
-			// MBR -= rTemp
-			for (int i : mbr) {
-				if (i == 0) {
-					if (x) {
-						tmp_str = tmp_str.concat(Integer.toString(i));
-					}
-				}else {
-					tmp_str = tmp_str.concat(Integer.toString(i));
-					if (!x) {
-						x = true;
-					}
-				}
-			}
-			x = false;
-			for (int i : rTemp) {
-				if (i == 0) {
-					if (x) {
-						tmp_str2 = tmp_str2.concat(Integer.toString(i));
-					}
-				}else {
-					tmp_str2 = tmp_str2.concat(Integer.toString(i));
-					if (!x) {
-						x = true;
-					}
-				}
-			}
-			//to judge if the content of mbr[] is a negative number
-			if (tmp_str.length() == 16) {
-				res = -Integer.parseUnsignedInt(tmp_str.substring(1), 2) - Integer.parseUnsignedInt(tmp_str2, 2);
-			}else {
-				res = Integer.parseUnsignedInt(tmp_str, 2) - Integer.parseUnsignedInt(tmp_str2, 2);	
-			}
-			if (res > 0) {
-				tmp_str = Integer.toBinaryString(res);
-			}else {
-				tmp_str = Integer.toBinaryString(-res);
-				is_negative = true;
-			}
-//			System.out.println("tmp_str: " + tmp_str);
-			//judge if underflows
-			if (tmp_str.length() >= 16) {
-				cc[1] = 1;
-				System.out.println("***Warning: Underflow detected in MBR, the result could be erroneous!***");
-				System.out.println("In function SMR() :");
-				UI.screen_update();
-				return; //we can use trap code here instead of return
-			}
-			// fill the result to 16 bits
-			temp_length = tmp_str.length();
-			for (int i = 0; i < 16 - temp_length; i++) {
-				if (i == 15 - temp_length && is_negative) {
-					tmp_str = "1".concat(tmp_str);
-				}else {
-					tmp_str = "0".concat(tmp_str);	
-				}
-			}
-			for (int i = 0; i < 16; i++) {
-				mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
-			}
-			moveMbrToReg(r);
 		}
-		System.out.println("In function SMR() :");
-	}
-	// AIR
-	public void Air(int reg, String immed) {
-		// fill the immed to 16 bits
-		int temp = 16 - immed.length();
-		for (int i = 0; i < temp; i++) {
-			immed = "0".concat(immed);
-		}
-		for (int i = 15; i >= 0; i--) {
-//			System.out.println("r[reg][i] = " + r[reg][i]);
-//			System.out.println("immed.charAt(i - 11) = " + Character.getNumericValue(immed.charAt(i - 11)) + "\n");
-			if (r[reg][i] + Character.getNumericValue(immed.charAt(i)) < 2) {
-				r[reg][i] += Character.getNumericValue(immed.charAt(i));
-			} else {
-				if (i != 0) {
-					r[reg][i] = r[reg][i] + Character.getNumericValue(immed.charAt(i)) - 2;
-					r[reg][i - 1]++;
-				} else {
-					cc[0] = 1;
-					System.out.println(
-							"***Warning: Overflow detected in R[" + reg + "], the result could be erroneous!***");
-					UI.screen_update();
-				}
-			}
-		}
-		System.out.println("In function AIR() :");
-	}
-	// SIR
-	private void Sir(int reg, String immed) {
-		int temp_length, res;
-		boolean x = false, is_negative = false; //for cutting the tmp_str
-		String tmp_str = "";
-		for (int i : r[reg]) {
+		// MBR -= rTemp
+		for (int i : mbr) {
 			if (i == 0) {
 				if (x) {
 					tmp_str = tmp_str.concat(Integer.toString(i));
 				}
-			}else {
+			} else {
 				tmp_str = tmp_str.concat(Integer.toString(i));
 				if (!x) {
 					x = true;
 				}
 			}
 		}
-		//to judge if the content of mbr[] is a negative number
-		if (tmp_str.length() == 16) {
-			res = -Integer.parseUnsignedInt(tmp_str.substring(1), 2) - Integer.parseUnsignedInt(immed, 2);
-		}else {
-			res = Integer.parseUnsignedInt(tmp_str, 2) - Integer.parseUnsignedInt(immed, 2);	
+		x = false;
+		for (int i : rTemp) {
+			if (i == 0) {
+				if (x) {
+					tmp_str2 = tmp_str2.concat(Integer.toString(i));
+				}
+			} else {
+				tmp_str2 = tmp_str2.concat(Integer.toString(i));
+				if (!x) {
+					x = true;
+				}
+			}
 		}
-		if (res > 0) {
+		// to judge if the content of mbr[] is a negative number
+		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+				: Integer.parseUnsignedInt(tmp_str, 2);
+		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
+				: Integer.parseUnsignedInt(tmp_str2, 2);
+		res = a - b;
+		if (res >= 0) {
 			tmp_str = Integer.toBinaryString(res);
-		}else {
+		} else {
 			tmp_str = Integer.toBinaryString(-res);
 			is_negative = true;
 		}
-		//judge if underflows
+//			System.out.println("tmp_str: " + tmp_str);
+		// judge if underflows
 		if (tmp_str.length() >= 16) {
 			cc[1] = 1;
-			System.out.println("***Warning: Underflow detected in R[" + reg + "], the result could be erroneous!***");
+			System.out.println("***Warning: Underflow detected in MBR, the result could be erroneous!***");
+			System.out.println("In function SMR() :");
+			UI.screen_update();
+			return; // we can use trap code here instead of return
+		}
+		// fill the result to 16 bits
+		temp_length = tmp_str.length();
+		for (int i = 0; i < 16 - temp_length; i++) {
+			if (i == 15 - temp_length && is_negative) {
+				tmp_str = "1".concat(tmp_str);
+			} else {
+				tmp_str = "0".concat(tmp_str);
+			}
+		}
+		for (int i = 0; i < 16; i++) {
+			mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
+		}
+		moveMbrToReg(r);
+		System.out.println("In function SMR() :");
+	}
+
+	// AIR
+	public void Air(int reg, String immed) {
+		int temp_length, res, a, b;
+		boolean x = false, is_negative = false; // for cutting the tmp_str
+		String tmp_str = "";
+		for (int i : r[reg]) {
+			if (i == 0) {
+				if (x) {
+					tmp_str = tmp_str.concat(Integer.toString(i));
+				}
+			} else {
+				tmp_str = tmp_str.concat(Integer.toString(i));
+				if (!x) {
+					x = true;
+				}
+			}
+		}
+		// to judge if the content of mbr[] is a negative number
+		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+				: Integer.parseUnsignedInt(tmp_str, 2);
+		b = Integer.parseUnsignedInt(immed, 2);
+		res = a + b;
+		if (res >= 0) {
+			tmp_str = Integer.toBinaryString(res);
+		} else {
+			tmp_str = Integer.toBinaryString(-res);
+			is_negative = true;
+		}
+		// judge if underflows
+		if (tmp_str.length() >= 16) {
+			cc[0] = 1;
+			System.out.println("***Warning: Overflow detected in R[" + reg + "], the result could be erroneous!***");
 			System.out.println("In function SIR() :");
 			UI.screen_update();
-			return; //we can use trap code here instead of return
+			return; // we can use trap code here instead of return
 		}
 //		System.out.println("tmp_str: " + tmp_str);
 		// fill the result to 16 bits
@@ -1190,8 +1176,60 @@ public class ComputerArchitecture {
 		for (int i = 0; i < 16 - temp_length; i++) {
 			if (i == 15 - temp_length && is_negative) {
 				tmp_str = "1".concat(tmp_str);
-			}else {
-				tmp_str = "0".concat(tmp_str);	
+			} else {
+				tmp_str = "0".concat(tmp_str);
+			}
+		}
+		for (int i = 0; i < 16; i++) {
+			r[reg][i] = Character.getNumericValue(tmp_str.charAt(i));
+		}
+		System.out.println("In function AIR() :");
+	}
+
+	// SIR
+	private void Sir(int reg, String immed) {
+		int temp_length, res, a, b;
+		boolean x = false, is_negative = false; // for cutting the tmp_str
+		String tmp_str = "";
+		for (int i : r[reg]) {
+			if (i == 0) {
+				if (x) {
+					tmp_str = tmp_str.concat(Integer.toString(i));
+				}
+			} else {
+				tmp_str = tmp_str.concat(Integer.toString(i));
+				if (!x) {
+					x = true;
+				}
+			}
+		}
+		// to judge if the content of mbr[] is a negative number
+		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+				: Integer.parseUnsignedInt(tmp_str, 2);
+		b = Integer.parseUnsignedInt(immed, 2);
+		res = a - b;
+		if (res >= 0) {
+			tmp_str = Integer.toBinaryString(res);
+		} else {
+			tmp_str = Integer.toBinaryString(-res);
+			is_negative = true;
+		}
+		// judge if underflows
+		if (tmp_str.length() >= 16) {
+			cc[1] = 1;
+			System.out.println("***Warning: Underflow detected in R[" + reg + "], the result could be erroneous!***");
+			System.out.println("In function SIR() :");
+			UI.screen_update();
+			return; // we can use trap code here instead of return
+		}
+//		System.out.println("tmp_str: " + tmp_str);
+		// fill the result to 16 bits
+		temp_length = tmp_str.length();
+		for (int i = 0; i < 16 - temp_length; i++) {
+			if (i == 15 - temp_length && is_negative) {
+				tmp_str = "1".concat(tmp_str);
+			} else {
+				tmp_str = "0".concat(tmp_str);
 			}
 		}
 		for (int i = 0; i < 16; i++) {
@@ -1199,6 +1237,7 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function SIR() :");
 	}
+
 	// SRC
 	public void Src(int reg, int count, int al, int lr) {
 		for (int i = 0; i < count; i++) {
@@ -1222,6 +1261,7 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function SRC() :");
 	}
+
 	// RRC
 	private void Rrc(int reg, int count, int lr) {
 		int temp;
@@ -1248,11 +1288,13 @@ public class ComputerArchitecture {
 		}
 		System.out.println("In function RRC() :");
 	}
+
 //	//HLT
 	private void Hlt() {
 		is_halted = true;
 		System.out.println("In function HLT() :");
 	}
+
 	// TRAP
 	private void Trap(int trap_code, MemorySystem ms) throws IOException {
 		int pcAddr;
@@ -1347,6 +1389,7 @@ public class ComputerArchitecture {
 		is_from_trap = true;
 		System.out.println("**********Recovering from TRAP() :**********");
 	}
+
 	// decode the instruction in register IR
 	public void decode(MemorySystem ms) throws Exception {
 		String opcode = "0";
@@ -1480,16 +1523,17 @@ public class ComputerArchitecture {
 			Stx(Integer.toBinaryString(effectiveAddress), generalRegInUse, indirect, ms);
 			break;
 		case "61":
-		    In(Integer.toBinaryString(effectiveAddress),generalRegInUse, ms);
-		    break;
+			In(Integer.toBinaryString(effectiveAddress), generalRegInUse, ms);
+			break;
 		case "62":
-		    Out(Integer.toBinaryString(effectiveAddress),generalRegInUse);
-		    break;
+			Out(Integer.toBinaryString(effectiveAddress), generalRegInUse);
+			break;
 		case "63":
-		    Chk(Integer.toBinaryString(effectiveAddress),generalRegInUse);
-		    break;
+			Chk(Integer.toBinaryString(effectiveAddress), generalRegInUse);
+			break;
 		}
 	}
+
 	public void display(MemorySystem ms) {
 		System.out.println("The values in four GPRs :");
 		System.out.println("r0 : " + Arrays.toString(r[0]));
@@ -1526,6 +1570,7 @@ public class ComputerArchitecture {
 		System.out.println(
 				"--------------------------------------------------------------------------------------------------------");
 	}
+
 	public void display_preload(MemorySystem ms) {
 		display(ms);
 //		System.out.println("pre-load program -->memory[1000] : " + Arrays.toString(memory1[1000]));
@@ -1550,6 +1595,7 @@ public class ComputerArchitecture {
 				"--------------------------------------------------------------------------------------------------------");
 		System.out.println("The program is ready to go.\n");
 	}
+
 	// initialize all the register to 0, effectiveAddress to -1, stepByStep to 0.
 	public void init(MemorySystem ms) throws Exception {
 		try {
@@ -1639,28 +1685,29 @@ public class ComputerArchitecture {
 		System.out.println("In function init() :");
 		display_preload(ms);
 	}
+
 	public void run(MemorySystem ms) throws IOException {
 		int pcAddr;
 		if (is_halted) {
 			return;
 		}
 		try {
-			loadFile("reExample.txt", ms);
+			loadFile("test.txt", ms);
 		} catch (Exception e) {
 		}
 		int insLen = instructionsNum;
-		
+
 		while (true) {
-			int pcValue=0;
+			int pcValue = 0;
 			for (int i = 11; i >= 0; i--) {
 				if (pc[i] == 1) {
 					pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
 				}
 			}
-			System.out.println(pcValue);
-			int[] pcBefore=new int[12];
-			for (int i=0;i<12;i++){
-				pcBefore[i]=pc[i];
+//			System.out.println(pcValue);
+			int[] pcBefore = new int[12];
+			for (int i = 0; i < 12; i++) {
+				pcBefore[i] = pc[i];
 			}
 			System.out.println(
 					"Successfully loaded.\nThe instruction is: " + current_instruction[insLen - instructionsNum]);
@@ -1700,15 +1747,15 @@ public class ComputerArchitecture {
 				moveMbrToPc();
 				is_from_trap = false;
 			} else {
-				boolean ifInc=true;
-				for (int i=0;i<12;i++){
-					if (pc[i]!=pcBefore[i]){
-						ifInc=false;
+				boolean ifInc = true;
+				for (int i = 0; i < 12; i++) {
+					if (pc[i] != pcBefore[i]) {
+						ifInc = false;
 						break;
 					}
 				}
-				if (ifInc){
-				pcIncrement(); // U need to change this
+				if (ifInc) {
+					pcIncrement(); // U need to change this
 				}
 			}
 			// print
@@ -1717,21 +1764,22 @@ public class ComputerArchitecture {
 					+ "\n--------------------------------------------------------------------------------------------------------\n");
 			effectiveAddress = 0;
 			instructionsNum -= 1;
-			pcValue=0;
+			pcValue = 0;
 			for (int i = 11; i >= 0; i--) {
 				if (pc[i] == 1) {
 					pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
 				}
 			}
-			System.out.println(pcValue);
-			System.out.println(insLen);
-			if (pcValue>(1000+insLen)){
+//			System.out.println(pcValue);
+//			System.out.println(insLen);
+			if (pcValue > (1000 + insLen)) {
 				break;
 			}
 		}
 		is_halted = true;
 		System.out.println("**Program over.**");
 	}
+
 	public void run_single_step(MemorySystem ms) throws IOException {
 		int pcAddr;
 		if (is_halted) {
@@ -1746,6 +1794,17 @@ public class ComputerArchitecture {
 		if (stepByStep == instructionsNum) {
 			System.out.println("No more instructions!");
 			return;
+		}
+		int pcValue = 0;
+		for (int i = 11; i >= 0; i--) {
+			if (pc[i] == 1) {
+				pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
+			}
+		}
+//		System.out.println(pcValue);
+		int[] pcBefore = new int[12];
+		for (int i = 0; i < 12; i++) {
+			pcBefore[i] = pc[i];
 		}
 		System.out.println("Successfully loaded.\nThe instruction is: " + current_instruction[stepByStep]);
 		fetchFromPcToMar();
@@ -1768,7 +1827,16 @@ public class ComputerArchitecture {
 			moveMbrToPc();
 			is_from_trap = false;
 		} else {
-			pcIncrement(); // U need to change this
+			boolean ifInc = true;
+			for (int i = 0; i < 12; i++) {
+				if (pc[i] != pcBefore[i]) {
+					ifInc = false;
+					break;
+				}
+			}
+			if (ifInc) {
+				pcIncrement(); // U need to change this
+			}
 		}
 		// print
 		display(ms);
@@ -1776,5 +1844,16 @@ public class ComputerArchitecture {
 				+ "\n--------------------------------------------------------------------------------------------------------\n");
 		effectiveAddress = 0;
 		stepByStep++;
+//		pcValue=0;
+//		for (int i = 11; i >= 0; i--) {
+//			if (pc[i] == 1) {
+//				pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
+//			}
+//		}
+//		System.out.println(pcValue);
+//		System.out.println(insLen);
+//		if (pcValue>(1000+insLen)){
+//			break;
+//		}
 	}
 }

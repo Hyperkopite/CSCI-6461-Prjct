@@ -1,0 +1,233 @@
+IN 0 0 0 0
+LDA R3 0 0 1
+STR R3 0 0 20    //m[20]=sentenceNumber=1
+LDA R3 0 0 1
+STR R3 0 0 21     //m[21]=wordNumber=1
+LDA R3 0 0 0
+STR R3 0 0 22    //m[22]=word.index=0
+LDA R3 0 0 0
+STR R3 0 0 23    //m[23]=sentence.index=0
+LDA R3 0 0 30
+STR R3 0 0 25     //assume that the search word's address is 30 memory[25]=word.address
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 8      //R3=32+8=40
+STR R3 0 0 26      //assume that the search sentence address is 40 memory[26]=sentence.address
+LDA R3 0 0 0
+STR R3 0 0 27    //m[27]=sentence.head=0
+LDR R3 0 0 22     //[addr3] r3=word.index
+AMR R3 0 0 25      //r3=r3+word.address
+STR R3 0 0 28
+LDX X1 0 0 28     //x1=r3
+LDR R0 X1 0 0    //r0=c(x1)
+LDR R3 0 0 23     //r3=sentence.index
+AMR R3 0 0 26      //r3=r3+sentence.address
+STR R3 0 0 28
+LDX X1 0 0 28     //x1=r3
+LDR R1 X1 0 0    //r1=c(x1)
+SIR R0 0 0 3       // check if the end of the word
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 5
+SRC R3 1 1 5
+AIR R3 0 0 8
+STR R3 0 0 28
+LDX X1 0 0 28      //X1=memory[25]=z+y*32+x*32*32=addr0
+JZ R0 X1 0 0
+AIR R0 0 0 3
+SIR R1 0 0 3   //check if end of the sentence
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 6
+SRC R3 1 1 5
+AIR R3 0 0 16
+STR R3 0 0 28
+LDX X1 0 0 28      //X1=memory[25]=z+y*32+x*32*32=addr9
+JZ R1 X1 0 0
+AIR R1 0 0 3
+LDA R2 0 0 1
+SRC R2 1 1 5
+AIR R2 0 0 14      //R3=32+14=46
+STR R2 0 0 24       //m[24]=46
+SMR R1 0 0 24
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 3
+SRC R3 1 1 5
+AIR R3 0 0 26
+STR R3 0 0 28
+LDX X1 0 0 28      //X1=memory[25]=z+y*32+x*32*32=addr2
+JZ R1 X1 0 0
+AMR R1 0 0 24
+LDA R2 0 0 1
+SRC R2 1 1 5
+AIR R2 0 0 12      //R3=32+12=44
+STR R2 0 0 24       //m[24]=44
+SMR R1 0 0 24
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 4
+SRC R3 1 1 5
+AIR R3 0 0 2
+STR R3 0 0 28
+LDX X1 0 0 28      //X1=memory[25]=z+y*32+x*32*32=addr4
+JZ R1 X1 0 0
+AMR R1 0 0 24
+LDA R2 0 0 1
+SRC R2 1 1 5
+AIR R2 0 0 0      //R3=32+0=32
+STR R2 0 0 24       //m[24]=32
+SMR R1 0 0 24
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 4
+SRC R3 1 1 5
+AIR R3 0 0 15
+STR R3 0 0 28
+LDX X1 0 0 28      //X1=memory[25]=z+y*32+x*32*32=addr5
+JZ R1 X1 0 0
+AMR R1 0 0 24
+LDR R3 0 0 22     //r3=word.index
+AMR R3 0 0 25      //r3=r3+word.address
+STR R3 0 0 28
+LDX X2 0 0 28     //x2=r3
+SMR R1 X2 0 0
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 4
+SRC R3 1 1 5
+AIR R3 0 0 26
+STR R3 0 0 28
+LDX X1 0 0 28      //X1=memory[25]=z+y*32+x*32*32=addr6
+JZ R1 X1 0 0
+AMR R1 X2 0 0
+LDA R3 0 0 0
+STR R3 0 0 22
+LDR R3 0 0 23   //addr7  x1 do not use aging in this loop
+AIR R3 0 0 1
+STR R3 0 0 23
+AMR R3 0 0 26
+STR R3 0 0 28
+LDX X1 0 0 28
+LDA R2 0 0 2
+SRC R2 1 1 5
+AIR R2 0 0 0      //R3=32*2=64
+SMR R2 X1 0 0
+LDA R3 0 0 0
+SRC R3 1 1 5
+AIR R3 0 0 31
+SRC R3 1 1 5
+AIR R3 0 0 25
+STR R3 0 0 28
+LDX X2 0 0 28      //X2=memory[25]=z+y*32+x*32*32=addr3
+JGE R2 X2 0 0
+LDA R2 0 0 2
+SRC R2 1 1 5
+AIR R2 0 0 26      //R3=32*2+26=90
+SMR R2 X1 0 0
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 2
+SRC R3 1 1 5
+AIR R3 0 0 17
+STR R3 0 0 28
+LDX X3 0 0 28      //X3=memory[25]=z+y*32+x*32*32=addr7
+JGE R2 X3 0 0
+LDA R2 0 0 3
+SRC R2 1 1 5
+AIR R2 0 0 0      //R3=32*3=96
+SMR R2 X1 0 0
+JGE R2 X2 0 0
+LDA R2 0 0 3
+SRC R2 1 1 5
+AIR R2 0 0 26      //R3=32*3+26=122
+SMR R2 X1 0 0
+JGE R2 X3 0 0
+JMA 0 X2 0 0
+LDR R3 0 0 20  // addr2
+AIR R3 0 0 1
+STR R3 0 0 20
+LDA R3 0 0 0
+STR R3 0 0 21
+LDR R3 0 0 23
+AIR R3 0 0 2
+STR R3 0 0 27
+LDA R3 0 0 0     //addr4
+STR R3 0 0 22
+LDR R3 0 0 23
+AIR R3 0 0 1
+STR R3 0 0 23
+LDA R3 0 0 0
+SRC R3 1 1 5
+AIR R3 0 0 31
+SRC R3 1 1 5
+AIR R3 0 0 25
+STR R3 0 0 28
+LDX X2 0 0 28      //X2=memory[25]=z+y*32+x*32*32=addr3
+JMA 0 X2 0 0
+LDR R3 0 0 21     //addr5
+AIR R3 0 0 1
+STR R3 0 0 21
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 4
+SRC R3 1 1 5
+AIR R3 0 0 2
+STR R3 0 0 28
+LDX X2 0 0 28      //X2=memory[25]=z+y*32+x*32*32=addr4
+JMA 0 X2 0 0
+LDR R3 0 0 22     //addr6
+AIR R3 0 0 1
+STR R3 0 0 22
+LDR R3 0 0 23
+AIR R3 0 0 1
+STR R3 0 0 23
+LDA R3 0 0 0
+SRC R3 1 1 5
+AIR R3 0 0 31
+SRC R3 1 1 5
+AIR R3 0 0 25
+STR R3 0 0 28
+LDX X2 0 0 28      //X2=memory[25]=z+y*32+x*32*32=addr3
+JMA 0 X2 0 0
+LDR R3 0 0 23   //addr0  x1 do not use aging in this part
+AMR R3 0 0 26
+STR R3 0 0 28
+LDX X1 0 0 28
+LDA R2 0 0 2
+SRC R2 1 1 5
+AIR R2 0 0 0      //R3=32*2=64
+SMR R2 X1 0 0
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 6
+SRC R3 1 1 5
+AIR R3 0 0 14
+STR R3 0 0 28
+LDX X2 0 0 28      //X2=memory[25]=z+y*32+x*32*32=addr8
+JGE R2 X2 0 0
+LDA R2 0 0 2
+SRC R2 1 1 5
+AIR R2 0 0 26      //R3=32*2+26=90
+SMR R2 X1 0 0
+LDA R3 0 0 1
+SRC R3 1 1 5
+AIR R3 0 0 6
+SRC R3 1 1 5
+AIR R3 0 0 16
+STR R3 0 0 28
+LDX X3 0 0 28      //X1=memory[25]=z+y*32+x*32*32=addr9
+JGE R2 X3 0 0
+LDA R2 0 0 3
+SRC R2 1 1 5
+AIR R2 0 0 0      //R3=32*3=96
+SMR R2 X1 0 0
+JGE R2 X2 0 0
+LDA R2 0 0 3
+SRC R2 1 1 5
+AIR R2 0 0 26      //R3=32*3+26=122
+SMR R2 X1 0 0
+JGE R2 X3 0 0
+LDA R3 0 0 1   //addr8
+STR R3 0 0 29
+LDA R3 0 0 0   //addr9
