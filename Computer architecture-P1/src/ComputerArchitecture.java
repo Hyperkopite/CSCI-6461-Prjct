@@ -32,7 +32,7 @@ public class ComputerArchitecture {
 	private int indexRegInUse;
 	private int instructionsNum; // count total number of instructions in the file.
 	private int[] rTemp = new int[16]; // used in indirect mode.
-	private String[] current_instruction = new String[100000];
+	private String[] current_instruction = new String[10000];
 	// for program2
 	public final int START = 40;
 	public int STOP = 0;
@@ -1694,7 +1694,7 @@ public class ComputerArchitecture {
 			return;
 		}
 		try {
-			loadFile("123.txt", ms);
+			loadFile("reProgram2.txt", ms);
 		} catch (Exception e) {
 		}
 		int insLen = instructionsNum;
@@ -1717,21 +1717,6 @@ public class ComputerArchitecture {
 			pcAddr = calMemAddr();
 			fetchFromMemToMbr(pcAddr, ms);
 			moveMbrToIr();
-//			for (int i = 0; i < 16; i++) {
-//				System.out.print(ir[i]);
-//				if ((i + 1) % 4 == 0) {
-//					System.out.print(' ');
-//				}
-//			}
-//			System.out.print("\n");
-//			System.out.print("pc: ");
-//			for (int i = 0; i < 12; i++) {
-//				System.out.print(pc[i]);
-//				if ((i + 1) % 4 == 0) {
-//					System.out.print(' ');
-//				}
-//			}
-//			System.out.print("\n");
 			try {
 				decode(ms);
 			} catch (Exception e) {
@@ -1774,7 +1759,7 @@ public class ComputerArchitecture {
 			}
 //			System.out.println(pcValue);
 //			System.out.println(insLen);
-			if (pcValue > (1000 + insLen)) {
+			if (pcValue > (1000 + insLen) || instructionsNum <= 0) {
 				break;
 			}
 		}
@@ -1789,7 +1774,7 @@ public class ComputerArchitecture {
 		}
 		if (stepByStep == 0) {
 			try {
-				loadFile("test.txt", ms);
+				loadFile("reProgram2.txt", ms);
 			} catch (Exception e) {
 			}
 		}
