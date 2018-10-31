@@ -395,7 +395,7 @@ public class ComputerArchitecture {
 
 	// instruction JZ
 	private void Jz(String addr, int reg, int indirect, MemorySystem ms) throws IOException {
-		for (int i = 0; i < 16; i++) {
+		for (int i = 1; i < 16; i++) {
 			if (r[reg][i] == 1) {
 				pcIncrement();
 				System.out.println("In function Jz() :");
@@ -629,7 +629,35 @@ public class ComputerArchitecture {
 				moveMbrToPc();
 			}
 		} else {
-			pcIncrement();
+			for(int i=1 ;i<16;i++){
+				if (r[reg][i]==1){
+					System.out.println("In function Jge() :");
+					pcIncrement();
+					return;
+				}
+			}
+			if (indirect == 0) {
+				int addrLen = addr.length();
+				// load address to register reg
+				for (int i = 0; i < addrLen; i++) {
+					pc[12 - addrLen + i] = Character.getNumericValue(addr.charAt(i));
+				}
+				for (int i = 0; i < (12 - addrLen); i++) {
+					pc[i] = 0;
+				}
+			} else {
+				int address = 0;
+				// move address to mar
+				moveAddrToMar(addr);
+				// calculate address in mar
+				address = calMemAddr();
+				// fetch values in memory to mbr
+				fetchFromMemToMbr(address, ms);
+				// move mbr to register pc
+				moveMbrToPc();
+			}
+			
+			
 		}
 		System.out.println("In function Jge() :");
 	}
@@ -972,7 +1000,7 @@ public class ComputerArchitecture {
 	}
 
 	// AMR
-	private void Amr(int r, String addr, int indirect, MemorySystem ms) throws IOException {
+	private void Amr(int reg, String addr, int indirect, MemorySystem ms) throws IOException {
 		int address = 0, a, b, res, temp_length;
 		String tmp_str = "", tmp_str2 = "";
 		boolean x = false, is_negative = false;
@@ -980,263 +1008,443 @@ public class ComputerArchitecture {
 		address = calMemAddr();
 		fetchFromMemToMbr(address, ms);
 		moveMbrToRTemp();
-		if (indirect == 0) { // direct addressing
-			moveRegToMbr(r);
-		} else { // indirect addressing
+		if (indirect == 1)  // direct addressing
+		{ // indirect addressing
 			moveRTempToMar();
 			address = calMemAddr();
 			fetchFromMemToMbr(address, ms);
 			moveMbrToRTemp();
-			moveRegToMbr(r);
+			
 		}
+		int va=0;
+		
+		for (int i = 15; i >= 1; i--) {
+			if (rTemp[i] == 1) {
+				va += (int) Math.pow(2, (15 - i));
+			}
+		}
+		if (rTemp[0]==1){
+			va=-va;
+		}
+		int rV=0;
+		for (int i = 15; i >= 1; i--) {
+			if (r[reg][i] == 1) {
+				rV += (int) Math.pow(2, (15 - i));
+			}
+		}
+		if (r[reg][0]==1){
+			rV=-rV;
+		}
+		
+		
+		va=va+rV;
+		if (va<0){
+			va=-va;
+			r[reg][0]=1;
+		}
+		else{
+			r[reg][0]=0;
+		}
+		int j=15;
+		int left=0;
+		for (int i=1;i<16;i++){
+			r[reg][i]=0;
+		}
+		
+		while (va!=0){
+			left=va%2;
+			r[reg][j]=left;
+			va=va/2;
+			j--;
+		}
+		
+		
 		// MBR += rTemp
-		for (int i : mbr) {
-			if (i == 0) {
-				if (x) {
-					tmp_str = tmp_str.concat(Integer.toString(i));
-				}
-			} else {
-				tmp_str = tmp_str.concat(Integer.toString(i));
-				if (!x) {
-					x = true;
-				}
-			}
-		}
-		x = false;
-		for (int i : rTemp) {
-			if (i == 0) {
-				if (x) {
-					tmp_str2 = tmp_str2.concat(Integer.toString(i));
-				}
-			} else {
-				tmp_str2 = tmp_str2.concat(Integer.toString(i));
-				if (!x) {
-					x = true;
-				}
-			}
-		}
-		System.out.println(tmp_str + ',' + tmp_str2);
-		// to judge if the content of mbr[] is a negative number
-		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str.substring(1), 2);
-		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
-				: tmp_str2.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str2, 2);
-		res = a + b;
-		System.out.println(res);
-		if (res >= 0) {
-			tmp_str = Integer.toBinaryString(res);
-		} else {
-			tmp_str = Integer.toBinaryString(-res);
-			is_negative = true;
-		}
-		System.out.println("tmp_str: " + tmp_str);
-		// judge if underflows
-		if (tmp_str.length() >= 16) {
-			cc[0] = 1;
-			System.out.println("***Warning: Overflow detected in MBR, the result could be erroneous!***");
-			System.out.println("In function AMR() :");
-			UI.screen_update();
-			return; // we can use trap code here instead of return
-		}
-		// fill the result to 16 bits
-		temp_length = tmp_str.length();
-		for (int i = 0; i < 16 - temp_length; i++) {
-			if (i == 15 - temp_length && is_negative) {
-				tmp_str = "1".concat(tmp_str);
-			} else {
-				tmp_str = "0".concat(tmp_str);
-			}
-		}
-		for (int i = 0; i < 16; i++) {
-			mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
-		}
-		moveMbrToReg(r);
+//		for (int i : mbr) {
+//			if (i == 0) {
+//				if (x) {
+//					tmp_str = tmp_str.concat(Integer.toString(i));
+//				}
+//			} else {
+//				tmp_str = tmp_str.concat(Integer.toString(i));
+//				if (!x) {
+//					x = true;
+//				}
+//			}
+//		}
+//		x = false;
+//		for (int i : rTemp) {
+//			if (i == 0) {
+//				if (x) {
+//					tmp_str2 = tmp_str2.concat(Integer.toString(i));
+//				}
+//			} else {
+//				tmp_str2 = tmp_str2.concat(Integer.toString(i));
+//				if (!x) {
+//					x = true;
+//				}
+//			}
+//		}
+//		System.out.println(tmp_str + ',' + tmp_str2);
+//		// to judge if the content of mbr[] is a negative number
+//		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+//				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str.substring(1), 2);
+//		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
+//				: tmp_str2.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str2, 2);
+//		res = a + b;
+//		System.out.println(res);
+//		if (res >= 0) {
+//			tmp_str = Integer.toBinaryString(res);
+//		} else {
+//			tmp_str = Integer.toBinaryString(-res);
+//			is_negative = true;
+//		}
+//		System.out.println("tmp_str: " + tmp_str);
+//		// judge if underflows
+//		if (tmp_str.length() >= 16) {
+//			cc[0] = 1;
+//			System.out.println("***Warning: Overflow detected in MBR, the result could be erroneous!***");
+//			System.out.println("In function AMR() :");
+//			UI.screen_update();
+//			return; // we can use trap code here instead of return
+//		}
+//		// fill the result to 16 bits
+//		temp_length = tmp_str.length();
+//		for (int i = 0; i < 16 - temp_length; i++) {
+//			if (i == 15 - temp_length && is_negative) {
+//				tmp_str = "1".concat(tmp_str);
+//			} else {
+//				tmp_str = "0".concat(tmp_str);
+//			}
+//		}
+//		for (int i = 0; i < 16; i++) {
+//			mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
+//		}
+//		moveMbrToReg(r);
 		System.out.println("In function AMR() :");
 	}
 
 	// SMR
-	public void Smr(int r, String addr, int indirect, MemorySystem ms) throws IOException {
-		int address = 0;
-		int temp_length, res, a, b;
-		boolean x = false, is_negative = false; // for cutting the tmp_str
+	public void Smr(int reg, String addr, int indirect, MemorySystem ms) throws IOException {
+		int address = 0, a, b, res, temp_length;
 		String tmp_str = "", tmp_str2 = "";
+		boolean x = false, is_negative = false;
 		moveAddrToMar(addr);
 		address = calMemAddr();
 		fetchFromMemToMbr(address, ms);
 		moveMbrToRTemp();
-		if (indirect == 0) { // direct addressing
-			moveRegToMbr(r);
-		} else { // indirect addressing
+		if (indirect == 1)  // direct addressing
+		{ // indirect addressing
 			moveRTempToMar();
 			address = calMemAddr();
 			fetchFromMemToMbr(address, ms);
 			moveMbrToRTemp();
-			moveRegToMbr(r);
+			
 		}
-		// MBR -= rTemp
-		for (int i : mbr) {
-			if (i == 0) {
-				if (x) {
-					tmp_str = tmp_str.concat(Integer.toString(i));
-				}
-			} else {
-				tmp_str = tmp_str.concat(Integer.toString(i));
-				if (!x) {
-					x = true;
-				}
+		int va=0;
+		
+		for (int i = 15; i >= 1; i--) {
+			if (rTemp[i] == 1) {
+				va += (int) Math.pow(2, (15 - i));
 			}
 		}
-		x = false;
-		for (int i : rTemp) {
-			if (i == 0) {
-				if (x) {
-					tmp_str2 = tmp_str2.concat(Integer.toString(i));
-				}
-			} else {
-				tmp_str2 = tmp_str2.concat(Integer.toString(i));
-				if (!x) {
-					x = true;
-				}
+		if (rTemp[0]==1){
+			va=-va;
+		}
+		int rV=0;
+		for (int i = 15; i >= 1; i--) {
+			if (r[reg][i] == 1) {
+				rV += (int) Math.pow(2, (15 - i));
 			}
 		}
-		// to judge if the content of mbr[] is a negative number
-		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
-		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
-				: tmp_str2.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str2, 2);
-		res = a - b;
-		if (res >= 0) {
-			tmp_str = Integer.toBinaryString(res);
-		} else {
-			tmp_str = Integer.toBinaryString(-res);
-			is_negative = true;
+		if (r[reg][0]==1){
+			rV=-rV;
 		}
-//			System.out.println("tmp_str: " + tmp_str);
-		// judge if underflows
-		if (tmp_str.length() >= 16) {
-			cc[1] = 1;
-			System.out.println("***Warning: Underflow detected in MBR, the result could be erroneous!***");
-			System.out.println("In function SMR() :");
-			UI.screen_update();
-			return; // we can use trap code here instead of return
+		
+		rV=rV-va;
+		va=rV;
+		if (va<0){
+			va=-va;
+			r[reg][0]=1;
 		}
-		// fill the result to 16 bits
-		temp_length = tmp_str.length();
-		for (int i = 0; i < 16 - temp_length; i++) {
-			if (i == 15 - temp_length && is_negative) {
-				tmp_str = "1".concat(tmp_str);
-			} else {
-				tmp_str = "0".concat(tmp_str);
-			}
+		else{
+			r[reg][0]=0;
 		}
-		for (int i = 0; i < 16; i++) {
-			mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
+		int j=15;
+		int left=0;
+		for (int i=1;i<16;i++){
+			r[reg][i]=0;
 		}
-		moveMbrToReg(r);
+		
+		while (va!=0){
+			left=va%2;
+			r[reg][j]=left;
+			va=va/2;
+			j--;
+		}
+//		int address = 0;
+//		int temp_length, res, a, b;
+//		boolean x = false, is_negative = false; // for cutting the tmp_str
+//		String tmp_str = "", tmp_str2 = "";
+//		moveAddrToMar(addr);
+//		address = calMemAddr();
+//		fetchFromMemToMbr(address, ms);
+//		moveMbrToRTemp();
+//		if (indirect == 0) { // direct addressing
+//			moveRegToMbr(r);
+//		} else { // indirect addressing
+//			moveRTempToMar();
+//			address = calMemAddr();
+//			fetchFromMemToMbr(address, ms);
+//			moveMbrToRTemp();
+//			moveRegToMbr(r);
+//		}
+//		// MBR -= rTemp
+//		for (int i : mbr) {
+//			if (i == 0) {
+//				if (x) {
+//					tmp_str = tmp_str.concat(Integer.toString(i));
+//				}
+//			} else {
+//				tmp_str = tmp_str.concat(Integer.toString(i));
+//				if (!x) {
+//					x = true;
+//				}
+//			}
+//		}
+//		x = false;
+//		for (int i : rTemp) {
+//			if (i == 0) {
+//				if (x) {
+//					tmp_str2 = tmp_str2.concat(Integer.toString(i));
+//				}
+//			} else {
+//				tmp_str2 = tmp_str2.concat(Integer.toString(i));
+//				if (!x) {
+//					x = true;
+//				}
+//			}
+//		}
+//		// to judge if the content of mbr[] is a negative number
+//		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+//				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
+//		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
+//				: tmp_str2.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str2, 2);
+//		res = a - b;
+//		if (res >= 0) {
+//			tmp_str = Integer.toBinaryString(res);
+//		} else {
+//			tmp_str = Integer.toBinaryString(-res);
+//			is_negative = true;
+//		}
+////			System.out.println("tmp_str: " + tmp_str);
+//		// judge if underflows
+//		if (tmp_str.length() >= 16) {
+//			cc[1] = 1;
+//			System.out.println("***Warning: Underflow detected in MBR, the result could be erroneous!***");
+//			System.out.println("In function SMR() :");
+//			UI.screen_update();
+//			return; // we can use trap code here instead of return
+//		}
+//		// fill the result to 16 bits
+//		temp_length = tmp_str.length();
+//		for (int i = 0; i < 16 - temp_length; i++) {
+//			if (i == 15 - temp_length && is_negative) {
+//				tmp_str = "1".concat(tmp_str);
+//			} else {
+//				tmp_str = "0".concat(tmp_str);
+//			}
+//		}
+//		for (int i = 0; i < 16; i++) {
+//			mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
+//		}
+//		moveMbrToReg(r);
 		System.out.println("In function SMR() :");
 	}
 
 	// AIR
 	public void Air(int reg, String immed) {
-		int temp_length, res, a, b;
-		boolean x = false, is_negative = false; // for cutting the tmp_str
-		String tmp_str = "";
-		for (int i : r[reg]) {
-			if (i == 0) {
-				if (x) {
-					tmp_str = tmp_str.concat(Integer.toString(i));
-				}
-			} else {
-				tmp_str = tmp_str.concat(Integer.toString(i));
-				if (!x) {
-					x = true;
-				}
+		
+		int addrLen = immed.length();
+		int va=0;
+		for (int i = 0; i < addrLen; i++) {
+			if (Character.getNumericValue(immed.charAt(i))==1){
+				va=va+(int) Math.pow(2, (addrLen - i-1));
+			}
+			
+		}
+		
+		int rV=0;
+		for (int i = 15; i >= 1; i--) {
+			if (r[reg][i] == 1) {
+				rV += (int) Math.pow(2, (15 - i));
 			}
 		}
-		// to judge if the content of mbr[] is a negative number
-		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
-		b = Integer.parseUnsignedInt(immed, 2);
-		res = a + b;
-		if (res >= 0) {
-			tmp_str = Integer.toBinaryString(res);
-		} else {
-			tmp_str = Integer.toBinaryString(-res);
-			is_negative = true;
+		if (r[reg][0]==1){
+			rV=-rV;
 		}
-		// judge if underflows
-		if (tmp_str.length() >= 16) {
-			cc[0] = 1;
-			System.out.println("***Warning: Overflow detected in R[" + reg + "], the result could be erroneous!***");
-			System.out.println("In function SIR() :");
-			UI.screen_update();
-			return; // we can use trap code here instead of return
+		
+		va=va+rV;
+		if (va<0){
+			va=-va;
+			r[reg][0]=1;
 		}
-//		System.out.println("tmp_str: " + tmp_str);
-		// fill the result to 16 bits
-		temp_length = tmp_str.length();
-		for (int i = 0; i < 16 - temp_length; i++) {
-			if (i == 15 - temp_length && is_negative) {
-				tmp_str = "1".concat(tmp_str);
-			} else {
-				tmp_str = "0".concat(tmp_str);
-			}
+		else{
+			r[reg][0]=0;
 		}
-		for (int i = 0; i < 16; i++) {
-			r[reg][i] = Character.getNumericValue(tmp_str.charAt(i));
+		int j=15;
+		int left=0;
+		for (int i=1;i<16;i++){
+			r[reg][i]=0;
 		}
+		
+		while (va!=0){
+			left=va%2;
+			r[reg][j]=left;
+			va=va/2;
+			j--;
+		}
+		
+		
+//		int temp_length, res, a, b;
+//		boolean x = false, is_negative = false; // for cutting the tmp_str
+//		String tmp_str = "";
+//		for (int i : r[reg]) {
+//			if (i == 0) {
+//				if (x) {
+//					tmp_str = tmp_str.concat(Integer.toString(i));
+//				}
+//			} else {
+//				tmp_str = tmp_str.concat(Integer.toString(i));
+//				if (!x) {
+//					x = true;
+//				}
+//			}
+//		}
+//		// to judge if the content of mbr[] is a negative number
+//		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+//				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
+//		b = Integer.parseUnsignedInt(immed, 2);
+//		res = a + b;
+//		if (res >= 0) {
+//			tmp_str = Integer.toBinaryString(res);
+//		} else {
+//			tmp_str = Integer.toBinaryString(-res);
+//			is_negative = true;
+//		}
+//		// judge if underflows
+//		if (tmp_str.length() >= 16) {
+//			cc[0] = 1;
+//			System.out.println("***Warning: Overflow detected in R[" + reg + "], the result could be erroneous!***");
+//			System.out.println("In function SIR() :");
+//			UI.screen_update();
+//			return; // we can use trap code here instead of return
+//		}
+////		System.out.println("tmp_str: " + tmp_str);
+//		// fill the result to 16 bits
+//		temp_length = tmp_str.length();
+//		for (int i = 0; i < 16 - temp_length; i++) {
+//			if (i == 15 - temp_length && is_negative) {
+//				tmp_str = "1".concat(tmp_str);
+//			} else {
+//				tmp_str = "0".concat(tmp_str);
+//			}
+//		}
+//		for (int i = 0; i < 16; i++) {
+//			r[reg][i] = Character.getNumericValue(tmp_str.charAt(i));
+//		}
 		System.out.println("In function AIR() :");
 	}
 
 	// SIR
 	private void Sir(int reg, String immed) {
-		int temp_length, res, a, b;
-		boolean x = false, is_negative = false; // for cutting the tmp_str
-		String tmp_str = "";
-		for (int i : r[reg]) {
-			if (i == 0) {
-				if (x) {
-					tmp_str = tmp_str.concat(Integer.toString(i));
-				}
-			} else {
-				tmp_str = tmp_str.concat(Integer.toString(i));
-				if (!x) {
-					x = true;
-				}
+		int addrLen = immed.length();
+		int va=0;
+		for (int i = 0; i < addrLen; i++) {
+			if (Character.getNumericValue(immed.charAt(i))==1){
+				va=va+(int) Math.pow(2, (addrLen - i-1));
+			}
+			
+		}
+		
+		int rV=0;
+		for (int i = 15; i >= 1; i--) {
+			if (r[reg][i] == 1) {
+				rV += (int) Math.pow(2, (15 - i));
 			}
 		}
-		// to judge if the content of mbr[] is a negative number
-		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
-				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
-		b = Integer.parseUnsignedInt(immed, 2);
-		res = a - b;
-		if (res >= 0) {
-			tmp_str = Integer.toBinaryString(res);
-		} else {
-			tmp_str = Integer.toBinaryString(-res);
-			is_negative = true;
+		if (r[reg][0]==1){
+			rV=-rV;
 		}
-		// judge if underflows
-		if (tmp_str.length() >= 16) {
-			cc[1] = 1;
-			System.out.println("***Warning: Underflow detected in R[" + reg + "], the result could be erroneous!***");
-			System.out.println("In function SIR() :");
-			UI.screen_update();
-			return; // we can use trap code here instead of return
+		
+		va=rV-va;
+		if (va<0){
+			va=-va;
+			r[reg][0]=1;
 		}
-//		System.out.println("tmp_str: " + tmp_str);
-		// fill the result to 16 bits
-		temp_length = tmp_str.length();
-		for (int i = 0; i < 16 - temp_length; i++) {
-			if (i == 15 - temp_length && is_negative) {
-				tmp_str = "1".concat(tmp_str);
-			} else {
-				tmp_str = "0".concat(tmp_str);
-			}
+		else{
+			r[reg][0]=0;
 		}
-		for (int i = 0; i < 16; i++) {
-			r[reg][i] = Character.getNumericValue(tmp_str.charAt(i));
+		int j=15;
+		int left=0;
+		for (int i=1;i<16;i++){
+			r[reg][i]=0;
 		}
+		
+		while (va!=0){
+			left=va%2;
+			r[reg][j]=left;
+			va=va/2;
+			j--;
+		}
+		
+//		int temp_length, res, a, b;
+//		boolean x = false, is_negative = false; // for cutting the tmp_str
+//		String tmp_str = "";
+//		for (int i : r[reg]) {
+//			if (i == 0) {
+//				if (x) {
+//					tmp_str = tmp_str.concat(Integer.toString(i));
+//				}
+//			} else {
+//				tmp_str = tmp_str.concat(Integer.toString(i));
+//				if (!x) {
+//					x = true;
+//				}
+//			}
+//		}
+//		// to judge if the content of mbr[] is a negative number
+//		a = tmp_str.length() == 16 ? -Integer.parseUnsignedInt(tmp_str.substring(1), 2)
+//				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
+//		b = Integer.parseUnsignedInt(immed, 2);
+//		res = a - b;
+//		if (res >= 0) {
+//			tmp_str = Integer.toBinaryString(res);
+//		} else {
+//			tmp_str = Integer.toBinaryString(-res);
+//			is_negative = true;
+//		}
+//		// judge if underflows
+//		if (tmp_str.length() >= 16) {
+//			cc[1] = 1;
+//			System.out.println("***Warning: Underflow detected in R[" + reg + "], the result could be erroneous!***");
+//			System.out.println("In function SIR() :");
+//			UI.screen_update();
+//			return; // we can use trap code here instead of return
+//		}
+////		System.out.println("tmp_str: " + tmp_str);
+//		// fill the result to 16 bits
+//		temp_length = tmp_str.length();
+//		for (int i = 0; i < 16 - temp_length; i++) {
+//			if (i == 15 - temp_length && is_negative) {
+//				tmp_str = "1".concat(tmp_str);
+//			} else {
+//				tmp_str = "0".concat(tmp_str);
+//			}
+//		}
+//		for (int i = 0; i < 16; i++) {
+//			r[reg][i] = Character.getNumericValue(tmp_str.charAt(i));
+//		}
 		System.out.println("In function SIR() :");
 	}
 
@@ -1561,14 +1769,21 @@ public class ComputerArchitecture {
 //		System.out.println("memory[16] : " + Arrays.toString(memory1[16]));
 //		System.out.println("memory[20] : " + Arrays.toString(memory1[20]));
 //		System.out.println("memory[25] : " + Arrays.toString(memory1[25]));
-		ms.displayMainMem(7);
-		ms.displayMainMem(16);
-		ms.displayMainMem(20);
-		ms.displayMainMem(25);
-		ms.displayMainMem(256);
-		ms.displayMainMem(512);
-		ms.displayMainMem(513);
-		ms.displayMainMem(514);
+//		ms.displayMainMem(7);
+//		ms.displayMainMem(16);
+//		ms.displayMainMem(20);
+//		ms.displayMainMem(25);
+//		ms.displayMainMem(256);
+//		ms.displayMainMem(512);
+//		ms.displayMainMem(513);
+//		ms.displayMainMem(514);
+		for(int i=20;i<33;i++){
+			ms.displayMainMem(i);
+		}
+		for(int i=40;i<45;i++){
+			ms.displayMainMem(i);
+		}
+		
 		System.out.println(
 				"--------------------------------------------------------------------------------------------------------");
 	}
@@ -1698,7 +1913,7 @@ public class ComputerArchitecture {
 		} catch (Exception e) {
 		}
 		int insLen = instructionsNum;
-
+		instructionsNum=instructionsNum+1000;
 		while (true) {
 			int pcValue = 0;
 			for (int i = 11; i >= 0; i--) {
@@ -1706,13 +1921,14 @@ public class ComputerArchitecture {
 					pcValue = pcValue + (int) Math.pow(pc[i] * 2, (11 - i));
 				}
 			}
+			int dis=pcValue;
 //			System.out.println(pcValue);
 			int[] pcBefore = new int[12];
 			for (int i = 0; i < 12; i++) {
 				pcBefore[i] = pc[i];
 			}
 			System.out.println(
-					"Successfully loaded.\nThe instruction is: " + current_instruction[insLen - instructionsNum]);
+					"Successfully loaded.\nThe instruction is: " + current_instruction[dis-1000]);
 			fetchFromPcToMar();
 			pcAddr = calMemAddr();
 			fetchFromMemToMbr(pcAddr, ms);
@@ -1723,7 +1939,7 @@ public class ComputerArchitecture {
 			}
 			if (is_halted) {
 				System.out.println("**Program has been halted or over.**");
-				System.out.println("End of this instruction: " + current_instruction[insLen - instructionsNum]
+				System.out.println("End of this instruction: " + current_instruction[dis-1000]
 						+ "\n--------------------------------------------------------------------------------------------------------\n");
 				UI.screen_update();
 				return;
@@ -1747,7 +1963,7 @@ public class ComputerArchitecture {
 			}
 			// print
 			display(ms);
-			System.out.println("End of this instruction: " + current_instruction[insLen - instructionsNum]
+			System.out.println("End of this instruction: " + current_instruction[dis-1000]
 					+ "\n--------------------------------------------------------------------------------------------------------\n");
 			effectiveAddress = 0;
 			instructionsNum -= 1;
@@ -1759,7 +1975,7 @@ public class ComputerArchitecture {
 			}
 //			System.out.println(pcValue);
 //			System.out.println(insLen);
-			if (pcValue > (1000 + insLen) || instructionsNum <= 0) {
+			if (pcValue > (1000 + insLen) ) {
 				break;
 			}
 		}

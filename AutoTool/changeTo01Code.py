@@ -16,6 +16,10 @@ def opToStr(ins):
     opArray=high+low
     str1=str1+''.join(opArray)
     num=[]
+    if ins[0]=='IN':
+        return '1100010000010100'
+
+
     if ins[0]!= 'SRC' and ins[0]!='RRC':
         for i in range(1,5):
             num.append(int(re.findall("\d+",ins[i])[0]))
@@ -56,8 +60,8 @@ def opToStr(ins):
 
 
 
-
-file=open('example.txt')
+filename=str(input('input the filename:'))
+file=open(filename)
 inst=[]
 addInfo=[]
 str1=file.readline()
@@ -78,9 +82,9 @@ dic={'LDR':'01','STR':'02','LDA':'03','LDX':'41','STX':'42','JZ':'10','JNE':'11'
      'MLT':'20','DVD':'21','TRR':'22','AND':'23','ORR':'24','NOT':'25','SRC':'31','RRC':'32',
      'IN':'61','OUT':'62','CHK':'63'}
 
-newfile=open('reExample.txt','w')
+newfile=open('re'+filename,'w')
 for i in range(len(inst)):
-    content=opToStr(inst[i])+'     //['+str(i+1000)+']'+addInfo[i]
+    content=opToStr(inst[i])+'     //['+str(i+1000)+']'+' '+' '.join(inst[i])+'  //'+addInfo[i]
     newfile.writelines(content)
 
 newfile.close()
