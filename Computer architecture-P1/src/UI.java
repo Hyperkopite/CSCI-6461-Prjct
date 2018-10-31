@@ -419,14 +419,14 @@ public class UI {
 							ms.setMemory(i + 1, 15, 1);
 						}
 					}
-//					for (int i = 30; i < 40; i++) {
-//						System.out.print("mem[" + i + "]");
-//						for (int j = 0; j < 16; j++) {
-//							System.out.print(ms.getMemory(i, j));
-//						}
-//						System.out.println("\n");
-//					}
-//					screen_update();
+					for (int i = 30; i < 40; i++) {
+						System.out.print("mem[" + i + "]");
+						for (int j = 0; j < 16; j++) {
+							System.out.print(ms.getMemory(i, j));
+						}
+						System.out.println("\n");
+					}
+					screen_update();
 				}
 			}
 		});
