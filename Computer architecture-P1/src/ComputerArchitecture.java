@@ -371,6 +371,8 @@ public class ComputerArchitecture {
 				STOP = START + i;
 //                ms.displayMainMem(START+i);
 			}
+            ms.setMemory(START + len, 15, 1);
+            ms.setMemory(START + len, 14, 1); 
 		}
 	}
 
