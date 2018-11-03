@@ -1343,6 +1343,7 @@ public class ComputerArchitecture {
 		for (int i = 15; i >= 4; i--) {
 			ms.setMemory(130, i, mar[i]);
 		}
+		
 //		System.out.print("pc: ");
 //		for (int i = 0; i < 12; i++) {
 //			System.out.print(pc[i]);
@@ -1355,12 +1356,14 @@ public class ComputerArchitecture {
 //			System.out.print(ms.getMemory(130, i));
 //		}
 //		System.out.print("\n");
+		
 		// set mem[128] as mem location 0 and jump to mem[128].
 		Jma("10000000", 0, ms);
 		// parse the address in mem[128] (131)
 		fetchFromPcToMar();
 		pcAddr = calMemAddr();
 		fetchFromMemToMbr(pcAddr, ms);
+		
 		// set the pc as 131+index of routines, it's the address of the entry of the
 		// routine[index]
 		pcAddr = 0;
@@ -1378,6 +1381,7 @@ public class ComputerArchitecture {
 //			}
 //		}
 //		System.out.print("\n");
+		
 		while (true) {
 			fetchFromPcToMar();
 			pcAddr = calMemAddr();
@@ -1806,7 +1810,7 @@ public class ComputerArchitecture {
 		}
 		if (stepByStep == 0) {
 			try {
-				loadFile("reProgram2.txt", ms);
+				loadFile("test.txt", ms);
 			} catch (Exception e) {
 			}
 		}
