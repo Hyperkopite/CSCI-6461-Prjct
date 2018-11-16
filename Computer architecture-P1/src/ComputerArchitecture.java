@@ -1133,6 +1133,12 @@ public class ComputerArchitecture {
 				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
 		b = tmp_str2.length() == 16 ? -Integer.parseUnsignedInt(tmp_str2.substring(1), 2)
 				: tmp_str2.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str2, 2);
+		if(a<0){
+			a=-(65536+a);
+		}
+		if(b<0){
+			b=-(65536+b);
+		}
 		res = a - b;
 		if (res >= 0) {
 			tmp_str = Integer.toBinaryString(res);
@@ -1160,6 +1166,23 @@ public class ComputerArchitecture {
 		}
 		for (int i = 0; i < 16; i++) {
 			mbr[i] = Character.getNumericValue(tmp_str.charAt(i));
+		}
+		if (mbr[0]==1){
+			for (int i = 1; i < 16; i++) {
+				if (mbr[i]==0){
+					mbr[i]=1;
+				}
+				else{
+					mbr[i]=0;
+				}
+			}
+			for (int i=15;i>=1;i--){
+				if (mbr[i]==0){
+					mbr[i]=1;
+					break;
+				}
+				mbr[i]=0;
+			}
 		}
 		moveMbrToReg(r);
 		System.out.println("In function SMR() :");
