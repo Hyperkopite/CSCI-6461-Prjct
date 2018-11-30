@@ -137,6 +137,14 @@ public class ComputerArchitecture {
 			}
 		}
 	}
+	
+	public void setter_mar(int a, int b) {
+		mar[a] = b;
+	}
+	
+	public void setter_mbr(int a, int b) {
+		mbr[a] = b;
+	}
 
 	public void setter_mem(int num, MemorySystem ms) {
 		for (int i = 0; i < 16; i++) {
@@ -1210,7 +1218,7 @@ public class ComputerArchitecture {
 				: tmp_str.length() == 0 ? 0 : Integer.parseUnsignedInt(tmp_str, 2);
 		b = Integer.parseUnsignedInt(immed, 2);
 		res = a + b;
-		System.out.println(a + ',' + b + ',' + res);
+//		System.out.println(a + ',' + b + ',' + res);
 		if (res >= 0) {
 			tmp_str = Integer.toBinaryString(res);
 		} else {
