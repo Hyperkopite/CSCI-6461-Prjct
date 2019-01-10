@@ -1,5 +1,5 @@
 # CSCI-6461-Prjct
-Currently under part V<br>
+Project completed|Thank u!<br>
 <a target="_blank" href=""><img src="https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg"></a>
 <a target="_blank" href=""><img src="https://img.shields.io/badge/Status-Need%20help-red.svg"></a>
 <a target="_blank" href=""><img src="https://img.shields.io/badge/Coverage-70%25-yellow.svg"></a><br>
