@@ -44,4 +44,4 @@ Project completed √ | Thank u!<br>
 √ 7.LDR, STR, LDA, LDX, STX<br>
 √ 8.Program 1<br>
 √ 9.Program 2_need to debug<br>
-![image](https://user-images.githubusercontent.com/9525971/142965033-f52994ec-643e-4dbb-a372-8fd34da72235.png)
+![image](https://user-images.githubusercontent.com/9525971/142965091-e118b012-a7fc-4c2f-ad0c-80aeed6f7ec9.png)
