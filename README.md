@@ -1,4 +1,8 @@
 # CSCI-6461-Prjct
+会 议 主 题	WEB安全测试技术交流（同行协助）
+召  集  人	殷慧琳
+邀 请 人	陈信宜：安全开发部 WEB安全测试专家
+
 Project completed √ | Thank u!<br>
 <a target="_blank" href=""><img src="https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg"></a><br>
 已完成的指令：(需要测试)<br>
