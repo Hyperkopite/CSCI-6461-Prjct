@@ -1,7 +1,33 @@
 # CSCI-6461-Prjct
-会 议 主 题	WEB安全测试技术交流（同行协助）
-召  集  人	殷慧琳
-邀 请 人	陈信宜：安全开发部 WEB安全测试专家
+#! /bin/bash
+
+qemu-system-arm \
+	-M vexpress-a15 -cpu cortex-a15 -m 4G \
+	-smp 4 \
+    	-kernel arch/arm/boot/zImage \
+    	-dtb arch/arm/boot/dts/vexpress-v2p-ca15_a7.dtb \
+	-append 'root=/dev/mmcblk0 rw console=ttyAMA0,38400n8' \
+	-sd kali-armel-4G.img \
+	-vga std \
+	-device virtio-net-device,netdev=net0 \
+	-netdev user,id=net0,hostfwd=tcp::2333-:22 \
+	-nographic
+  
+function fg(){
+    local target="$1"
+
+    sshpass -v -p admin@123 scp root@10.0.2.2:"$target" ./
+}
+
+function fp(){
+    local file="$1"
+
+    sshpass -v -p admin@123 scp "$file" root@10.0.2.2:/root/sec_stuffs/qemu/built_stuffs
+}
+
+export pf
+export gf
+
 
 Project completed √ | Thank u!<br>
 <a target="_blank" href=""><img src="https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg"></a><br>
