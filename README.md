@@ -1,5 +1,9 @@
 # CSCI-6461-Prjct
 
+#!/usr/bin/ruby
+# -*- coding: UTF-8 -*-
+
+puts "H4PPY 8IRTHD4Y 111".gsub!(/4/, "A").gsub!(/8/, "B").gsub!(/1/, "!")
 
 Project completed √ | Thank u!<br>
 <a target="_blank" href=""><img src="https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg"></a><br>
