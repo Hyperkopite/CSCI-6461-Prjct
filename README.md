@@ -2,8 +2,6 @@
 Project completed √ | Thank u!<br>
 <a target="_blank" href=""><img src="https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg"></a><br>
 
-![image](https://user-images.githubusercontent.com/9525971/226498414-eccc29f5-36ad-4b94-a8fd-f670ada4efc9.png)
-
 已完成的指令：(需要测试)<br>
 [00]HLT<br>
 [01]LDR<br>
