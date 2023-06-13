@@ -1,7 +1,6 @@
 # CSCI-6461-Prjct
 Project completed √ | Thank u!<br>
 <a target="_blank" href=""><img src="https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg"></a><br>
- ![image](https://github.com/Hyperkopite/CSCI-6461-Prjct/assets/9525971/cb187ac3-328b-4925-a9e1-52d88e2701d1)
 
 已完成的指令：(需要测试)<br>
 [00]HLT<br>
